@@ -9,6 +9,7 @@ import {
   ScreenHeaderBtn,
   Welcome,
 } from "../components";
+import LikeDislikeComponent from "../components/like-dislike/likedis";
 
 const Home = () => {
   const router = useRouter();
