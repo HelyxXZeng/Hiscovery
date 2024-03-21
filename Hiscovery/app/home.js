@@ -9,7 +9,8 @@ import {
   ScreenHeaderBtn,
   Welcome,
 } from "../components";
-import LikeDislikeComponent from "../components/like-dislike/likedis";
+
+import Comment from "../components/comment/comment";
 
 const Home = () => {
   const router = useRouter();
@@ -47,7 +48,7 @@ const Home = () => {
               }
             }}
           />
-
+          <Comment/>
           <Popularjobs />
           <Nearbyjobs />
         </View>

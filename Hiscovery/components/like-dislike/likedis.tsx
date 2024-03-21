@@ -10,15 +10,15 @@ const LikeDislikeComponent: React.FC = () => {
 
   const handleLikePress = () => {
     setLiked(true);
+    setDisliked(false);
     setLikeCount(likeCount + 1);
-    setDislikeCount(dislikeCount - (liked ? 1 : 0));
     animateButton();
   };
 
   const handleDislikePress = () => {
     setLiked(false);
+    setDisliked(true);
     setDislikeCount(dislikeCount + 1);
-    setLikeCount(likeCount - (!liked ? 1 : 0));
     animateButton();
   };
 
