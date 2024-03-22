@@ -10,6 +10,8 @@ import {
   Welcome,
 } from "../components";
 
+import Comment from "../components/comment/comment";
+
 const Home = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,7 +48,7 @@ const Home = () => {
               }
             }}
           />
-
+          <Comment/>
           <Popularjobs />
           <Nearbyjobs />
         </View>
