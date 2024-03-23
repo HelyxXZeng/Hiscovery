@@ -16,8 +16,8 @@ const Layout = () => {
   }
 
   return (
-    <Stack initialRouteName="home">
-      <Stack.Screen name="home" />
+    <Stack initialRouteName="auth">
+      <Stack.Screen name="auth" />
     </Stack>
   );
 };
