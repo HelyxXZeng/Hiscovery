@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import LikeDislikeComponent from '../like-dislike/likedis'; // Import your LikeDislikeComponent
+import LikeDislikeComponent from '../like-dislike/Likedis';
 //import ReportButton from './ReportButton'; // Import your ReportButton
 
 const defaultAvatar = require('../../assets/icons/default_avatar_icon.png');
