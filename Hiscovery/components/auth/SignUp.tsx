@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, StyleSheet, View, AppState, TextInput, TouchableOpacity, Text, Platform } from 'react-native'
+import { Alert, StyleSheet, View, AppState, TextInput, TouchableOpacity, Text, Platform, ScrollView } from 'react-native'
 import { supabase } from '../../lib/supabase'
 import { Button, Input } from 'react-native-elements'
 import { COLORS, SIZES, FONT } from '../../constants/theme'
@@ -70,99 +70,106 @@ export default function SignIn({ switchToSignIn }) {
     }
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={[styles.card, styles.fontSize]}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
-                placeholder="Email"
-                autoCapitalize={'none'}
-            />
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.container}>
+                <TextInput
+                    style={[styles.card, styles.fontSize]}
+                    onChangeText={(text) => setEmail(text)}
+                    value={email}
+                    placeholder="Email"
+                    autoCapitalize={'none'}
+                />
 
-            <TextInput
-                style={[styles.card, styles.fontSize, styles.mt20]}
-                onChangeText={(text) => setName(text)}
-                value={name}
-                placeholder="Full Name"
-                autoCapitalize={'words'}
-            />
+                <TextInput
+                    style={[styles.card, styles.fontSize, styles.mt20]}
+                    onChangeText={(text) => setName(text)}
+                    value={name}
+                    placeholder="Full Name"
+                    autoCapitalize={'words'}
+                />
 
 
-            <TextInput
-                style={[styles.card, styles.fontSize, styles.mt20]}
-                onChangeText={(text) => setUsername(text)}
-                value={username}
-                placeholder="Username"
-                autoCapitalize={'none'}
-            />
+                <TextInput
+                    style={[styles.card, styles.fontSize, styles.mt20]}
+                    onChangeText={(text) => setUsername(text)}
+                    value={username}
+                    placeholder="Username"
+                    autoCapitalize={'none'}
+                />
 
-            <View style={[styles.card, styles.oneRow]}>
-                <View style={{ flex: 1 }}>
-                    <Text>Birth Date</Text>
-                    <TextInput
-                        style={[styles.fontSize, styles.mt20,]}
-                        value={formattedDate}
-                        placeholder="Select Date"
-                        editable={false} // Make the TextInput non-editable
+                <View style={[styles.card, styles.oneRow]}>
+                    <View style={{ flex: 1 }}>
+                        <Text>Birth Date</Text>
+                        <TextInput
+                            style={[styles.fontSize, styles.mt20,]}
+                            value={formattedDate}
+                            placeholder="Select Date"
+                            editable={false} // Make the TextInput non-editable
+                        />
+                    </View>
+
+                    <Button
+                        onPress={() => { setShowDatePicker(true) }}
+                        title="📅"
                     />
                 </View>
 
-                <Button
-                    onPress={() => { setShowDatePicker(true) }}
-                    title="📅"
-                />
-            </View>
 
+                {showDatePicker && (
+                    <DateTimePicker
+                        value={birthdate}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={handleDateChange}
+                    />
+                )}
 
-            {showDatePicker && (
-                <DateTimePicker
-                    value={birthdate}
-                    mode="date"
-                    is24Hour={true}
-                    display="default"
-                    onChange={handleDateChange}
-                />
-            )}
-
-            <TextInput
-                style={[styles.card, styles.fontSize, styles.mt20]}
-                onChangeText={(text) => setPhone(text)}
-                value={phone}
-                placeholder="Phone"
-                autoCapitalize={'none'}
-            />
-
-            <View style={[styles.card, styles.oneRow]}>
                 <TextInput
-                    style={[styles.fontSize, { flex: 1 }]} // Add flex: 1 here
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    secureTextEntry={hidePassword} // This will hide the password when hidePassword is true
-                    placeholder="Password"
+                    style={[styles.card, styles.fontSize, styles.mt20]}
+                    onChangeText={(text) => setPhone(text)}
+                    value={phone}
+                    placeholder="Phone"
                     autoCapitalize={'none'}
                 />
-                <Icon
-                    style={{ alignSelf: 'center' }} // Change 'flex-end' to 'center'
-                    name={hidePassword ? 'eye-slash' : 'eye'}
-                    type='font-awesome'
-                    onPress={() => setHidePassword(!hidePassword)}
-                />
-            </View>
 
-            <View style={styles.formCenter}>
-                <Text style={styles.mt20}>Already have an Account?
-                    <TouchableOpacity disabled={loading} onPress={switchToSignIn}>
-                        <Text style={[{ color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>  Sign In now!</Text>
-                    </TouchableOpacity>
-                </Text>
-                <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN UP" disabled={loading} onPress={() => signUpWithEmail()} />
-            </View>
+                <View style={[styles.card, styles.oneRow]}>
+                    <TextInput
+                        style={[styles.fontSize, { flex: 1 }]} // Add flex: 1 here
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                        secureTextEntry={hidePassword} // This will hide the password when hidePassword is true
+                        placeholder="Password"
+                        autoCapitalize={'none'}
+                    />
+                    <Icon
+                        style={{ alignSelf: 'center' }} // Change 'flex-end' to 'center'
+                        name={hidePassword ? 'eye-slash' : 'eye'}
+                        type='font-awesome'
+                        onPress={() => setHidePassword(!hidePassword)}
+                    />
+                </View>
 
-        </View>
+                <View style={styles.formCenter}>
+                    <Text style={styles.mt20}>Already have an Account?
+                        <TouchableOpacity disabled={loading} onPress={switchToSignIn}>
+                            <Text style={[{ color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>  Sign In now!</Text>
+                        </TouchableOpacity>
+                    </Text>
+                    <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN UP" disabled={loading} onPress={() => signUpWithEmail()} />
+                </View>
+
+            </View>
+        </ScrollView>
+
     )
 }
 
 const styles = StyleSheet.create({
+    scrollContainer: {
+        flexGrow: 1,
+        justifyContent: 'center',
+    },
     container: {
         padding: 12,
         flex: 1,

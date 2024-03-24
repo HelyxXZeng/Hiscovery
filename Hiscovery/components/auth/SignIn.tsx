@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, StyleSheet, View, AppState, TextInput, TouchableOpacity, Text } from 'react-native'
+import { Alert, StyleSheet, View, AppState, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native'
 import { supabase } from '../../lib/supabase'
 import { Button, Input } from 'react-native-elements'
 import { COLORS, SIZES, FONT } from '../../constants/theme'
@@ -39,49 +39,56 @@ export default function SignIn({ switchToSignUp }) {
     }
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={[styles.card, styles.fontSize, { marginTop: 50 }]}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
-                placeholder="Email"
-                autoCapitalize={'none'}
-            />
-
-            <View style={[styles.card, styles.oneRow]}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.container}>
                 <TextInput
-                    style={[styles.fontSize, { flex: 1 }]} // Add flex: 1 here
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    secureTextEntry={hidePassword} // This will hide the password when hidePassword is true
-                    placeholder="Password"
+                    style={[styles.card, styles.fontSize, { marginTop: 50 }]}
+                    onChangeText={(text) => setEmail(text)}
+                    value={email}
+                    placeholder="Email"
                     autoCapitalize={'none'}
                 />
-                <Icon
-                    style={{ alignSelf: 'center' }} // Change 'flex-end' to 'center'
-                    name={hidePassword ? 'eye-slash' : 'eye'}
-                    type='font-awesome'
-                    onPress={() => setHidePassword(!hidePassword)}
-                />
-            </View>
 
-            <View style={styles.formCenter}>
-                <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN IN" disabled={loading} onPress={() => signInWithEmail()} />
-                <Text style={styles.mt20}>Don't have an Account?
-                    <TouchableOpacity disabled={loading} onPress={switchToSignUp}>
-                        <Text style={[{ color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>  Sign Up now!</Text>
+                <View style={[styles.card, styles.oneRow]}>
+                    <TextInput
+                        style={[styles.fontSize, { flex: 1 }]} // Add flex: 1 here
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                        secureTextEntry={hidePassword} // This will hide the password when hidePassword is true
+                        placeholder="Password"
+                        autoCapitalize={'none'}
+                    />
+                    <Icon
+                        style={{ alignSelf: 'center' }} // Change 'flex-end' to 'center'
+                        name={hidePassword ? 'eye-slash' : 'eye'}
+                        type='font-awesome'
+                        onPress={() => setHidePassword(!hidePassword)}
+                    />
+                </View>
+
+                <View style={styles.formCenter}>
+                    <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN IN" disabled={loading} onPress={() => signInWithEmail()} />
+                    <Text style={styles.mt20}>Don't have an Account?
+                        <TouchableOpacity disabled={loading} onPress={switchToSignUp}>
+                            <Text style={[{ color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>  Sign Up now!</Text>
+                        </TouchableOpacity>
+                    </Text>
+                    <TouchableOpacity onPress={() => console.log('Forgot Password')}>
+                        <Text style={[{ marginTop: 40 }, { fontSize: SIZES.large }, { color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>Forget Password?</Text>
                     </TouchableOpacity>
-                </Text>
-                <TouchableOpacity onPress={() => console.log('Forgot Password')}>
-                    <Text style={[{ marginTop: 40 }, { fontSize: SIZES.large }, { color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>Forget Password?</Text>
-                </TouchableOpacity>
-            </View>
+                </View>
 
-        </View>
+            </View>
+        </ScrollView>
+
     )
 }
 
 const styles = StyleSheet.create({
+    scrollContainer: {
+        flexGrow: 1,
+        justifyContent: 'center',
+    },
     container: {
         padding: 12,
         flex: 1,
