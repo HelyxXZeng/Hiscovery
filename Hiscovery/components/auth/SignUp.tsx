@@ -6,6 +6,7 @@ import { COLORS, SIZES, FONT } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
 // `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
@@ -71,7 +72,7 @@ export default function SignIn({ switchToSignIn }) {
     return (
         <View style={styles.container}>
             <TextInput
-                style={[styles.card, styles.fontSize, { marginTop: 50 }]}
+                style={[styles.card, styles.fontSize]}
                 onChangeText={(text) => setEmail(text)}
                 value={email}
                 placeholder="Email"
@@ -86,6 +87,7 @@ export default function SignIn({ switchToSignIn }) {
                 autoCapitalize={'words'}
             />
 
+
             <TextInput
                 style={[styles.card, styles.fontSize, styles.mt20]}
                 onChangeText={(text) => setUsername(text)}
@@ -94,15 +96,24 @@ export default function SignIn({ switchToSignIn }) {
                 autoCapitalize={'none'}
             />
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TextInput
-                    style={[styles.card, styles.fontSize, styles.mt20, { flex: 1 }]}
-                    value={formattedDate}
-                    placeholder="Select Date"
-                    editable={false} // Make the TextInput non-editable
+            <View style={[styles.card, styles.oneRow]}>
+                <View style={{ flex: 1 }}>
+                    <Text>Birth Date</Text>
+                    <TextInput
+                        style={[styles.fontSize, styles.mt20,]}
+                        value={formattedDate}
+                        placeholder="Select Date"
+                        editable={false} // Make the TextInput non-editable
+                    />
+                </View>
+
+                <Button
+                    onPress={() => { setShowDatePicker(true) }}
+                    title="📅"
                 />
-                <Button onPress={() => { setShowDatePicker(true) }} title="📅" />
             </View>
+
+
             {showDatePicker && (
                 <DateTimePicker
                     value={birthdate}
@@ -145,9 +156,6 @@ export default function SignIn({ switchToSignIn }) {
                     </TouchableOpacity>
                 </Text>
                 <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN UP" disabled={loading} onPress={() => signUpWithEmail()} />
-                <TouchableOpacity onPress={() => console.log('Forgot Password')}>
-                    <Text style={[{ marginTop: 40 }, { fontSize: SIZES.large }, { color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>Forget Password?</Text>
-                </TouchableOpacity>
             </View>
 
         </View>
@@ -169,7 +177,9 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     oneRow: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     fontSize: {
         fontSize: 18
