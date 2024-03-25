@@ -1,7 +1,6 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import Auth from "./screens/auth/auth";
-import Account from "./account";
+
 // import * as SplashScreen from "expo-splash-screen";
 
 // SplashScreen.preventAutoHideAsync();
