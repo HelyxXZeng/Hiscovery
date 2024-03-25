@@ -77,7 +77,6 @@ export default function SignIn({ switchToSignUp }) {
                         <Text style={[{ marginTop: 40 }, { fontSize: SIZES.large }, { color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>Forget Password?</Text>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </ScrollView>
 
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     container: {
-        padding: 12,
+        padding: 25,
         flex: 1,
         backgroundColor: COLORS.primary
     },
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 20,
         marginTop: 20,
-        borderColor: COLORS.gray2,
+        borderColor: COLORS.gray,
         borderWidth: 1
     },
     oneRow: {

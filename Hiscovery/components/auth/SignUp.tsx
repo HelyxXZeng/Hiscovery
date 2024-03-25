@@ -81,32 +81,24 @@ export default function SignIn({ switchToSignIn }) {
                 />
 
                 <TextInput
-                    style={[styles.card, styles.fontSize, styles.mt20]}
+                    style={[styles.card, styles.fontSize]}
                     onChangeText={(text) => setName(text)}
                     value={name}
                     placeholder="Full Name"
                     autoCapitalize={'words'}
                 />
 
-
                 <TextInput
-                    style={[styles.card, styles.fontSize, styles.mt20]}
+                    style={[styles.card, styles.fontSize]}
                     onChangeText={(text) => setUsername(text)}
                     value={username}
                     placeholder="Username"
                     autoCapitalize={'none'}
                 />
 
-                <View style={[styles.card, styles.oneRow]}>
-                    <View style={{ flex: 1 }}>
-                        <Text>Birth Date</Text>
-                        <TextInput
-                            style={[styles.fontSize, styles.mt20,]}
-                            value={formattedDate}
-                            placeholder="Select Date"
-                            editable={false} // Make the TextInput non-editable
-                        />
-                    </View>
+                <View style={[styles.card, styles.oneRow, { paddingTop: 0 }]}>
+                    <Text style={[styles.fontSize, styles.mt20, { flex: 1 }, { color: COLORS.gray2 }]}>
+                        {"Birth Date: " + formattedDate}</Text>
 
                     <Button
                         onPress={() => { setShowDatePicker(true) }}
@@ -126,7 +118,7 @@ export default function SignIn({ switchToSignIn }) {
                 )}
 
                 <TextInput
-                    style={[styles.card, styles.fontSize, styles.mt20]}
+                    style={[styles.card, styles.fontSize]}
                     onChangeText={(text) => setPhone(text)}
                     value={phone}
                     placeholder="Phone"
@@ -171,7 +163,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     container: {
-        padding: 12,
+        padding: 25,
         flex: 1,
         backgroundColor: COLORS.primary
     },
@@ -180,13 +172,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 20,
         marginTop: 20,
-        borderColor: COLORS.gray2,
+        borderColor: COLORS.gray,
         borderWidth: 1
     },
     oneRow: {
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'space-between',
+        alignItems: 'baseline'
     },
     fontSize: {
         fontSize: 18
