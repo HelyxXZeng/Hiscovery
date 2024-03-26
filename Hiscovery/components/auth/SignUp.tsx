@@ -5,19 +5,20 @@ import { Button, Input } from 'react-native-elements'
 import { COLORS, SIZES, FONT } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useRouter } from 'expo-router'
 
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
 // `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
 // if the user's session is terminated. This should only be registered once.
-AppState.addEventListener('change', (state) => {
-    if (state === 'active') {
-        supabase.auth.startAutoRefresh()
-    } else {
-        supabase.auth.stopAutoRefresh()
-    }
-})
+// AppState.addEventListener('change', (state) => {
+//     if (state === 'active') {
+//         supabase.auth.startAutoRefresh()
+//     } else {
+//         supabase.auth.stopAutoRefresh()
+//     }
+// })
 
 export default function SignIn({ switchToSignIn }) {
     const [email, setEmail] = useState('')
@@ -30,6 +31,8 @@ export default function SignIn({ switchToSignIn }) {
     const [loading, setLoading] = useState(false)
     const [hidePassword, setHidePassword] = useState(true)
     const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const router = useRouter();
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || birthdate;
@@ -62,7 +65,9 @@ export default function SignIn({ switchToSignIn }) {
                     p_username: username
                 })
             if (error) console.error(error)
-            else console.log(data)
+            else {
+                router.push(`/home`);
+            }
 
         }
         if (!session) Alert.alert('Please check your inbox for email verification!')
