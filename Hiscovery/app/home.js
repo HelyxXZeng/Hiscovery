@@ -10,7 +10,7 @@ import {
   Welcome,
 } from "../components";
 
-import Comment from "../components/comment/Comment";
+import Comment from "../components/comment/comment";
 
 const Home = () => {
   const router = useRouter();
