@@ -66,9 +66,7 @@ const Home = () => {
     // </SafeAreaView>
     <View>
       <Comment />
-      <Button title="Sign Out" onPress={signOut}>
-        {/* <Text>Sign Out</Text> */}
-      </Button>
+      <Button title="Sign Out" onPress={signOut} />
     </View>
   );
 };
