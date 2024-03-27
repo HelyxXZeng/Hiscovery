@@ -5,6 +5,7 @@ import { Button, Input } from 'react-native-elements'
 import { COLORS, SIZES, FONT } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
 import { useRouter } from 'expo-router'
+import styles from './style'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -86,44 +87,3 @@ export default function SignIn({ switchToSignUp }) {
 
     )
 }
-
-const styles = StyleSheet.create({
-    scrollContainer: {
-        flexGrow: 1,
-        justifyContent: 'center',
-    },
-    container: {
-        padding: 25,
-        flex: 1,
-        backgroundColor: COLORS.primary
-    },
-    card: {
-        borderRadius: 20,
-        backgroundColor: 'white',
-        padding: 20,
-        marginTop: 20,
-        borderColor: COLORS.gray,
-        borderWidth: 1
-    },
-    oneRow: {
-        flexDirection: 'row'
-    },
-    fontSize: {
-        fontSize: 18
-    },
-    formCenter: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%'
-    },
-    mt20: {
-        marginTop: 20,
-    },
-    button: {
-        backgroundColor: COLORS.darkRed,
-        borderRadius: 20,
-        width: 328,
-        height: 56
-    }
-})

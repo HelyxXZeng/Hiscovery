@@ -33,7 +33,7 @@ const CategoryButton = ({ item }) => (
 
 
 
-export default function App() {
+export default function CategoryList() {
     return (
         <View style={styles.container}>
             <FlatList
