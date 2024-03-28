@@ -12,6 +12,7 @@ import {
 } from "../components";
 
 import Comment from "../components/comment/Comment";
+import ArticleCard from "../components/articleCard/ArticleCard";
 
 const Home = () => {
   const router = useRouter();
@@ -66,7 +67,12 @@ const Home = () => {
     // </SafeAreaView>
     <View>
       <Comment />
+
       <Button title="Sign Out" onPress={signOut} />
+
+      <ArticleCard />
+
+
     </View>
   );
 };
