@@ -2,27 +2,32 @@ import * as React from "react";
 import { Image, Text, StyleSheet, View } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 
-const ArticleCard = () => {
+// Define an interface for the Supabase data
+interface ArticleData {
+  id: number;
+  name: string;
+  description: string;
+  category_name: string;
+  author_name: string;
+  publish_time: string;
+  image_url: string;
+  is_bookmarked: boolean;
+}
+
+// Modify ArticleCard component to accept props based on ArticleData interface
+const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   return (
     <View style={styles.news}>
       <View style={styles.Tags}>
-        <Text style={styles.heading}>Diễn biến Thế chiến II</Text>
-        <Text
-          style={[styles.summary, styles.summarySpaceBlock]}
-        >{`Chiến tranh thế giới thứ hai bùng nổ ở châu Âu, khi Đức xâm chiếm Ba Lan ngày 1/9/1939. Cuộc chiến lan rộng sang nhiều quốc gia và dân tộc trên toàn cựu lục địa. Khi thế chiến chấm dứt năm 1945, tổng cộng 27 triệu trong tổng số 110 triệu binh lính đã chết, khoảng 25 triệu thường dân thiệt mạng.`}
-        </Text>
+        <Text style={styles.heading}>{data.name}</Text>
+        <Text style={[styles.summary, styles.summarySpaceBlock]}>{data.description}</Text>
       </View>
       <View style={styles.ImageParent}>
-        <Image
-          style={styles.ImageIcon}
-          source={{ uri: 'https://cdn.donmai.us/sample/a1/68/__acheron_honkai_and_1_more_drawn_by_gxws__sample-a1688a7878f6ee653f1c3c8c68048e8a.jpg' }}
-        />
+        <Image style={styles.ImageIcon} source={{ uri: data.image_url }} />
         <View style={[styles.frameParent, styles.parentFlexBox]}>
           <View style={[styles.TagNCParent, styles.parentFlexBox]}>
-            <Text style={[styles.tag, styles.textTypo]}>Thế chiến II</Text>
-            <Text style={[styles.tag]}>
-              Lịch sử Thế Giới
-            </Text>
+            <Text style={[styles.tag, styles.textTypo]}>{data.category_name}</Text>
+            <Text style={[styles.tag]}>{data.author_name}</Text>
           </View>
           <View style={[styles.TagNCParent, styles.parentFlexBox]}>
             <View style={[styles.commentIconParent, styles.parentFlexBox]}>
@@ -34,7 +39,7 @@ const ArticleCard = () => {
             </View>
             <Image
               style={styles.bookmarkIcon}
-              source={require("../../assets/icons/bookmark-icon.png")}
+              source={ ( data.is_bookmarked? require("../../assets/icons/bookmark-filled-icon.png") : require("../../assets/icons/bookmark-icon.png") )}
             />
           </View>
         </View>
