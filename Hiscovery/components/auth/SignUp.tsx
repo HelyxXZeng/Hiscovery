@@ -20,7 +20,7 @@ import styles from './style'
 //     }
 // })
 
-export default function SignIn({ switchToSignIn }) {
+export default function SignUp({ switchToSignIn }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [birthdate, setBirthdate] = useState(new Date())

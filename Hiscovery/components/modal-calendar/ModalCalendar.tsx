@@ -5,17 +5,28 @@ import RNPickerSelect from 'react-native-picker-select';
 import { COLORS } from '../../constants/theme';
 
 const ModalCalendar = ({ visible, selectedDate, onSelectDate }) => {
-    const [selectedYear, setSelectedYear] = useState(selectedDate.getFullYear());
-    const [inSelectedDate, setInSelectedDate] = useState(selectedDate)
+    const [selectedYear, setSelectedYear] = useState(2024);
+    const [initialDate, setInitialDate] = useState('2024-03-01')
+    const [calendarKey, setCalendarKey] = useState(0);
+
+    useEffect(() => {
+        if (!selectedYear) {
+
+            setInitialDate(selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + selectedDate.getDay())
+        }
+        else {
+            setInitialDate(selectedYear.toString() + '-06-01')
+        }
+        setCalendarKey(calendarKey + 1); // Update key to force rerender
+        console.log('this is initialDate', initialDate)
+    }, [selectedYear])
+
     const handleYearChange = (year) => {
-        setSelectedYear(year);
-        setInSelectedDate(new Date(year, selectedDate.getMonth() + 1, 1))
+        setSelectedYear(parseInt(year)); // Parse the year to ensure it's a number
     };
 
     const handleDateChange = (date) => {
-        setInSelectedDate(new Date(date))
         onSelectDate(new Date(date));
-        // onClose();
     };
 
     const yearItems = Array.from({ length: 100 }, (_, i) => ({ label: `${2024 - i}`, value: 2024 - i }));
@@ -32,24 +43,17 @@ const ModalCalendar = ({ visible, selectedDate, onSelectDate }) => {
                         onValueChange={handleYearChange}
                         items={yearItems}
                         style={pickerSelectStyles}
-                        placeholder={{ label: "Select a year...", value: null }}
+                        placeholder={{ label: "Select a year", value: null }}
                     />
+                    {/* <Text>{initialDate}</Text> */}
                     <Calendar
+                        key={calendarKey} // Key to force rerender
                         style={styles.calendar}
-                        initialDate={`${selectedYear}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`}
+                        current={initialDate}
                         onDayPress={(day) => handleDateChange(day.dateString)}
-                        theme={{
-                            backgroundColor: COLORS.primary,
-                            calendarBackground: COLORS.primary,
-                            textSectionTitleColor: COLORS.secondary,
-                            selectedDayBackgroundColor: COLORS.darkRed,
-                            selectedDayTextColor: COLORS.primary,
-                            todayTextColor: COLORS.darkRed,
-                            dayTextColor: COLORS.secondary,
-                            textDisabledColor: COLORS.gray2
-                        }}
+                        theme={theme}
                         markedDates={{
-                            [inSelectedDate.toISOString().substring(0, 10)]: { selected: true }
+                            [selectedDate.toISOString().substring(0, 10)]: { selected: true }
                         }}
                     />
                 </View>
@@ -87,6 +91,17 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     }
 });
+
+const theme = {
+    backgroundColor: COLORS.primary,
+    calendarBackground: COLORS.primary,
+    textSectionTitleColor: COLORS.secondary,
+    selectedDayBackgroundColor: COLORS.darkRed,
+    selectedDayTextColor: COLORS.primary,
+    todayTextColor: COLORS.darkRed,
+    dayTextColor: COLORS.secondary,
+    textDisabledColor: COLORS.gray2
+}
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
