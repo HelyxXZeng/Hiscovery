@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView, TouchableOpacity, View, Text, Button } from "react-native";
 import { Stack, useRouter } from "expo-router";
+import { supabase } from "../lib/supabase";
 
 import { COLORS, icons, images, SIZES } from "../constants";
 import {
@@ -16,6 +17,15 @@ import ArticleCard from "../components/articleCard/ArticleCard";
 const Home = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error);
+    } else {
+      router.push('/auth');
+    }
+  }
 
   return (
     // <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
