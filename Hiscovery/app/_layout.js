@@ -10,6 +10,8 @@ const Layout = () => {
     DMBold: require("../assets/fonts/DMSans-Bold.ttf"),
     DMMedium: require("../assets/fonts/DMSans-Medium.ttf"),
     DMRegular: require("../assets/fonts/DMSans-Regular.ttf"),
+    MerriweatherBold: require("../assets/fonts/Merriweather-Bold.ttf"),
+    RobotoRegular: require("../assets/fonts/Roboto-Regular.ttf")
   });
 
   if (!fontsLoaded) {
