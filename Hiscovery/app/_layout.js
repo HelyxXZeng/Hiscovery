@@ -17,8 +17,12 @@ const Layout = () => {
   }
 
   return (
-    <Stack initialRouteName="auth">
-      <Stack.Screen name="auth" />
+    // <Stack initialRouteName="auth">
+    //   <Stack.Screen name="auth" />
+    // </Stack>
+
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
 };
