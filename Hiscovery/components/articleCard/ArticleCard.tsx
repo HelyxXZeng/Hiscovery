@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
     width: "100%",
     alignSelf: "stretch",
+    resizeMode:"center",
   },
   tag: {
     fontSize: SIZES.xSmall,

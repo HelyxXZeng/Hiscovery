@@ -13,6 +13,7 @@ import {
 
 import Comment from "../components/comment/Comment";
 import ArticleCard from "../components/articleCard/ArticleCard";
+import SmallArticleCard from "../components/smallArticleCard/SmallArticleCard"
 
 const Home = () => {
   const router = useRouter();
@@ -66,12 +67,8 @@ const Home = () => {
     //   </ScrollView>
     // </SafeAreaView>
     <View>
-      <Comment />
 
       <Button title="Sign Out" onPress={signOut} />
-
-      <ArticleCard />
-
 
     </View>
   );
