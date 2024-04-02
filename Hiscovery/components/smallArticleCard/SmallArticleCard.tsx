@@ -15,7 +15,7 @@ const ItemWatchLater = ({ article }: { article: ArticleData }) => {
       <View style={[styles.itemWatchLater, styles.itemWatchLaterLayout]}>
         <Image
           style={styles.itemWatchLaterChild}
-          resizeMode="center"
+          resizeMode="cover"
           source={{ uri: article.image_url }}
         />
         <View style={styles.titleParent}>
@@ -25,56 +25,47 @@ const ItemWatchLater = ({ article }: { article: ArticleData }) => {
         <View style={styles.itemWatchLaterItem} />
       </View>
     );
-};
+  };
   
-
 const styles = StyleSheet.create({
-  itemWatchLaterLayout: {
-    height: 90,
-  },
-  itemWatchLaterChild: {
-    top: 1,
-    left: 0,
-    borderRadius: 5,
-    width: 102,
-    height: 91,
-    position: "absolute",
-  },
-  title: {
-    textAlign: "left",
-    fontFamily: FONT.heading,
-    fontSize: SIZES.medium,
-    color: COLORS.textColor1,
-    display: "flex",
-    alignItems: "center",
-    width: 195,
-  },
-  tagNTime: {
-    fontSize: SIZES.small,
-    color: COLORS.textColor3,
-    textAlign:'left',
-    fontFamily: FONT.tag,
-  },
-  titleParent: {
-    top: 0,
-    left: 130,
-    justifyContent: "space-between",
-    width: 195,
-  },
-  itemWatchLaterItem: {
-    top: 104,
-    left: -11,
-    borderStyle: "solid",
-    borderColor: COLORS.colorWhitesmoke_100,
-    borderTopWidth: 1,
-    height: 1,
-    position: "absolute",
-  },
-  itemWatchLater: {
-    top: 128,
-    left: 17,
-    width: 325,
-  },
+    itemWatchLaterLayout: {
+      height: 90,
+    },
+    itemWatchLaterChild: {
+      borderRadius: 5,
+      width: 102,
+      height: 91,
+    },
+    title: {
+      fontFamily: FONT.heading,
+      fontSize: SIZES.medium,
+      color: COLORS.textColor1,
+    },
+    tagNTime: {
+      fontSize: SIZES.small,
+      color: COLORS.textColor3,
+      fontFamily: FONT.tag,
+    },
+    titleParent: {
+      marginLeft: 10,
+      justifyContent: "space-between",
+      flex: 1,
+
+    },
+    itemWatchLaterItem: {
+      marginTop: 10,
+      borderStyle: "solid",
+      borderColor: COLORS.colorWhitesmoke_100,
+      borderTopWidth: 1,
+      height: 1,
+    },
+    itemWatchLater: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 10,
+      width: "100%",
+    },
 });
+    
 
 export default ItemWatchLater;
