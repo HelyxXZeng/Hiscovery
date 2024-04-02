@@ -70,8 +70,6 @@ const Home = () => {
 
       <Button title="Sign Out" onPress={signOut} />
 
-      <ArticleCard />
-
     </View>
   );
 };
