@@ -67,7 +67,11 @@ const Home = () => {
     //   </ScrollView>
     // </SafeAreaView>
     <View>
-      <Comment />
+
+      <Button title="Sign Out" onPress={signOut} />
+
+      <ArticleCard />
+
     </View>
   );
 };

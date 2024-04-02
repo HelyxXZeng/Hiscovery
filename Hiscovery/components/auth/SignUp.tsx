@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { Alert, StyleSheet, View, AppState, TextInput, TouchableOpacity, Text, Platform, ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Alert, StyleSheet, View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native'
 import { supabase } from '../../lib/supabase'
-import { Button, Input } from 'react-native-elements'
-import { COLORS, SIZES, FONT } from '../../constants/theme'
+import { Button } from 'react-native-elements'
+import { COLORS, FONT, SIZES } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router'
-
+import ModalCalendar from '../modal-calendar/ModalCalendar'
+import styles from './style'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -20,30 +20,31 @@ import { useRouter } from 'expo-router'
 //     }
 // })
 
-export default function SignIn({ switchToSignIn }) {
+export default function SignUp({ switchToSignIn }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [birthdate, setBirthdate] = useState(new Date())
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [username, setUsername] = useState('')
+    const [formattedDate, setFormattedDate] = useState(birthdate.toISOString().substring(0, 10))
 
-    const [loading, setLoading] = useState(false)
     const [hidePassword, setHidePassword] = useState(true)
-    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showCalendarModal, setShowCalendarModal] = useState(false);
 
     const router = useRouter();
 
-    const handleDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || birthdate;
-        setShowDatePicker(Platform.OS === 'ios'); // For iOS, always show DatePicker inline
-        setBirthdate(currentDate);
+    useEffect(() => {
+        setFormattedDate(birthdate.toISOString().substring(0, 10))
+    }, [birthdate])
+
+
+    const handleDateChange = (date) => {
+        setBirthdate(date);
+        setShowCalendarModal(false);
     };
 
-    const formattedDate = birthdate.toLocaleDateString();
-
     async function signUpWithEmail() {
-        setLoading(true)
         const {
             data: { session },
             error,
@@ -58,7 +59,6 @@ export default function SignIn({ switchToSignIn }) {
                 .rpc('register_user', {
                     p_birthdate: birthdate,
                     p_email: email,
-                    p_join_date: new Date(),
                     p_name: name,
                     p_password: password,
                     p_phone: phone,
@@ -71,7 +71,6 @@ export default function SignIn({ switchToSignIn }) {
 
         }
         if (!session) Alert.alert('Please check your inbox for email verification!')
-        setLoading(false)
     }
 
     return (
@@ -106,21 +105,16 @@ export default function SignIn({ switchToSignIn }) {
                         {"Birth Date: " + formattedDate}</Text>
 
                     <Button
-                        onPress={() => { setShowDatePicker(true) }}
+                        onPress={() => { setShowCalendarModal(true) }}
                         title="📅"
                     />
                 </View>
 
-
-                {showDatePicker && (
-                    <DateTimePicker
-                        value={birthdate}
-                        mode="date"
-                        is24Hour={true}
-                        display="default"
-                        onChange={handleDateChange}
-                    />
-                )}
+                <ModalCalendar
+                    visible={showCalendarModal}
+                    selectedDate={birthdate}
+                    onSelectDate={handleDateChange}
+                />
 
                 <TextInput
                     style={[styles.card, styles.fontSize]}
@@ -140,7 +134,7 @@ export default function SignIn({ switchToSignIn }) {
                         autoCapitalize={'none'}
                     />
                     <Icon
-                        style={{ alignSelf: 'center' }} // Change 'flex-end' to 'center'
+                        style={{ alignSelf: 'center' }}
                         name={hidePassword ? 'eye-slash' : 'eye'}
                         type='font-awesome'
                         onPress={() => setHidePassword(!hidePassword)}
@@ -149,11 +143,11 @@ export default function SignIn({ switchToSignIn }) {
 
                 <View style={styles.formCenter}>
                     <Text style={styles.mt20}>Already have an Account?
-                        <TouchableOpacity disabled={loading} onPress={switchToSignIn}>
+                        <TouchableOpacity onPress={switchToSignIn}>
                             <Text style={[{ color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>  Sign In now!</Text>
                         </TouchableOpacity>
                     </Text>
-                    <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN UP" disabled={loading} onPress={() => signUpWithEmail()} />
+                    <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN UP" onPress={() => signUpWithEmail()} />
                 </View>
 
             </View>
@@ -161,46 +155,3 @@ export default function SignIn({ switchToSignIn }) {
 
     )
 }
-
-const styles = StyleSheet.create({
-    scrollContainer: {
-        flexGrow: 1,
-        justifyContent: 'center',
-    },
-    container: {
-        padding: 25,
-        flex: 1,
-        backgroundColor: COLORS.primary
-    },
-    card: {
-        borderRadius: 20,
-        backgroundColor: 'white',
-        padding: 20,
-        marginTop: 20,
-        borderColor: COLORS.gray,
-        borderWidth: 1
-    },
-    oneRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'baseline'
-    },
-    fontSize: {
-        fontSize: 18
-    },
-    formCenter: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%'
-    },
-    mt20: {
-        marginTop: 20,
-    },
-    button: {
-        backgroundColor: COLORS.darkRed,
-        borderRadius: 20,
-        width: 328,
-        height: 56
-    }
-})
