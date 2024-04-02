@@ -3,7 +3,7 @@ import { Image, Text, StyleSheet, View } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 
 // Define an interface for the Supabase data
-interface ArticleData {
+export interface ArticleData {
   id: number;
   name: string;
   description: string;
@@ -39,12 +39,12 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
             </View>
             <Image
               style={styles.bookmarkIcon}
-              source={ ( data.is_bookmarked? require("../../assets/icons/bookmark-filled-icon.png") : require("../../assets/icons/bookmark-icon.png") )}
+              source={(data.is_bookmarked ? require("../../assets/icons/bookmark-filled-icon.png") : require("../../assets/icons/bookmark-icon.png"))}
             />
           </View>
         </View>
       </View>
-      <View style={styles.newsChild} />
+      <View style={styles.separator} />
     </View>
   );
 };
@@ -135,13 +135,13 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     alignItems: "center",
   },
-  newsChild: {
+  separator: {
     borderStyle: "solid",
     borderColor: COLORS.colorWhitesmoke_100,
     borderTopWidth: 1,
-    width: 340,
+    width: '100%',
     height: 1,
-    marginTop: 5,
+    marginTop: 10,
   },
   news: {
     paddingHorizontal: 10,
