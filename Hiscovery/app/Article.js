@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import DocxReader from '../lib/DocxReader'; 
 import { COLORS } from '../constants';// Path to your DocxReader component
 
-const Article = ( {id} ) => {
+const Article = () => {
   const [docxUrl, setDocxUrl] = React.useState('');
 
   React.useEffect(() => {
@@ -13,7 +13,7 @@ const Article = ( {id} ) => {
         const { data: article, error } = await supabase
           .from('Article')
           .select('content_url')
-          .eq('id', id)
+          .eq('id', 18)
           .single();
 
         if (error || !article) {

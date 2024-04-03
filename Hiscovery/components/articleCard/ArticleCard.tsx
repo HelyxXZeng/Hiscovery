@@ -2,6 +2,7 @@ import * as React from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 import { useRouter } from "expo-router";
+import Article from "../../app/Article";
 
 // Define an interface for the Supabase data
 export interface ArticleData {
@@ -20,7 +21,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push('/comment');
+    router.push('Article', { id: data.id })
   }
   return (
     <TouchableOpacity onPress={handlePress}>
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
     width: "100%",
     alignSelf: "stretch",
-    resizeMode:"center",
+    resizeMode:"stretch",
   },
   tag: {
     fontSize: SIZES.xSmall,
