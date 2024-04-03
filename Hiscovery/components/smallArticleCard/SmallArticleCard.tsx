@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { FONT, SIZES, COLORS } from "../../constants/index";
+import { useRouter } from 'expo-router';
 
 interface ArticleData {
     id: number;
@@ -11,19 +12,26 @@ interface ArticleData {
 }
 
 const ItemWatchLater = ({ article }: { article: ArticleData }) => {
-    return (
-      <View style={[styles.itemWatchLater, styles.itemWatchLaterLayout]}>
-        <Image
-          style={styles.itemWatchLaterChild}
-          resizeMode="cover"
-          source={{ uri: article.image_url }}
-        />
-        <View style={styles.titleParent}>
-          <Text style={styles.title}>{article.name}</Text>
-          <Text style={styles.tagNTime}>{article.category_name} - {article.publish_time}</Text>
+  const router = useRouter();
+
+  const handlePress = () => {
+    router.push('../../app/home');
+  };
+    return (  
+      <TouchableOpacity onPress={handlePress}>
+        <View style={[styles.itemWatchLater, styles.itemWatchLaterLayout]}>
+          <Image
+            style={styles.itemWatchLaterChild}
+            resizeMode="cover"
+            source={{ uri: article.image_url }}
+          />
+          <View style={styles.titleParent}>
+            <Text style={styles.title}>{article.name}</Text>
+            <Text style={styles.tagNTime}>{article.category_name} - {article.publish_time}</Text>
+          </View>
+          <View style={styles.itemWatchLaterItem} />
         </View>
-        <View style={styles.itemWatchLaterItem} />
-      </View>
+      </TouchableOpacity>
     );
   };
   
@@ -50,7 +58,6 @@ const styles = StyleSheet.create({
       marginLeft: 10,
       justifyContent: "space-between",
       flex: 1,
-
     },
     itemWatchLaterItem: {
       marginTop: 10,
