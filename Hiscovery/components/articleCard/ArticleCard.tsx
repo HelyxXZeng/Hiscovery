@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Image, Text, StyleSheet, View } from "react-native";
+import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
+import { useRouter } from "expo-router";
 
 // Define an interface for the Supabase data
 export interface ArticleData {
@@ -16,36 +17,44 @@ export interface ArticleData {
 
 // Modify ArticleCard component to accept props based on ArticleData interface
 const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
+  const router = useRouter();
+
+  const handlePress = () => {
+    router.push('/comment');
+  }
   return (
-    <View style={styles.news}>
-      <View style={styles.Tags}>
-        <Text style={styles.heading}>{data.name}</Text>
-        <Text style={[styles.summary, styles.summarySpaceBlock]}>{data.description}</Text>
-      </View>
-      <View style={styles.ImageParent}>
-        <Image style={styles.ImageIcon} source={{ uri: data.image_url }} />
-        <View style={[styles.frameParent, styles.parentFlexBox]}>
-          <View style={[styles.TagNCParent, styles.parentFlexBox]}>
-            <Text style={[styles.tag, styles.textTypo]}>{data.category_name}</Text>
-            <Text style={[styles.tag]}>{data.author_name}</Text>
-          </View>
-          <View style={[styles.TagNCParent, styles.parentFlexBox]}>
-            <View style={[styles.commentIconParent, styles.parentFlexBox]}>
-              <Image
-                style={styles.commentIcon}
-                source={require("../../assets/icons/commentIcon.gif")}
-              />
-              <Text style={[styles.text, styles.textTypo]}>3</Text>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.news}>
+        <View style={styles.Tags}>
+          <Text style={styles.heading}>{data.name}</Text>
+          <Text style={[styles.summary, styles.summarySpaceBlock]}>{data.description}</Text>
+        </View>
+        <View style={styles.ImageParent}>
+          <Image style={styles.ImageIcon} source={{ uri: data.image_url }} />
+          <View style={[styles.frameParent, styles.parentFlexBox]}>
+            <View style={[styles.TagNCParent, styles.parentFlexBox]}>
+              <Text style={[styles.tag, styles.textTypo]}>{data.category_name}</Text>
+              <Text style={[styles.tag]}>{data.author_name}</Text>
             </View>
-            <Image
-              style={styles.bookmarkIcon}
-              source={(data.is_bookmarked ? require("../../assets/icons/bookmark-filled-icon.png") : require("../../assets/icons/bookmark-icon.png"))}
-            />
+            <View style={[styles.TagNCParent, styles.parentFlexBox]}>
+              <View style={[styles.commentIconParent, styles.parentFlexBox]}>
+                <Image
+                  style={styles.commentIcon}
+                  source={require("../../assets/icons/commentIcon.gif")}
+                />
+                <Text style={[styles.text, styles.textTypo]}>3</Text>
+              </View>
+              <Image
+                style={styles.bookmarkIcon}
+                source={(data.is_bookmarked ? require("../../assets/icons/bookmark-filled-icon.png") : require("../../assets/icons/bookmark-icon.png"))}
+              />
+            </View>
           </View>
         </View>
+        <View style={styles.separator} />
       </View>
-      <View style={styles.separator} />
-    </View>
+    </TouchableOpacity>
+    
   );
 };
 
