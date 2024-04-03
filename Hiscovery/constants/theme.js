@@ -1,7 +1,8 @@
 const COLORS = {
-  primary: "white",
+  primary: "#B32751",
   secondary: "black",
   tertiary: "#FF7754",
+  iconColor: "#757575",
 
   gray: "#F1F1FA",
   gray2: "#C1C0C8",
@@ -9,7 +10,7 @@ const COLORS = {
   white: "#F3F4F8",
   lightWhite: "#FAFAFC",
   darkRed: "#B32751",
-  
+
   //Đám này là color của article card
   colorLightslategray_100: "#8f9bb3",
   colorLightslategray_200: "#9095a1",
