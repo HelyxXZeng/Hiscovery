@@ -3,6 +3,8 @@ import { Text, SafeAreaView } from 'react-native';
 import { supabase } from '../lib/supabase';
 import DocxReader from '../lib/DocxReader'; 
 import { COLORS } from '../constants';// Path to your DocxReader component
+import { Stack } from 'expo-router';
+import Header from '../components/header/Header';
 
 const Article = () => {
   const [docxUrl, setDocxUrl] = React.useState('');
@@ -31,6 +33,12 @@ const Article = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
+      <Stack.Screen
+       options={{ 
+        headerTitle: () => <Header title="Article" iconvisible={true}/>,
+        headerTitleAlign: 'center' ,
+        headerBackVisible:false
+      }} />
       {docxUrl ? (
         <DocxReader docxUrl={docxUrl} />
       ) : (

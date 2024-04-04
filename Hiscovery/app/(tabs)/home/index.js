@@ -1,11 +1,16 @@
 import { Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { Link } from "expo-router";
+import Header from "../../../components/header/Header";
 
 export default function Page() {
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerShown: true, title: "Home" }} />
+      <Stack.Screen
+       options={{ 
+        headerTitleAlign: 'center', 
+        headerTitle: () => <Header title="Home" iconvisible={false}/>,
+      }} />
 
       {/* <View style={styles.container}> */}
       <Text>Index page of Home Tab</Text>
