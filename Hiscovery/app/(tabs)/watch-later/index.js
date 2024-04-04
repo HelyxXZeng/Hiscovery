@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 export default function Page() {
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerShown: true, title: "Watch Later" }} />
+      <Stack.Screen options={{ headerShown: false, title: "Watch Later" }} />
       <Text>Index page of Watch Later Tab</Text>
     </View>
   );

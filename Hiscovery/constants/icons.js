@@ -118,6 +118,23 @@ const notification = ({ fill }) => {
   return <SvgXml xml={svgXml} />;
 };
 
+const arrowRight = ({ fill }) => {
+  const svgXml = `
+  <svg width="40" height="37" viewBox="0 0 40 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_264_517" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="37">
+<rect width="40" height="37" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_264_517)">
+<path d="M23.0769 27.2163L21.3205 25.5442L27.6859 19.6562H7.5V17.3438H27.6859L21.3205 11.4558L23.0769 9.78366L32.4999 18.5L23.0769 27.2163Z" fill="${fill}"/>
+</g>
+</svg>
+
+
+    `;
+
+  return <SvgXml xml={svgXml} />;
+};
+
 export default {
   heart,
   menu,
@@ -136,4 +153,5 @@ export default {
   watchLater,
   category,
   notification,
+  arrowRight,
 };

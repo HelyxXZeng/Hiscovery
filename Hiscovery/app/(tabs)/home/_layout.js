@@ -1,5 +1,5 @@
-import { Stack } from "expo-router";
-import { Image, View } from "react-native";
+import { Stack, Link } from "expo-router";
+import { Image } from "react-native";
 import { icons, COLORS } from "../../../constants";
 
 const HomeLayout = () => {
@@ -10,7 +10,11 @@ const HomeLayout = () => {
       <Stack.Screen
         name="(tabs-top)"
         options={{
-          headerLeft: () => <icons.category fill={COLORS.iconColor} />,
+          headerLeft: () => (
+            <Link href={"/category-list"}>
+              <icons.category fill={COLORS.iconColor} />
+            </Link>
+          ),
           headerTitle: () => (
             <Image
               source={require("../../../assets/images/logo-home.png")}
@@ -26,8 +30,8 @@ const HomeLayout = () => {
       />
 
       <Stack.Screen
-        name="details"
-        options={{ headerTitle: "Details", headerBackTitle: "Back" }}
+        name="detail"
+        options={{ headerTitle: "Detail", headerBackTitle: "Back" }}
       />
     </Stack>
   );
