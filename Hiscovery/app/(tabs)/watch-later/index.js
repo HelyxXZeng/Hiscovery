@@ -30,7 +30,6 @@ export default function Page() {
       }} />
       {/* <Text>Index page of Watch Later Tab</Text> */}
       {articles && <BigArticleList articles={articles} />}
-
     </View>
   );
 }

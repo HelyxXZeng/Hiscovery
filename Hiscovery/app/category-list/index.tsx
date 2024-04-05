@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
 import { supabase } from '../../lib/supabase';
+import { Stack } from "expo-router";
 
 // Replace with your actual category data and images
 // const categories = [
@@ -51,6 +52,7 @@ export default function CategoryList() {
 
     return (
         <View style={styles.container}>
+            {/* <Stack.Screen options={{ headerShown: true, title: "Category" }} /> */}
             <FlatList
                 data={categories}
                 renderItem={CategoryButton}
