@@ -25,7 +25,6 @@ export default function Page() {
       <Stack.Screen options={{ headerShown: true, title: "Watch Later" }} />
       {/* <Text>Index page of Watch Later Tab</Text> */}
       {articles && <BigArticleList articles={articles} />}
-
     </View>
   );
 }
