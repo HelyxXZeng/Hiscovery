@@ -28,9 +28,8 @@ export default function Page() {
       <Stack.Screen
         options={{
           headerTitle: () => <Header title="Watch Later" iconvisible={false} />,
-          headerTitleAlign: "center",
-        }}
-      />
+          headerTitleAlign: 'center'
+        }} />
       {/* <Text>Index page of Watch Later Tab</Text> */}
       {articles && <SmallArticleList articles={articles} />}
     </View>
