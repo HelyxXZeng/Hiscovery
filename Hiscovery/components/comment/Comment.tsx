@@ -7,15 +7,20 @@ const defaultAvatar = require('../../assets/icons/default_avatar_icon.png');
 interface CommentProps {
   data: {
     id: number;
-    avatar: string;
+
+    avatar_url: string;
     time: string; // Assuming you're handling the timestamp as a string
     comment_content: string;
+    username: string;
+
   };
 }
 
 const Comment: React.FC<CommentProps> = ({ data }) => {
   const defaultText = "Hello. Đây là tin nhắn đầu tiên";
-  const { avatar, comment_content } = data;
+
+  const { avatar_url: avatar, comment_content, username } = data;
+
     // const { id } = useParams<{ id: string }>(); // Get the comment ID from URL parameters
   
     // Simulate fetching comment data from an API based on the comment ID
@@ -48,6 +53,9 @@ const Comment: React.FC<CommentProps> = ({ data }) => {
           <Image source={avatar ? { uri: avatar } : defaultAvatar} style={styles.avatar} />
         </View>
         <View style={styles.commentContainer}>
+
+          <Text style={styles.userName}>{username || "Anonymous"}</Text>
+
           <Text style={styles.commentText}>{comment_content || defaultText}</Text>
           <View style={styles.actionsContainer}>
             <LikeDislikeComponent />
@@ -84,6 +92,10 @@ const Comment: React.FC<CommentProps> = ({ data }) => {
       alignItems: 'center',
       justifyContent:"flex-end"
     },
+    userName: {
+      fontSize: 12,
+      marginBottom: 5,
+    }
   });
   
   export default Comment;
