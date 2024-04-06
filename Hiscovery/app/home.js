@@ -6,6 +6,7 @@ import {
   View,
   Text,
   Button,
+  LogBox
 } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { supabase } from "../lib/supabase";
@@ -21,6 +22,8 @@ import {
 import Comment from "../components/comment/Comment";
 import ArticleCard from "../components/articleCard/ArticleCard";
 import SmallArticleCard from "../components/smallArticleCard/SmallArticleCard"
+
+LogBox.ignoreAllLogs(); // Ignore all log warnings
 
 const Home = () => {
   const router = useRouter();

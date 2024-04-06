@@ -36,44 +36,40 @@ const Article = ({ article_id = 2, user_id }) => {
   }, []);
 
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
+      {/* <Stack.Screen
+        options={{
+          headerTitle: () => <Header title="Article" iconvisible={true} />,
+          headerTitleAlign: 'center',
+          headerBackVisible: false
+        }} /> */}
 
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary, padding: 5 }}>
+      {docxUrl ? (
+        <DocxReader docxUrl={docxUrl} />
+      ) : (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Loading...</Text>
+        </View>
+      )}
 
+      {showComments ? (
+        <CommentContainer article_id={article_id} user_id={1} onClose={() => setShowComments(false)} />
+      ) : (
+        <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#f0f0f0',
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              borderRadius: 5,
+            }}
+            onPress={() => setShowComments(true)}>
+            <Image source={require('../assets/icons/commentIcon.gif')} style={{ width: 20, height: 20 }} />
+          </TouchableOpacity>
+        </View>
+      )}
 
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
-        <Stack.Screen
-          options={{
-            headerTitle: () => <Header title="Article" iconvisible={true} />,
-            headerTitleAlign: 'center',
-            headerBackVisible: false
-          }} />
-
-        {docxUrl ? (
-          <DocxReader docxUrl={docxUrl} />
-        ) : (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Loading...</Text>
-          </View>
-        )}
-
-        {showComments ? (
-          <CommentContainer article_id={article_id} user_id={1} onClose={() => setShowComments(false)} />
-        ) : (
-          <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#f0f0f0',
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                borderRadius: 5,
-              }}
-              onPress={() => setShowComments(true)}>
-              <Image source={require('../assets/icons/commentIcon.gif')} style={{ width: 20, height: 20 }} />
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+      {/* <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
         <TouchableOpacity
           style={{
             backgroundColor: '#f0f0f0',
@@ -100,8 +96,8 @@ const Article = ({ article_id = 2, user_id }) => {
         </View>
       </Modal> */}
 
-      </SafeAreaView>
     </SafeAreaView>
+
   );
 };
 

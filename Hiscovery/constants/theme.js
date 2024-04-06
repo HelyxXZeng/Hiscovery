@@ -1,5 +1,5 @@
 const COLORS = {
-  primary: "#B32751",
+  primary: "white",
   secondary: "black",
   tertiary: "#FF7754",
   iconColor: "#757575",
