@@ -28,7 +28,8 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
       <View style={styles.news}>
         <View style={styles.Tags}>
           <Text style={styles.heading}>{data.name}</Text>
-          <Text style={[styles.summary, styles.summarySpaceBlock]}>{data.description}</Text>
+          <Text style={[styles.summary, styles.summarySpaceBlock]} numberOfLines={4}
+            ellipsizeMode='tail'>{data.description}</Text>
         </View>
         <View style={styles.ImageParent}>
           <Image style={styles.ImageIcon} source={{ uri: data.image_url }} />
@@ -55,7 +56,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
         <View style={styles.separator} />
       </View>
     </TouchableOpacity>
-    
+
   );
 };
 
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   summary: {
-    fontSize: SIZES.small,
+    fontSize: SIZES.medium,
     textAlign: "justify",
     fontFamily: FONT.tag,
     marginTop: 10,
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
     width: "100%",
     alignSelf: "stretch",
-    resizeMode:"stretch",
+    resizeMode: "stretch",
   },
   tag: {
     fontSize: SIZES.xSmall,
