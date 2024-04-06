@@ -24,10 +24,10 @@ export default function Page() {
   return (
     <View style={styles.container}>
       <Stack.Screen
-       options={{ 
-        headerTitle: () => <Header title="Watch Later" iconvisible={false}/>,
-        headerTitleAlign: 'center' 
-      }} />
+        options={{
+          headerTitle: () => <Header title="Watch Later" iconvisible={false} />,
+          headerTitleAlign: 'center'
+        }} />
       {/* <Text>Index page of Watch Later Tab</Text> */}
       {articles && <BigArticleList articles={articles} />}
     </View>
