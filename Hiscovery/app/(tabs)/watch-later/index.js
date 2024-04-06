@@ -1,25 +1,27 @@
 import { Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
-import BigArticleList from "../../../components/article-list/BigArticleList";
+import SmallArticleList from "../../../components/small-article-list/SmallArticleList";
 import { useEffect, useState } from "react";
-import { supabase } from '../../../lib/supabase'
+import { supabase } from "../../../lib/supabase";
 import Header from "../../../components/header/Header";
 
 export default function Page() {
-  const [articles, setArticles] = useState(null)
+  const [articles, setArticles] = useState(null);
   useEffect(() => {
     async function fetchData() {
-      let { data, error } = await supabase
-        .rpc('get_article_list_from_category', {
+      let { data, error } = await supabase.rpc(
+        "get_article_list_from_category",
+        {
           category_id: 1,
-          user_id: 1
-        })
-      if (error) console.error(error)
-      else setArticles(data)
+          user_id: 1,
+        }
+      );
+      if (error) console.error(error);
+      else setArticles(data);
     }
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -29,7 +31,7 @@ export default function Page() {
           headerTitleAlign: 'center'
         }} />
       {/* <Text>Index page of Watch Later Tab</Text> */}
-      {articles && <BigArticleList articles={articles} />}
+      {articles && <SmallArticleList articles={articles} />}
     </View>
   );
 }

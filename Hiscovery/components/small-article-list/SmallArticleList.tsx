@@ -1,16 +1,17 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import ArticleCard, { ArticleData } from '../articleCard/ArticleCard';
+// import ArticleCard, { ArticleData } from '../articleCard/ArticleCard';
+import ItemWatchLater, {ArticleData} from '../smallArticleCard/SmallArticleCard'
 import { COLORS, SIZES } from '../../constants/theme';
 
-interface BigArticleListProps {
+interface SmallArticleListProps {
     articles: ArticleData[];
 }
 
-const BigArticleList: React.FC<BigArticleListProps> = ({ articles }) => {
+const SmallArticleList: React.FC<SmallArticleListProps> = ({ articles }) => {
     const renderItem = ({ item }: { item: ArticleData }) => (
         <>
-            <ArticleCard data={item} />
+            <ItemWatchLater article={item} />
             {/* <View style={styles.separator} /> */}
         </>
 
@@ -27,7 +28,7 @@ const BigArticleList: React.FC<BigArticleListProps> = ({ articles }) => {
     );
 };
 
-export default BigArticleList;
+export default SmallArticleList;
 
 const styles = StyleSheet.create({
     container: {
