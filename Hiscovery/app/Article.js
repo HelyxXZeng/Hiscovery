@@ -2,8 +2,13 @@ import React from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { supabase } from '../lib/supabase';
 import DocxReader from '../lib/DocxReader'; 
+
 import { COLORS } from '../constants';
 import CommentContainer from '../components/comment/CommentContainer';
+
+import { Stack } from 'expo-router';
+import Header from '../components/header/Header';
+
 
 const Article = ({ article_id = 2, user_id }) => {
   const [docxUrl, setDocxUrl] = React.useState('');
@@ -31,8 +36,18 @@ const Article = ({ article_id = 2, user_id }) => {
   }, []);
 
   return (
+<>
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary, padding: 5 }}>
       
+
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
+      <Stack.Screen
+       options={{ 
+        headerTitle: () => <Header title="Article" iconvisible={true}/>,
+        headerTitleAlign: 'center' ,
+        headerBackVisible:false
+      }} />
+
       {docxUrl ? (
         <DocxReader docxUrl={docxUrl} />
       ) : (
@@ -86,6 +101,7 @@ const Article = ({ article_id = 2, user_id }) => {
       </Modal> */}
 
     </SafeAreaView>
+</>
   );
 };
 
