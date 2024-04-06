@@ -3,7 +3,7 @@ import { Text, SafeAreaView, View, TouchableOpacity, Image, StyleSheet } from 'r
 import { supabase } from '../lib/supabase';
 import DocxReader from '../lib/DocxReader'; 
 import { COLORS } from '../constants';
-import CommentContainer from '../components/comment/CommentContainer';
+import CommentContainer from '../components/comment/CommentContainer'; // Container for Comments
 
 const Article = ({ article_id = 2, user_id }) => {
   const [docxUrl, setDocxUrl] = React.useState('');
