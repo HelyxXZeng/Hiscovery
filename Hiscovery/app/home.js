@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { SafeAreaView, ScrollView, TouchableOpacity, View, Text, Button } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  View,
+  Text,
+  Button,
+} from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { supabase } from "../lib/supabase";
 
@@ -13,6 +20,7 @@ import {
 
 import Comment from "../components/comment/Comment";
 import ArticleCard from "../components/articleCard/ArticleCard";
+import SmallArticleCard from "../components/smallArticleCard/SmallArticleCard"
 
 const Home = () => {
   const router = useRouter();
@@ -21,11 +29,11 @@ const Home = () => {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error('Error signing out:', error);
+      console.error("Error signing out:", error);
     } else {
-      router.push('/auth');
+      router.push("/auth");
     }
-  }
+  };
 
   return (
     // <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
@@ -66,12 +74,10 @@ const Home = () => {
     //   </ScrollView>
     // </SafeAreaView>
     <View>
-      <Comment />
 
       <Button title="Sign Out" onPress={signOut} />
 
       <ArticleCard />
-
 
     </View>
   );
