@@ -1,6 +1,6 @@
 import { Redirect } from "expo-router";
-import 'text-encoding'
+import "text-encoding";
 
 export default function Index() {
-  return <Redirect href={"/home"} />;
+  return <Redirect href={"/(tabs)/home"} />;
 }
