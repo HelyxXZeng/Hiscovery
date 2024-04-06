@@ -1,15 +1,62 @@
-import { View, Text, Button } from "react-native";
-import React from "react";
-import { Link } from "expo-router";
+// import { View, Text, Button } from "react-native";
+// import React from "react";
+// import { Link } from "expo-router";
 
-const Page = () => {
+// const Page = () => {
+//   return (
+//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+//       <Link href={"/(tabs)/home/detail"} asChild>
+//         <Button title="Open Details Page" />
+//       </Link>
+//     </View>
+//   );
+// };
+
+// export default Page;
+
+import { Stack } from "expo-router";
+import { StyleSheet, Text, View } from "react-native";
+import BigArticleList from "../../../../components/article-list/BigArticleList";
+import { useEffect, useState } from "react";
+import { supabase } from "../../../../lib/supabase";
+import Header from "../../../../components/header/Header";
+
+export default function Page() {
+  const [articles, setArticles] = useState(null);
+  useEffect(() => {
+    async function fetchData() {
+      let { data, error } = await supabase.rpc(
+        "get_article_list_from_category",
+        {
+          category_id: 1,
+          user_id: 1,
+        }
+      );
+      if (error) console.error(error);
+      else setArticles(data);
+    }
+
+    fetchData();
+  }, []);
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Link href={"/(tabs)/home/detail"} asChild>
-        <Button title="Open Details Page" />
-      </Link>
+    <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerTitle: () => <Header title="Watch Later" iconvisible={false} />,
+          headerTitleAlign: "center",
+        }}
+      />
+      {/* <Text>Index page of Watch Later Tab</Text> */}
+      {articles && <BigArticleList articles={articles} />}
     </View>
   );
-};
+}
 
-export default Page;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
