@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import DocxReader from '../lib/DocxReader';
 
 import { COLORS } from '../constants';
-import CommentContainer from '../components/comment/CommentContainer';
+import CommentContainer from '../components/comment/CommentContainer'; // Container for Comments
 
 import { Stack } from 'expo-router';
 import Header from '../components/header/Header';
