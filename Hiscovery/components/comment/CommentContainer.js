@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Text, Image, TextInput } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text, Image, TextInput, Alert } from 'react-native';
 import Comment from './Comment'; // Import the Comment component
 import { COLORS, icons } from '../../constants';
 import { supabase } from '../../lib/supabase';
@@ -57,7 +57,6 @@ const CommentContainer = ({ article_id, onClose }) => {
       }
       if (sessionData && sessionData.user) {
         setUserSessionID(sessionData.user.email);
-        console.log('There is user here', sessionData.user.email)
       }
       const { data: comments, error } = await supabase.rpc('get_comments', { article_id: article_id });
 
@@ -65,6 +64,7 @@ const CommentContainer = ({ article_id, onClose }) => {
         throw error || new Error('Comment not found.');
       }
       setComments(comments);
+
     } catch (error) {
       console.error('Error fetching comments:', error);
     }
@@ -72,7 +72,7 @@ const CommentContainer = ({ article_id, onClose }) => {
 
   React.useEffect(() => {
     fetchData();
-  }, []);
+  }, [article_id]);
 
   return (
     <View style={{ flex: 1 }}>
