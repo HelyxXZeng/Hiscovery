@@ -70,7 +70,7 @@ const Article = () => {
             )}
 
             {showComments ? (
-                <CommentContainer article_id={article_id} user_id={1} onClose={() => setShowComments(false)} />
+                <CommentContainer article_id={article_id} onClose={() => setShowComments(false)} />
             ) : (
                 <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
                     <TouchableOpacity

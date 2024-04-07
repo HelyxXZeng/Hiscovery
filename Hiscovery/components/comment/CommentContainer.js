@@ -6,7 +6,7 @@ import { supabase } from '../../lib/supabase';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router'
 
-const CommentContainer = ({ article_id, user_id, onClose }) => {
+const CommentContainer = ({ article_id, onClose }) => {
   // Simulated comments data (replace this with your actual data fetching mechanism)
   const [newComment, setNewComment] = React.useState('');
   const [Comments, setComments] = React.useState([]);
