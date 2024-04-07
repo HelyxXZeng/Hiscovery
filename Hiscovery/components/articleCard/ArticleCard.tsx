@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: SIZES.large,
-    fontWeight: "700",
     fontFamily: FONT.heading,
     textAlign: "left",
     color: COLORS.colorBlack,
