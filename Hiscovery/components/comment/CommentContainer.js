@@ -3,17 +3,21 @@ import { View, ScrollView, TouchableOpacity, Text, Image, TextInput } from 'reac
 import Comment from './Comment'; // Import the Comment component
 import { COLORS, icons } from '../../constants';
 import { supabase } from '../../lib/supabase';
+import { useNavigation } from '@react-navigation/native';
 
 const CommentContainer = ({ article_id, user_id, onClose }) => {
   // Simulated comments data (replace this with your actual data fetching mechanism)
   const [newComment, setNewComment] = React.useState('');
   const [Comments, setComments] = React.useState([]);
   const [refreshKey, setRefreshKey] = React.useState(0);
+  const [userSessionID, setUserSessionID] = React.useState(null);
+  
+  const navigation = useNavigation();
 
   const handleAddComment = async () => {
     // Implement logic to add new comment
     try {
-      const { data: comment, error } = await supabase.rpc('add_comment', { article_id: article_id, this_user_id: user_id, content: newComment });
+      const { data: comment, error } = await supabase.rpc('add_comment', { article_id: article_id, this_user_id: 2, content: newComment });
 
       if (error || !comment) {
         throw error || new Error('Article not found.');
@@ -23,21 +27,23 @@ const CommentContainer = ({ article_id, user_id, onClose }) => {
     }
     setNewComment('');
     setRefreshKey(prevKey => prevKey + 1);
-    try {
-      const { data: comments, error } = await supabase.rpc('get_comments', { article_id: article_id });
-
-      if (error || !comments) {
-        throw error || new Error('Comment not found.');
-      }
-      setComments(comments);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-    }
+    fetchData();
   };
 
   React.useEffect(() => {
-    async function fetchDocxUrl() {
+    async function fetchData() {
       try {
+        const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
+        if (sessionError) {
+          console.log(sessionError);
+          //redirect to SignIn
+          
+          return;
+        }
+        if (sessionData && sessionData.user) {
+          setUserSessionID(sessionData.user.email);
+        }
+
         const { data: comments, error } = await supabase.rpc('get_comments', { article_id: article_id });
 
         if (error || !comments) {
@@ -48,8 +54,7 @@ const CommentContainer = ({ article_id, user_id, onClose }) => {
         console.error('Error fetching comments:', error);
       }
     }
-
-    fetchDocxUrl();
+    fetchData();
   }, []);
 
   return (

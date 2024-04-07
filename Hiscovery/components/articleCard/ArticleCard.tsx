@@ -2,7 +2,7 @@ import * as React from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 import { useRouter } from "expo-router";
-import Article from "../../app/Article";
+import Article from "../../app/article/Article";
 
 // Define an interface for the Supabase data
 export interface ArticleData {
