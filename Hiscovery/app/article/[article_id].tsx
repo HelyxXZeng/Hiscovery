@@ -54,12 +54,12 @@ const Article = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
-            {/* <Stack.Screen
+            <Stack.Screen
                 options={{
-                    headerTitle: () => <Header title="Article" iconvisible={true} />,
+                    headerTitle: () => <Header title="Article" iconvisible={false} />,
                     headerTitleAlign: 'center',
-                    headerBackVisible: false
-                }} /> */}
+                    headerBackVisible: false,
+                }} />
 
             {docxUrl ? (
                 <DocxReader docxUrl={docxUrl} />

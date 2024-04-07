@@ -17,8 +17,8 @@ const ItemWatchLater = ({ article }: { article: ArticleData }) => {
   const router = useRouter();
   
   const handlePress = () => {
-    // router.push('../../app/home');
-  };
+    router.push('/article/' + article.id)
+  }
     return (  
       <TouchableOpacity onPress={handlePress}>
         <View style={ styles.itemWatchLaterLayout}>
