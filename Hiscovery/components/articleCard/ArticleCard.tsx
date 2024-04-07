@@ -2,7 +2,7 @@ import * as React from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 import { useRouter } from "expo-router";
-import Article from "../../app/Article";
+import Article from "../../app/article/Article";
 
 // Define an interface for the Supabase data
 export interface ArticleData {
@@ -21,7 +21,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push('Article', { id: data.id })
+    router.push('/article/' + data.id)
   }
   return (
     <TouchableOpacity onPress={handlePress}>

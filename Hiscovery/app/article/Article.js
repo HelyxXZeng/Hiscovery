@@ -1,16 +1,16 @@
 import React from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { supabase } from '../lib/supabase';
-import DocxReader from '../lib/DocxReader';
+import { supabase } from '../../lib/supabase';
+import DocxReader from '../../lib/DocxReader';
 
-import { COLORS } from '../constants';
-import CommentContainer from '../components/comment/CommentContainer'; // Container for Comments
+import { COLORS } from '../../constants';
+import CommentContainer from '../../components/comment/CommentContainer'; // Container for Comments
 
 import { Stack } from 'expo-router';
-import Header from '../components/header/Header';
+import Header from '../../components/header/Header';
 
 
-const Article = ({ article_id = 2, user_id }) => {
+const Article = ({ article_id = 2 }) => {
   const [docxUrl, setDocxUrl] = React.useState('');
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
@@ -64,7 +64,7 @@ const Article = ({ article_id = 2, user_id }) => {
               borderRadius: 5,
             }}
             onPress={() => setShowComments(true)}>
-            <Image source={require('../assets/icons/commentIcon.gif')} style={{ width: 20, height: 20 }} />
+            <Image source={require('../../assets/icons/commentIcon.gif')} style={{ width: 20, height: 20 }} />
           </TouchableOpacity>
         </View>
       )}

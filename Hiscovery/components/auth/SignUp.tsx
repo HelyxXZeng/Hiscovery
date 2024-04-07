@@ -66,7 +66,8 @@ export default function SignUp({ switchToSignIn }) {
                 })
             if (error) console.error(error)
             else {
-                router.push(`/home`);
+                // router.push(`/home`);
+                router.back();
             }
 
         }

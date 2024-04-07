@@ -3,6 +3,8 @@ import { View, ScrollView, TouchableOpacity, Text, Image, TextInput } from 'reac
 import Comment from './Comment'; // Import the Comment component
 import { COLORS, icons } from '../../constants';
 import { supabase } from '../../lib/supabase';
+import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router'
 
 const CommentContainer = ({ article_id, user_id, onClose }) => {
   // Simulated comments data (replace this with your actual data fetching mechanism)
@@ -10,10 +12,16 @@ const CommentContainer = ({ article_id, user_id, onClose }) => {
   const [Comments, setComments] = React.useState([]);
   const [refreshKey, setRefreshKey] = React.useState(0);
 
+  const [userSessionID, setUserSessionID] = React.useState(null);
+
+  const navigation = useNavigation();
+  const router = useRouter();
+
   const handleAddComment = async () => {
     // Implement logic to add new comment
     try {
-      const { data: comment, error } = await supabase.rpc('add_comment', { article_id: article_id, this_user_id: user_id, content: newComment });
+      const { data: comment, error } = await supabase.rpc('add_comment', { article_id: article_id, this_user_id: 2, content: newComment });
+
 
       if (error || !comment) {
         throw error || new Error('Article not found.');
@@ -23,7 +31,34 @@ const CommentContainer = ({ article_id, user_id, onClose }) => {
     }
     setNewComment('');
     setRefreshKey(prevKey => prevKey + 1);
+    fetchData();
+
+    // try {
+    //   const { data: comments, error } = await supabase.rpc('get_comments', { article_id: article_id });
+
+    //   if (error || !comments) {
+    //     throw error || new Error('Comment not found.');
+    //   }
+    //   setComments(comments);
+    // } catch (error) {
+    //   console.error('Error fetching comments:', error);
+    // }
+  };
+
+  async function fetchData() {
     try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
+      if (sessionError) {
+        console.log(sessionError);
+        //redirect to SignIn
+        router.push(`/auth`);
+        onClose();
+        return;
+      }
+      if (sessionData && sessionData.user) {
+        setUserSessionID(sessionData.user.email);
+        console.log('There is user here', sessionData.user.email)
+      }
       const { data: comments, error } = await supabase.rpc('get_comments', { article_id: article_id });
 
       if (error || !comments) {
@@ -33,23 +68,10 @@ const CommentContainer = ({ article_id, user_id, onClose }) => {
     } catch (error) {
       console.error('Error fetching comments:', error);
     }
-  };
+  }
 
   React.useEffect(() => {
-    async function fetchDocxUrl() {
-      try {
-        const { data: comments, error } = await supabase.rpc('get_comments', { article_id: article_id });
-
-        if (error || !comments) {
-          throw error || new Error('Comment not found.');
-        }
-        setComments(comments);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      }
-    }
-
-    fetchDocxUrl();
+    fetchData();
   }, []);
 
   return (
@@ -57,7 +79,7 @@ const CommentContainer = ({ article_id, user_id, onClose }) => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: COLORS.primary }}>
         <View />
         <TouchableOpacity onPress={onClose}>
-          <Image source={ icons.left } style={{ width: 30, height: 30 }} />
+          <Image source={icons.left} style={{ width: 30, height: 30 }} />
         </TouchableOpacity>
       </View>
 
