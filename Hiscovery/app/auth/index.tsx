@@ -30,7 +30,14 @@ export default function Auth() {
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
-                router.replace("/home/");
+                // router.replace("/(tabs)/home");
+                // router.back()
+                // try {
+                //     router.back()
+                // }
+                // catch (error) {
+                //     router.push(`/(tabs)/home`);
+                // }
             } else {
                 console.log("no user");
             }
@@ -38,7 +45,12 @@ export default function Auth() {
 
         supabase.auth.onAuthStateChange((_event, session) => {
             if (session) {
-                router.replace("/home/");
+                // try {
+                //     router.back()
+                // }
+                // catch (error) {
+                //     router.push(`/(tabs)/home`);
+                // }
             } else {
                 console.log("no user 2");
             }

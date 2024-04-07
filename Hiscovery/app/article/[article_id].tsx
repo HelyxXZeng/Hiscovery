@@ -21,26 +21,25 @@ const Article = () => {
     const { article_id } = route.params //This has compile error but can run without problem
 
     React.useEffect(() => {
-        console.log('this is article_id', article_id)
+        // console.log('this is article_id', article_id)
         async function fetchDocxUrl() {
             try {
-                const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
-                if (sessionError) {
-                    console.log(sessionError);
-                    setUserSessionID(0);
-                    console.log('Came here 1')
-                }
-                if (sessionData && sessionData.user) {
-                    setUserSessionID(sessionData.user.email);
-                    console.log('Came here 2', sessionData.user.email)
-                }
+                // const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
+                // if (sessionError) {
+                //     console.log(sessionError);
+                //     setUserSessionID(0);
+                //     // console.log('Came here 1')
+                // }
+                // if (sessionData && sessionData.user) {
+                //     setUserSessionID(sessionData.user.email);
+                //     // console.log('Came here 2', sessionData.user.email)
+                // }
 
                 const { data: article, error } = await supabase.rpc('get_article', { article_id: article_id });
-                console.log('Came here 3')
                 if (error || !article) {
                     throw error || new Error('Article not found.');
                 }
-                console.log('Came here 4')
+
                 setTitle(article[0].name);
                 setDescription(article[0].description);
                 setDocxUrl(article[0].content_url);
@@ -63,6 +62,7 @@ const Article = () => {
 
             {docxUrl ? (
                 <DocxReader docxUrl={docxUrl} />
+                // <Text>{docxUrl}</Text>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>Loading...</Text>

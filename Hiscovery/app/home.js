@@ -24,6 +24,12 @@ import ArticleCard from "../components/articleCard/ArticleCard";
 import SmallArticleCard from "../components/smallArticleCard/SmallArticleCard"
 
 LogBox.ignoreAllLogs(); // Ignore all log warnings
+console.warn = (message) => {
+  if (message.indexOf('fontFamily "RobotoRegular" is not a system font and has not been loaded through expo-font.') <= -1) {
+    // Only print messages that don't contain the ignored warning
+    // console.log(message);
+  }
+};
 
 const Home = () => {
   const router = useRouter();
