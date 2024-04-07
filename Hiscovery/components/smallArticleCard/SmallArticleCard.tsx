@@ -19,22 +19,37 @@ const ItemWatchLater = ({ article }: { article: ArticleData }) => {
   const handlePress = () => {
     router.push('/article/' + article.id)
   }
-    return (  
-      <TouchableOpacity onPress={handlePress}>
-        <View style={ styles.itemWatchLaterLayout}>
-          <Image
-            style={styles.itemWatchLaterChild}
-            resizeMode="cover"
-            source={{ uri: article.image_url }}
-          />
-          <View style={styles.titleParent}>
-            <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">{article.name}</Text>
-            <Text style={styles.tagNTime}>{article.category_name} - {article.publish_time}</Text>
-          </View>
-          
+  const formatDate = (dateTimeString: string) => {
+    const dateTime = new Date(dateTimeString);
+    const now = new Date();
+    const diffInMilliseconds = now.getTime() - dateTime.getTime();
+    const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+    const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
+    const diffInMonths = now.getMonth() - dateTime.getMonth() + (12 * (now.getFullYear() - dateTime.getFullYear()));
+
+    if (diffInHours < 24) {
+      return `${diffInHours} giờ trước`;
+    } else if (diffInDays < 30) {
+      return `${diffInDays} ngày trước`;
+    } else {
+      return `${dateTime.getDate()}-${dateTime.getMonth() + 1}-${dateTime.getFullYear()}`;
+    }
+  };
+
+  return (  
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.itemWatchLaterLayout}>
+        <Image
+          style={styles.itemWatchLaterChild}
+          resizeMode="cover"
+          source={{ uri: article.image_url }}
+        />
+        <View style={styles.titleParent}>
+          <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">{article.name}</Text>
+          <Text style={styles.tagNTime}>{article.category_name} - {formatDate(article.publish_time)}</Text>
         </View>
-        {/* <View style={styles.itemWatchLaterItem} /> */}
-      </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
     );
   };
   
@@ -49,7 +64,7 @@ const styles = StyleSheet.create({
     },
     itemWatchLaterChild: {
       borderRadius: 5,
-      width: 135,
+      width: 130,
       height: 90,
 
     },
@@ -57,6 +72,7 @@ const styles = StyleSheet.create({
       fontFamily: FONT.heading,
       fontSize: SIZES.medium18,
       color: COLORS.textColor1,
+      width:250,
     },
     tagNTime: {
       fontSize: SIZES.small,
