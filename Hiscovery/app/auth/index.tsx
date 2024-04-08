@@ -3,7 +3,7 @@ import { View, AppState } from 'react-native'
 import { supabase } from '../../lib/supabase'
 import SignIn from '../../components/auth/SignIn'
 import SignUp from '../../components/auth/SignUp'
-import { useRouter } from 'expo-router'
+import { Stack, useRouter } from 'expo-router'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -59,6 +59,7 @@ export default function Auth() {
 
     return (
         <View style={[{ flex: 1 }]}>
+            <Stack.Screen options={{headerShown:false, statusBarHidden:true, }}/>
             {isSignInComponent ? <SignIn switchToSignUp={switchComponent} /> : <SignUp switchToSignIn={switchComponent} />}
         </View>
     );
