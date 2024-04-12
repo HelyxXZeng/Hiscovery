@@ -66,7 +66,14 @@ export default function SignUp({ switchToSignIn }) {
                 })
             if (error) console.error(error)
             else {
-                router.push(`/home`);
+                // router.push(`/home`);
+                router.back();
+                // try {
+                //     router.back()
+                // }
+                // catch (error) {
+                //     router.push('/(tabs)/home')
+                // }
             }
 
         }

@@ -7,12 +7,10 @@ const defaultAvatar = require('../../assets/icons/default_avatar_icon.png');
 interface CommentProps {
   data: {
     id: number;
-
     avatar_url: string;
     time: string; // Assuming you're handling the timestamp as a string
     comment_content: string;
     username: string;
-
   };
 }
 
@@ -58,7 +56,7 @@ const Comment: React.FC<CommentProps> = ({ data }) => {
 
           <Text style={styles.commentText}>{comment_content || defaultText}</Text>
           <View style={styles.actionsContainer}>
-            <LikeDislikeComponent />
+            <LikeDislikeComponent comment_id={data.id}/>
           </View>
         </View>
       </View>

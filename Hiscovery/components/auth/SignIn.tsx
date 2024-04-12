@@ -27,8 +27,6 @@ export default function SignIn({ switchToSignUp }) {
 
     const router = useRouter();
 
-
-
     async function signInWithEmail() {
         setLoading(true)
         const { error } = await supabase.auth.signInWithPassword({
@@ -38,7 +36,14 @@ export default function SignIn({ switchToSignUp }) {
 
         if (error) Alert.alert(error.message)
         else {
-            router.push(`/home`);
+            // router.push(`/(tabs)/home`);
+            router.back()
+            // try {
+            //     router.back()
+            // }
+            // catch (error) {
+            //     router.push(`/(tabs)/home`);
+            // }
         }
         setLoading(false)
     }

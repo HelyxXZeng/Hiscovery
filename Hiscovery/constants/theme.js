@@ -1,5 +1,5 @@
 const COLORS = {
-  primary: "#B32751",
+  primary: "white",
   secondary: "black",
   tertiary: "#FF7754",
   iconColor: "#757575",
@@ -44,6 +44,7 @@ const SIZES = {
   xSmall: 10,
   small: 12,
   medium: 16,
+  medium18: 18,
   large: 20,
   xLarge: 24,
   xxLarge: 32,

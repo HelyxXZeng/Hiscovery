@@ -4,6 +4,7 @@ import { WebView } from 'react-native-webview';
 import mammoth from 'mammoth';
 import { supabase } from './supabase'; // Import Supabase client
 import { COLORS } from '../constants';
+import { NativeBaseProvider } from 'native-base';
 
 const DocxReader = ({ docxUrl }) => {
   const [htmlContent, setHtmlContent] = useState(null);
@@ -30,9 +31,10 @@ const DocxReader = ({ docxUrl }) => {
   }, []);
 
   const injectedJS = `
+
   // Adjust text size and alignment
   var style = document.createElement('style');
-  style.innerHTML = 'body { font-size: 20px; text-align: justify; }'; // Adjust the font-size as desired
+  style.innerHTML = 'body { font-size: 20px; text-align: justify; font-family: Roboto}'; // Adjust the font-size as desired
   document.head.appendChild(style);
 
   // Scale images to match text container width
@@ -65,6 +67,7 @@ for (var i = 0; i < images.length; i++) {
   `;
 
   return (
+
     <View style={{ flex: 1 }}>
       {htmlContent ? (
         <WebView
@@ -81,6 +84,7 @@ for (var i = 0; i < images.length; i++) {
         </View>
       )}
     </View>
+
   );
 };
 
