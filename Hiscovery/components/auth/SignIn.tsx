@@ -5,6 +5,7 @@ import { Button, Input } from 'react-native-elements'
 import { COLORS, SIZES, FONT } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
 import { useRouter } from 'expo-router'
+import { validateForm } from '../../lib/UserDataValidation';
 import styles from './style'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -29,23 +30,35 @@ export default function SignIn({ switchComponent }) {
 
     async function signInWithEmail() {
         setLoading(true)
-        const { error } = await supabase.auth.signInWithPassword({
+        const formData = {
             email: email,
-            password: password,
-        })
-
-        if (error) Alert.alert(error.message)
-        else {
-            // router.push(`/(tabs)/home`);
-            router.back()
-            // try {
-            //     router.back()
-            // }
-            // catch (error) {
-            //     router.push(`/(tabs)/home`);
-            // }
         }
-        setLoading(false)
+
+        const validationResult = validateForm(formData);
+
+        if (validationResult.isValid) {
+
+            const { error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            })
+
+            if (error) Alert.alert(error.message)
+            else {
+                // router.push(`/(tabs)/home`);
+                router.back()
+                // try {
+                //     router.back()
+                // }
+                // catch (error) {
+                //     router.push(`/(tabs)/home`);
+                // }
+            }
+            setLoading(false)
+        } else {
+            // Form is invalid, display error message
+            Alert.alert('Invalid Form', validationResult.message);
+        }
     }
 
     return (

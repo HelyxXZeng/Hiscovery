@@ -5,6 +5,7 @@ import { Button } from 'react-native-elements'
 import { COLORS, FONT, SIZES } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
 import { useRouter } from 'expo-router'
+import { validateForm } from '../../lib/UserDataValidation';
 import ModalCalendar from '../modal-calendar/ModalCalendar'
 import styles from './style'
 
@@ -45,39 +46,55 @@ export default function SignUp({ switchComponent }) {
     };
 
     async function signUpWithEmail() {
-        const {
-            data: { session },
-            error,
-        } = await supabase.auth.signUp({
+        const formData = {
+            phone: phone,
             email: email,
-            password: password,
-        })
-
-        if (error) Alert.alert(error.message)
-        else {
-            let { data, error } = await supabase
-                .rpc('register_user', {
-                    p_birthdate: birthdate,
-                    p_email: email,
-                    p_name: name,
-                    p_password: password,
-                    p_phone: phone,
-                    p_username: username
-                })
-            if (error) console.error(error)
-            else {
-                // router.push(`/home`);
-                router.back();
-                // try {
-                //     router.back()
-                // }
-                // catch (error) {
-                //     router.push('/(tabs)/home')
-                // }
-            }
-
+            name: name,
+            username: username
         }
-        if (!session) Alert.alert('Please check your inbox for email verification!')
+
+        const validationResult = validateForm(formData);
+
+        if (validationResult.isValid) {
+            const {
+                data: { session },
+                error,
+            } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+            })
+
+            if (error) Alert.alert(error.message)
+            else {
+                let { data, error } = await supabase
+                    .rpc('register_user', {
+                        p_birthdate: birthdate,
+                        p_email: email,
+                        p_name: name,
+                        p_password: password,
+                        p_phone: phone,
+                        p_username: username
+                    })
+                if (error) console.error(error)
+                else {
+                    // router.push(`/home`);
+                    router.back();
+                    // try {
+                    //     router.back()
+                    // }
+                    // catch (error) {
+                    //     router.push('/(tabs)/home')
+                    // }
+                }
+
+            }
+            if (!session) Alert.alert('Please check your inbox for email verification!')
+        } else {
+            // Form is invalid, display error message
+            Alert.alert('Invalid Form', validationResult.message);
+        }
+
+
     }
 
     return (
