@@ -19,7 +19,7 @@ import styles from './style'
 //     }
 // })
 
-export default function SignIn({ switchToSignUp }) {
+export default function SignIn({ switchComponent }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -79,11 +79,11 @@ export default function SignIn({ switchToSignUp }) {
                 <View style={styles.formCenter}>
                     <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN IN" disabled={loading} onPress={() => signInWithEmail()} />
                     <Text style={styles.mt20}>Don't have an Account?
-                        <TouchableOpacity disabled={loading} onPress={switchToSignUp}>
+                        <TouchableOpacity disabled={loading} onPress={() => switchComponent('signUp')}>
                             <Text style={[{ color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>  Sign Up now!</Text>
                         </TouchableOpacity>
                     </Text>
-                    <TouchableOpacity onPress={() => console.log('Forgot Password')}>
+                    <TouchableOpacity onPress={() => switchComponent('forgotPassword')}>
                         <Text style={[{ marginTop: 40 }, { fontSize: SIZES.large }, { color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>Forget Password?</Text>
                     </TouchableOpacity>
                 </View>

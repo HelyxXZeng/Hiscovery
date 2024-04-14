@@ -3,7 +3,9 @@ import { View, AppState } from 'react-native'
 import { supabase } from '../../lib/supabase'
 import SignIn from '../../components/auth/SignIn'
 import SignUp from '../../components/auth/SignUp'
+import ForgotPassword from '../../components/auth/ForgotPassword'
 import { Stack, useRouter } from 'expo-router'
+import * as Linking from "expo-linking";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -18,13 +20,16 @@ AppState.addEventListener('change', (state) => {
 })
 
 export default function Auth() {
-    const [isSignInComponent, setIsSignInComponent] = useState(true)
+    const [currentComponent, setCurrentComponent] = useState('signIn')
 
-    const switchComponent = () => {
-        setIsSignInComponent(!isSignInComponent);
+    const switchComponent = (newComponent) => {
+        setCurrentComponent(newComponent);
     };
 
     const router = useRouter();
+
+    // const url = Linking.useURL();
+    //   if (url) createSessionFromUrl(url);
 
     // Check if user is logged in
     useEffect(() => {
@@ -59,8 +64,10 @@ export default function Auth() {
 
     return (
         <View style={[{ flex: 1 }]}>
-            <Stack.Screen options={{headerShown:false, statusBarHidden:true, }}/>
-            {isSignInComponent ? <SignIn switchToSignUp={switchComponent} /> : <SignUp switchToSignIn={switchComponent} />}
+            <Stack.Screen options={{ headerShown: false, statusBarHidden: true, }} />
+            {currentComponent === 'signIn' ? <SignIn switchComponent={switchComponent} /> :
+                currentComponent === 'signUp' ? <SignUp switchComponent={switchComponent} /> :
+                    <ForgotPassword switchComponent={switchComponent} />}
         </View>
     );
 

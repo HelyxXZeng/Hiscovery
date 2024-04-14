@@ -20,7 +20,7 @@ import styles from './style'
 //     }
 // })
 
-export default function SignUp({ switchToSignIn }) {
+export default function SignUp({ switchComponent }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [birthdate, setBirthdate] = useState(new Date())
@@ -150,7 +150,7 @@ export default function SignUp({ switchToSignIn }) {
 
                 <View style={styles.formCenter}>
                     <Text style={styles.mt20}>Already have an Account?
-                        <TouchableOpacity onPress={switchToSignIn}>
+                        <TouchableOpacity onPress={() => switchComponent('signIn')}>
                             <Text style={[{ color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>  Sign In now!</Text>
                         </TouchableOpacity>
                     </Text>

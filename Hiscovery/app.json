@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "your-app-scheme",
+    "scheme": "com.supabase",
     "name": "Hiscovery",
     "slug": "Hiscovery",
     "version": "1.0.0",
