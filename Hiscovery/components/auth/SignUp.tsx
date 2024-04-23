@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements'
 import { COLORS, FONT, SIZES } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
 import { useRouter } from 'expo-router'
-import { validateForm } from '../../lib/UserDataValidation';
+import { validateForm } from '../../function/UserDataValidation';
 import ModalCalendar from '../modal-calendar/ModalCalendar'
 import styles from './style'
 

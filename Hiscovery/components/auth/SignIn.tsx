@@ -5,9 +5,8 @@ import { Button, Input } from 'react-native-elements'
 import { COLORS, SIZES, FONT } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
 import { useRouter } from 'expo-router'
-import { validateForm } from '../../lib/UserDataValidation';
 import styles from './style'
-
+import { validateForm } from '../../function/UserDataValidation';
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
 // `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
@@ -32,6 +31,7 @@ export default function SignIn({ switchComponent }) {
         setLoading(true)
         const formData = {
             email: email,
+            password: password,
         }
 
         const validationResult = validateForm(formData);
