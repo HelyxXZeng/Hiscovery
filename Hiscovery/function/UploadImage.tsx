@@ -34,7 +34,7 @@ async function uploadImage(type: string) {
         const filename = `avatar_${Date.now()}.jpg`;
 
         // Upload the image to Supabase Storage
-        let { error: uploadError } = await supabase.storage.from('my files/images/' + type)
+        let { error: uploadError } = await supabase.storage.from('images/' + type)
             .upload(filename, decode(base64), { contentType: 'image/jpeg', upsert: true });
 
         if (uploadError) {
@@ -43,10 +43,10 @@ async function uploadImage(type: string) {
         }
 
         // Get the URL of the uploaded image
-        let { data: urlData } = await supabase.storage.from('my files/images/' + type).getPublicUrl(filename);
+        let { data: urlData } = await supabase.storage.from('images/' + type).getPublicUrl(filename);
 
         let publicURL = urlData?.publicUrl; // Corrected this line
-        console.log(publicURL);  // You can now use this URL to display the image or save it to your database
+        // console.log(publicURL);  // You can now use this URL to display the image or save it to your database
         return publicURL
     }
 

@@ -25,7 +25,7 @@ export default function UpdateProfile() {
             const { data: { user } } = await supabase.auth.getUser()
             console.log("Email of current session:", user.email)
             let { data, error } = await supabase
-                .rpc('get_user_data', {
+                .rpc('get_basic_user_data', {
                     user_email: user.email
                 })
 
@@ -42,7 +42,8 @@ export default function UpdateProfile() {
     }, [])
 
     async function uploadAvatar() {
-        const newUrl = await uploadImage("avatar")
+        const newUrl = await uploadImage("user")
+        // console.log('New URL', newUrl)
         if (newUrl) {
             setAvatarUrl(newUrl)
 
