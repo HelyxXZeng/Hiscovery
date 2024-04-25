@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import styles from '../auth/style';
 import { Button, Icon, Header } from 'react-native-elements';
@@ -43,7 +43,7 @@ export default function ChangePasswordModal({ modalVisible, setModalVisible }) {
                             })
                         if (error) console.error(error)
                         else {
-                            console.log(data)
+                            // Clear the TextInput fields
                             alert("Password updated successfully!");
                             setModalVisible(false);
                         }
@@ -56,6 +56,13 @@ export default function ChangePasswordModal({ modalVisible, setModalVisible }) {
         await checkPassword()
     };
 
+    useEffect(() => {
+        setCurrentPassword("");
+        setNewPassword("");
+        setRetypePassword("");
+        setHidePassword(true);
+    }, [modalVisible])
+
     return (
         <Modal
             animationType="slide"
@@ -67,12 +74,12 @@ export default function ChangePasswordModal({ modalVisible, setModalVisible }) {
         >
             <View style={[]}>
                 <Header
-                    backgroundColor={COLORS.background}
+                    backgroundColor={COLORS.primary}
                     leftComponent={{ icon: 'arrow-back', color: 'black', size: 30, onPress: () => setModalVisible(false) }}
                     centerComponent={{ text: 'Change Password', style: { color: 'black', fontSize: SIZES.h4 } }}
                 />
                 <View style={styles.scrollContainer}>
-                    <View style={styles.container}>
+                    <View style={[{ padding: 25, alignSelf: 'center' }]}>
                         <View style={[styles.card, styles.oneRow]}>
                             <TextInput
                                 style={[styles.fontSize, { flex: 1 }]} // Add flex: 1 here
@@ -89,9 +96,7 @@ export default function ChangePasswordModal({ modalVisible, setModalVisible }) {
                                 onPress={() => setHidePassword(!hidePassword)}
                             />
                         </View>
-                        {/* </View> */}
 
-                        {/* <View style={styles.container}> */}
                         <View style={[styles.card, styles.oneRow]}>
                             <TextInput
                                 style={[styles.fontSize, { flex: 1 }]} // Add flex: 1 here
@@ -108,9 +113,7 @@ export default function ChangePasswordModal({ modalVisible, setModalVisible }) {
                                 onPress={() => setHidePassword(!hidePassword)}
                             />
                         </View>
-                        {/* </View> */}
 
-                        {/* <View style={styles.container}> */}
                         <View style={[styles.card, styles.oneRow]}>
                             <TextInput
                                 style={[styles.fontSize, { flex: 1 }]} // Add flex: 1 here

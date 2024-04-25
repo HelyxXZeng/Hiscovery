@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
     },
     changePassword: {
-        color: COLORS.primary,
+        color: COLORS.darkRed,
         fontFamily: FONT.bold,
         alignSelf: "center",
         marginTop: 20
