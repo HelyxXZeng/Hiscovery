@@ -16,6 +16,7 @@ export default function UpdateProfile() {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [username, setUsername] = useState('');
+    const [biography, setBiography] = useState('');
     const [avatarUrl, setAvatarUrl] = useState('https://eianmciufswbutirdbka.supabase.co/storage/v1/object/public/my%20files/images/icons/dollar.png?t=2024-03-03T11%3A57%3A19.836Z');
     const [modalVisible, setModalVisible] = useState(false);
     const router = useRouter();
@@ -36,6 +37,7 @@ export default function UpdateProfile() {
                 setPhone(deformatPhoneNumber(data[0].phone))
                 setUsername(data[0].username)
                 setAvatarUrl(data[0].avatar_url)
+                setBiography(data[0].biography)
             }
         }
         fetchUserData()
@@ -77,12 +79,13 @@ export default function UpdateProfile() {
             const { data: { user } } = await supabase.auth.getUser()
 
             let { data, error } = await supabase
-                .rpc('update_user', {
+                .rpc('update_basic_user', {
                     new_name: name,
                     new_email: email,
                     old_email: user.email,
                     new_phone: formatPhoneNumber(phone),
-                    new_username: username
+                    new_username: username,
+                    new_biography: biography
                 })
 
             if (error) {
@@ -94,7 +97,8 @@ export default function UpdateProfile() {
                     if (error) {
                         console.error('Error updating user email:', error);
                     } else {
-                        console.log('User email updated successfully');
+                        // console.log('User email updated successfully');
+                        Alert.alert('Update Profile Successfully');
                     }
                 } catch (error) {
                     console.error('Unexpected error:', error);
@@ -149,6 +153,17 @@ export default function UpdateProfile() {
                     placeholder="Phone"
                     autoCapitalize={'none'}
                 />
+                <TextInput
+                    style={[styles.card, styles.fontSize]}
+                    onChangeText={(text) => setBiography(text)}
+                    value={biography}
+                    placeholder="Biography"
+                    autoCapitalize={'none'}
+                    multiline={true}
+                    numberOfLines={3}
+                    textAlignVertical="top"
+                />
+
                 <Button buttonStyle={[styles.button, styles.mt20]} title="UPDATE PROFILE" onPress={() => updateProfile()} />
 
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
