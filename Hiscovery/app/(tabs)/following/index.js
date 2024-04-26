@@ -12,7 +12,7 @@ export default function Page() {
           headerTitle: () => <Header title="Following" iconvisible={false} />,
         }} />
       {/* <OnThisDay /> */}
-      <AuthorProfile id={1} />
+      <AuthorProfile id={38} />
       <Text>Index page of Following Tab</Text>
     </View>
   );

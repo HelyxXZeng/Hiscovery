@@ -14,6 +14,7 @@ import { ArticleData } from '../articleCard/ArticleCard'
 import { Icon } from 'react-native-elements';
 import { COLORS, FONT, SIZES } from '../../constants';
 import { ScrollView } from 'react-native-gesture-handler';
+import { supabase } from '../../lib/supabase';
 interface AuthorData {
     id: number;
     name: string;
@@ -32,10 +33,20 @@ interface AuthorProfileProps {
 const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
     const [authorData, setAuthorData] = useState<AuthorData | null>(null);
     const [articles, setArticles] = useState<ArticleData[]>([]);
+    const [readerId, setReaderId] = useState(0)
 
     const fetchData = async () => {
-        // Fetch author data and articles here
-        // This is just a placeholder
+        let { data, error } = await supabase
+            .rpc('get_author_profile_data', {
+                author_id: id,
+                reader_id: readerId
+            })
+        if (error) console.error(error)
+        else {
+            console.log(data[0])
+            setAuthorData(data[0])
+        }
+
         const fetchedAuthorData: AuthorData = {
             id: 1,
             name: "John Doe",
@@ -71,7 +82,7 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
             // Add more articles as needed
         ];
 
-        setAuthorData(fetchedAuthorData);
+        // setAuthorData(fetchedAuthorData);
         setArticles(fetchedArticles);
     };
 
@@ -79,8 +90,19 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
         // Handle follow functionality here
     };
 
+    const getId = async () => {
+        const { data: { user } } = await supabase.auth.getUser()
+        let { data, error } = await supabase
+            .rpc('get_id_by_email', {
+                p_email: user.email
+            })
+        if (error) console.error(error)
+        else setReaderId(data);
+    }
+
     useEffect(() => {
         fetchData();
+        getId()
     }, []);
 
     if (!authorData) return <Text>Loading...</Text>;
@@ -107,7 +129,7 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
                     <Text style={styles.info}>Followers: {authorData.number_of_followers} - </Text>
                     <Text style={styles.info}>Articles: {authorData.number_of_articles}</Text>
                 </View>
-                <Text style={styles.joinDate}>Since {authorData.join_date.toLocaleDateString()}</Text>
+                <Text style={styles.joinDate}>Since {authorData.join_date.toString()}</Text>
                 <Text style={styles.biography}>{authorData.biography}</Text>
                 <BigArticleList articles={articles} />
             </View>
