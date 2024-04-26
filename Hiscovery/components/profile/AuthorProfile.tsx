@@ -11,7 +11,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import BigArticleList from '../article-list/BigArticleList';
 import { ArticleData } from '../articleCard/ArticleCard'
-
+import { Icon } from 'react-native-elements';
+import { COLORS, FONT, SIZES } from '../../constants';
+import { ScrollView } from 'react-native-gesture-handler';
 interface AuthorData {
     id: number;
     name: string;
@@ -23,8 +25,11 @@ interface AuthorData {
     number_of_followers: number;
     number_of_articles: number;
 }
+interface AuthorProfileProps {
+    id: number;
+}
 
-const AuthorProfile: React.FC = () => {
+const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
     const [authorData, setAuthorData] = useState<AuthorData | null>(null);
     const [articles, setArticles] = useState<ArticleData[]>([]);
 
@@ -35,8 +40,8 @@ const AuthorProfile: React.FC = () => {
             id: 1,
             name: "John Doe",
             username: "john_doe",
-            image_url: "https://example.com/john_doe.jpg",
-            biography: "I'm a passionate writer exploring various topics.",
+            image_url: "https://th.bing.com/th/id/OIP.wdeyBuzZAOn1Y-AUExfH6wAAAA?rs=1&pid=ImgDetMain",
+            biography: "I'm a passionate writer exploring various topics. I'm a passionate writer exploring various topics. I'm a passionate writer exploring various topics. I'm a passionate writer exploring various topics.",
             join_date: new Date("2023-05-10"),
             followed: false,
             number_of_followers: 500,
@@ -50,8 +55,8 @@ const AuthorProfile: React.FC = () => {
                 category_name: "Technology",
                 author_name: "John Doe",
                 publish_time: "2023-06-20T10:00:00Z",
-                image_url: "https://example.com/react_hooks.jpg",
-                is_bookmarked: false
+                image_url: "https://th.bing.com/th/id/OIP.wdeyBuzZAOn1Y-AUExfH6wAAAA?rs=1&pid=ImgDetMain",
+                is_bookmarked: true
             },
             {
                 id: 2,
@@ -60,7 +65,7 @@ const AuthorProfile: React.FC = () => {
                 category_name: "Programming",
                 author_name: "John Doe",
                 publish_time: "2023-07-15T09:30:00Z",
-                image_url: "https://example.com/clean_code.jpg",
+                image_url: "https://th.bing.com/th/id/OIP.wdeyBuzZAOn1Y-AUExfH6wAAAA?rs=1&pid=ImgDetMain",
                 is_bookmarked: false
             }
             // Add more articles as needed
@@ -81,27 +86,90 @@ const AuthorProfile: React.FC = () => {
     if (!authorData) return <Text>Loading...</Text>;
 
     return (
-        <View>
-            <Image
-                style={{ width: 60, height: 60, borderRadius: 30 }}
-                source={{ uri: authorData.image_url }}
-            />
-            <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>{authorData.name}</Text>
-            <Text style={{ textAlign: 'center' }}>{authorData.username}</Text>
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={{ width: '50%' }}>{authorData.number_of_followers}</Text>
-                <Text style={{ width: '50%' }}>{authorData.number_of_articles}</Text>
-            </View>
-            <Text>Since {authorData.join_date.toLocaleDateString()}</Text>
-            <TouchableOpacity onPress={follow}>
+        <ScrollView style={styles.scrollView}>
+            <View style={styles.container}>
                 <Image
-                    source={authorData.followed ? require('../../assets/icons/star-filled.png') : require('../../assets/icons/star.png')}
+                    style={styles.avatar}
+                    source={{ uri: authorData.image_url }}
                 />
-            </TouchableOpacity>
-            <Text style={{ textAlign: 'justify' }}>{authorData.biography}</Text>
-            <BigArticleList articles={articles} />
-        </View>
+                <View style={styles.nameContainer}>
+                    <Text style={styles.name}>{authorData.name}</Text>
+                    <TouchableOpacity onPress={follow}>
+                        <Icon
+                            name={authorData.followed ? 'star' : 'star-o'}
+                            type='font-awesome'
+                            color={authorData.followed ? COLORS.darkRed : COLORS.gray2}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <Text style={styles.username}>{authorData.username}</Text>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.info}>Followers: {authorData.number_of_followers} - </Text>
+                    <Text style={styles.info}>Articles: {authorData.number_of_articles}</Text>
+                </View>
+                <Text style={styles.joinDate}>Since {authorData.join_date.toLocaleDateString()}</Text>
+                <Text style={styles.biography}>{authorData.biography}</Text>
+                <BigArticleList articles={articles} />
+            </View>
+        </ScrollView>
+
     );
 };
+
+const styles = StyleSheet.create({
+    scrollView: {
+        width: '100%',
+        height: '100%'
+    },
+    container: {
+        backgroundColor: 'white',
+        width: '100%',
+        height: '100%'
+    },
+    avatar: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginTop: 20,
+        alignSelf: 'center'
+    },
+    nameContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10
+    },
+    name: {
+        fontFamily: FONT.bold,
+        fontSize: SIZES.xLarge,
+        marginRight: 20
+    },
+    username: {
+        textAlign: 'center',
+        // marginTop: 0,
+        fontSize: SIZES.medium
+    },
+    infoContainer: {
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    info: {
+        textAlign: 'center',
+        fontSize: SIZES.medium
+    },
+    joinDate: {
+        textAlign: 'right',
+        marginRight: 20,
+        fontSize: SIZES.medium,
+        fontStyle: 'italic', // Add this line for italics
+        color: COLORS.gray2, // Add this line for gray color
+    },
+    biography: {
+        textAlign: 'justify',
+        margin: 20,
+        fontSize: SIZES.medium
+    }
+});
 
 export default AuthorProfile;

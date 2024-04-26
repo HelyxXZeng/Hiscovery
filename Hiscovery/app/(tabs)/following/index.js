@@ -2,6 +2,8 @@ import { Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import Header from "../../../components/header/Header";
 import OnThisDay from '../../../components/event/OnThisDay'
+import AuthorProfile from '../../../components/profile/AuthorProfile'
+
 export default function Page() {
   return (
     <View style={styles.container}>
@@ -9,7 +11,8 @@ export default function Page() {
         options={{
           headerTitle: () => <Header title="Following" iconvisible={false} />,
         }} />
-      <OnThisDay />
+      {/* <OnThisDay /> */}
+      <AuthorProfile id={1} />
       <Text>Index page of Following Tab</Text>
     </View>
   );
@@ -17,8 +20,8 @@ export default function Page() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '100%',
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
   },
 });
