@@ -36,54 +36,34 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
     const [readerId, setReaderId] = useState(0)
 
     const fetchData = async () => {
-        let { data, error } = await supabase
-            .rpc('get_author_profile_data', {
-                author_id: id,
-                reader_id: readerId
-            })
-        if (error) console.error(error)
-        else {
-            console.log(data[0])
-            setAuthorData(data[0])
+        const fetchAuthor = async () => {
+            let { data, error } = await supabase
+                .rpc('get_author_profile_data', {
+                    author_id: id,
+                    reader_id: readerId
+                })
+            if (error) console.error(error)
+            else {
+                // console.log(data[0])s
+                setAuthorData(data[0])
+            }
         }
 
-        const fetchedAuthorData: AuthorData = {
-            id: 1,
-            name: "John Doe",
-            username: "john_doe",
-            image_url: "https://th.bing.com/th/id/OIP.wdeyBuzZAOn1Y-AUExfH6wAAAA?rs=1&pid=ImgDetMain",
-            biography: "I'm a passionate writer exploring various topics. I'm a passionate writer exploring various topics. I'm a passionate writer exploring various topics. I'm a passionate writer exploring various topics.",
-            join_date: new Date("2023-05-10"),
-            followed: false,
-            number_of_followers: 500,
-            number_of_articles: 10
-        };
-        const fetchedArticles: ArticleData[] = [
-            {
-                id: 1,
-                name: "Introduction to React Hooks",
-                description: "Learn how to use React Hooks for state management.",
-                category_name: "Technology",
-                author_name: "John Doe",
-                publish_time: "2023-06-20T10:00:00Z",
-                image_url: "https://th.bing.com/th/id/OIP.wdeyBuzZAOn1Y-AUExfH6wAAAA?rs=1&pid=ImgDetMain",
-                is_bookmarked: true
-            },
-            {
-                id: 2,
-                name: "The Art of Writing Clean Code",
-                description: "Discover best practices for writing clean and maintainable code.",
-                category_name: "Programming",
-                author_name: "John Doe",
-                publish_time: "2023-07-15T09:30:00Z",
-                image_url: "https://th.bing.com/th/id/OIP.wdeyBuzZAOn1Y-AUExfH6wAAAA?rs=1&pid=ImgDetMain",
-                is_bookmarked: false
+        const fetchArticles = async () => {
+            let { data, error } = await supabase
+                .rpc('get_article_by_author', {
+                    author_id: id,
+                    reader_id: readerId
+                })
+            if (error) console.error(error)
+            else {
+                // console.log(data)
+                setArticles(data)
             }
-            // Add more articles as needed
-        ];
 
-        // setAuthorData(fetchedAuthorData);
-        setArticles(fetchedArticles);
+        }
+        fetchAuthor()
+        fetchArticles()
     };
 
     const follow = () => {
