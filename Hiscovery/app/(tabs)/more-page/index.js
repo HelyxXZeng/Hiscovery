@@ -25,7 +25,7 @@ export default function Page() {
         options={{
           headerTitle: () => <Header title="More" iconvisible={false} />,
         }} />
-      <UpdateProfile></UpdateProfile>
+      {/* <UpdateProfile></UpdateProfile> */}
       <Button title="Sign Out" onPress={signOut} />
     </View>
   );

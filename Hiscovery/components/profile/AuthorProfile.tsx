@@ -66,8 +66,27 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
         fetchArticles()
     };
 
-    const follow = () => {
-        // Handle follow functionality here
+    const follow = async () => {
+        const updatedData = {
+            ...authorData,
+            followed: !authorData?.followed,
+        };
+        setAuthorData(updatedData);
+        // console.log('reader id', readerId)
+        let { data, error } = await supabase
+            .rpc('follow_author', {
+                author_id: id,
+                reader_id: readerId
+            })
+        if (error) {
+            console.error(error)
+            const updatedData = {
+                ...authorData,
+                followed: !authorData?.followed,
+            };
+            setAuthorData(updatedData);
+        }
+
     };
 
     const getId = async () => {
@@ -77,7 +96,10 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
                 p_email: user.email
             })
         if (error) console.error(error)
-        else setReaderId(data);
+        else {
+            setReaderId(data);
+            // console.log('Id here', data)
+        }
     }
 
     useEffect(() => {
