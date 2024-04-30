@@ -48,7 +48,7 @@ export default function Page() {
         }}
       />
       {/* <Text>Index page of Watch Later Tab</Text> */}
-      {articles && <BigArticleList articles={articles} />}
+      {articles && <BigArticleList articles={articles} scrollEnabled={true} />}
     </View>
   );
 }

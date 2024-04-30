@@ -19,6 +19,10 @@ export default function Page() {
     }
   };
 
+  const goToAuthor = () => {
+    router.push("/author/38");
+  }
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -26,6 +30,7 @@ export default function Page() {
           headerTitle: () => <Header title="More" iconvisible={false} />,
         }} />
       {/* <UpdateProfile></UpdateProfile> */}
+      <Button title="Go to Author" onPress={goToAuthor} />
       <Button title="Sign Out" onPress={signOut} />
     </View>
   );

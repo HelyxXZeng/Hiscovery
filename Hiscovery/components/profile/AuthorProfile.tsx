@@ -133,7 +133,7 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
                 </View>
                 <Text style={styles.joinDate}>Since {authorData.join_date.toString()}</Text>
                 <Text style={styles.biography}>{authorData.biography}</Text>
-                <BigArticleList articles={articles} />
+                <BigArticleList articles={articles} scrollEnabled={false} />
             </View>
         </ScrollView>
 
