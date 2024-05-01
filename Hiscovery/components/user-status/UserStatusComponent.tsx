@@ -22,15 +22,28 @@ const UserStatusComponent: React.FC<{ data: UserStatusData }> = ({ data }) => {
         updateStatus()
     };
 
+    const getBackgroundColor = () => {
+        switch (status) {
+            case 'ACTIVE':
+                return COLORS.primary;
+            case 'BANNED':
+                return COLORS.darkRed;
+            case 'SUSPENDED':
+                return COLORS.gray2;
+            default:
+                return COLORS.primary;
+        }
+    };
+
     return (
-        <View style={styles.container}>
+        <View style={{ ...styles.container, backgroundColor: getBackgroundColor() }}>
             <View style={styles.top}>
                 <Image source={{ uri: data.image_url }} style={styles.image} />
                 <Text style={styles.name}>{data.name}</Text>
                 <Picker selectedValue={status} onValueChange={handleStatusChange} style={styles.picker}>
                     <Picker.Item style={styles.pickerItem} label="ACTIVE" value="ACTIVE" />
                     <Picker.Item style={styles.pickerItem} label="BANNED" value="BANNED" />
-                    <Picker.Item style={styles.pickerItem} label="SUSPEND" value="SUSPEND" />
+                    <Picker.Item style={styles.pickerItem} label="SUSPENDED" value="SUSPENDED" />
                 </Picker>
             </View>
             <View style={styles.bottom}>
@@ -52,11 +65,11 @@ const UserStatusComponent: React.FC<{ data: UserStatusData }> = ({ data }) => {
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Birthdate:</Text>
-                    <Text style={styles.content}>{data.birthdate.toDateString()}</Text>
+                    <Text style={styles.content}>{data.birthdate.toString()}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Join Date:</Text>
-                    <Text style={styles.content}>{data.join_date.toDateString()}</Text>
+                    <Text style={styles.content}>{data.join_date.toString()}</Text>
                 </View>
             </View>
         </View>
@@ -82,7 +95,7 @@ const styles = StyleSheet.create({
     name: {
         width: '40%',
         fontFamily: FONT.bold,
-        fontSize: SIZES.xLarge,
+        fontSize: SIZES.medium18,
         textAlign: 'left',
         textAlignVertical: 'center',
         marginLeft: 5

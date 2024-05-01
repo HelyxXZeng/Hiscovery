@@ -5,17 +5,25 @@ import { supabase } from '../../lib/supabase'
 import { UserManagementData } from './interface';
 import { COLORS } from '../../constants';
 
+interface Props {
+    type: string
+}
 
-const UserManagement: React.FC = () => {
+const UserManagement: React.FC<Props> = ({ type }) => {
     const [data, setData] = useState<UserManagementData | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            // let { data, error } = await supabase
-            //     .rpc('get_user_manager_data')
 
-            // if (error) console.error(error)
-            // else setData(data)
+            let { data, error } = await supabase
+                .rpc('get_user_management_data', {
+                    type: type
+                })
+            if (error) console.error(error)
+            else {
+                // console.log(data[0].user_status_data)
+                setData(data[0])
+            }
         };
 
         const exampleUserManagementData = {
@@ -23,7 +31,7 @@ const UserManagement: React.FC = () => {
             banned_users: 200,
             suspended_users: 100,
             users: 1400,
-            userStatusData: [
+            user_status_data: [
                 {
                     id: 1,
                     username: "john_doe",
@@ -93,7 +101,7 @@ const UserManagement: React.FC = () => {
                 // Add more userStatusData objects as needed
             ]
         };
-        setData(exampleUserManagementData)
+        // setData(exampleUserManagementData)
         fetchData();
     }, []);
 
@@ -113,13 +121,13 @@ const UserManagement: React.FC = () => {
                     <Text style={styles.content}>{data?.suspended_users}</Text>
                 </View>
                 <View style={styles.row}>
-                    <Text style={styles.label}>Users:</Text>
+                    <Text style={styles.label}>Number of Users:</Text>
                     <Text style={styles.content}>{data?.users}</Text>
                 </View>
             </View>
             <View style={styles.bottom}>
                 <FlatList
-                    data={data?.userStatusData}
+                    data={data?.user_status_data}
                     renderItem={({ item }) => <UserStatusComponent data={item} />}
                     keyExtractor={item => item.id.toString()}
                     scrollEnabled={false}

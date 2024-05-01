@@ -14,7 +14,7 @@ export default function Page() {
         options={{
           headerTitle: () => <Header title="Following" iconvisible={false} />,
         }} />
-      <UserManagement />
+      <UserManagement type="READER" />
       <Text>Index page of Following Tab</Text>
     </View>
   );
