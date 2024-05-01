@@ -14,7 +14,6 @@ export interface UserManagementData {
     active_users: number;
     banned_users: number;
     suspended_users: number;
-    authors: number;
-    readers: number;
+    users: number;
     userStatusData: UserStatusData[];
 }

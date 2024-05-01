@@ -22,8 +22,7 @@ const UserManagement: React.FC = () => {
             active_users: 1500,
             banned_users: 200,
             suspended_users: 100,
-            authors: 300,
-            readers: 1400,
+            users: 1400,
             userStatusData: [
                 {
                     id: 1,
@@ -114,12 +113,8 @@ const UserManagement: React.FC = () => {
                     <Text style={styles.content}>{data?.suspended_users}</Text>
                 </View>
                 <View style={styles.row}>
-                    <Text style={styles.label}>Authors:</Text>
-                    <Text style={styles.content}>{data?.authors}</Text>
-                </View>
-                <View style={styles.row}>
-                    <Text style={styles.label}>Readers:</Text>
-                    <Text style={styles.content}>{data?.readers}</Text>
+                    <Text style={styles.label}>Users:</Text>
+                    <Text style={styles.content}>{data?.users}</Text>
                 </View>
             </View>
             <View style={styles.bottom}>
