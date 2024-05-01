@@ -3,17 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { COLORS, FONT, SIZES } from '../../constants';
 import { supabase } from '../../lib/supabase'
-interface UserStatusData {
-    id: number;
-    username: string;
-    name: string;
-    email: string;
-    phone: string;
-    join_date: Date;
-    birthdate: Date;
-    image_url: string;
-    status: string;
-}
+import { UserStatusData } from './interface';
 
 const UserStatusComponent: React.FC<{ data: UserStatusData }> = ({ data }) => {
     const [status, setStatus] = useState(data.status)
@@ -75,7 +65,7 @@ const UserStatusComponent: React.FC<{ data: UserStatusData }> = ({ data }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: COLORS.primary,
         padding: 10,
         width: '100%'
     },
