@@ -5,9 +5,10 @@ import { COLORS, SIZES } from '../../constants/theme';
 
 interface BigArticleListProps {
     articles: ArticleData[];
+    scrollEnabled: boolean
 }
 
-const BigArticleList: React.FC<BigArticleListProps> = ({ articles }) => {
+const BigArticleList: React.FC<BigArticleListProps> = ({ articles, scrollEnabled }) => {
     const renderItem = ({ item }: { item: ArticleData }) => (
         <>
             <ArticleCard data={item} />
@@ -19,6 +20,7 @@ const BigArticleList: React.FC<BigArticleListProps> = ({ articles }) => {
     return (
         <View style={styles.container}>
             <FlatList
+                scrollEnabled={scrollEnabled}
                 data={articles}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()}
@@ -34,7 +36,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         padding: 5,
-        backgroundColor: "white"
     },
     button: {
         width: '47%',

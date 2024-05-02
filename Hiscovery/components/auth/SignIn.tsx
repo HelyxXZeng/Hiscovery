@@ -6,7 +6,7 @@ import { COLORS, SIZES, FONT } from '../../constants/theme'
 import { Icon } from 'react-native-elements';
 import { useRouter } from 'expo-router'
 import styles from './style'
-
+import { validateForm } from '../../function/UserDataValidation';
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
 // `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
@@ -19,7 +19,7 @@ import styles from './style'
 //     }
 // })
 
-export default function SignIn({ switchToSignUp }) {
+export default function SignIn({ switchComponent }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -29,23 +29,36 @@ export default function SignIn({ switchToSignUp }) {
 
     async function signInWithEmail() {
         setLoading(true)
-        const { error } = await supabase.auth.signInWithPassword({
+        const formData = {
             email: email,
             password: password,
-        })
-
-        if (error) Alert.alert(error.message)
-        else {
-            // router.push(`/(tabs)/home`);
-            router.back()
-            // try {
-            //     router.back()
-            // }
-            // catch (error) {
-            //     router.push(`/(tabs)/home`);
-            // }
         }
-        setLoading(false)
+
+        const validationResult = validateForm(formData);
+
+        if (validationResult.isValid) {
+
+            const { error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            })
+
+            if (error) Alert.alert(error.message)
+            else {
+                // router.push(`/(tabs)/home`);
+                router.back()
+                // try {
+                //     router.back()
+                // }
+                // catch (error) {
+                //     router.push(`/(tabs)/home`);
+                // }
+            }
+            setLoading(false)
+        } else {
+            // Form is invalid, display error message
+            Alert.alert('Invalid Form', validationResult.message);
+        }
     }
 
     return (
@@ -79,11 +92,11 @@ export default function SignIn({ switchToSignUp }) {
                 <View style={styles.formCenter}>
                     <Button buttonStyle={[styles.button, styles.mt20]} title="SIGN IN" disabled={loading} onPress={() => signInWithEmail()} />
                     <Text style={styles.mt20}>Don't have an Account?
-                        <TouchableOpacity disabled={loading} onPress={switchToSignUp}>
+                        <TouchableOpacity disabled={loading} onPress={() => switchComponent('signUp')}>
                             <Text style={[{ color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>  Sign Up now!</Text>
                         </TouchableOpacity>
                     </Text>
-                    <TouchableOpacity onPress={() => console.log('Forgot Password')}>
+                    <TouchableOpacity onPress={() => switchComponent('forgotPassword')}>
                         <Text style={[{ marginTop: 40 }, { fontSize: SIZES.large }, { color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>Forget Password?</Text>
                     </TouchableOpacity>
                 </View>
