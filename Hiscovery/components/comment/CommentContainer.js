@@ -85,7 +85,7 @@ const CommentContainer = ({ article_id, onClose }) => {
 
       <ScrollView key={refreshKey} style={{ flex: 1, maxHeight: 400 }}>
         {Comments.map(comment => (
-          <Comment key={comment.id} data={comment} />
+          <Comment key={comment.id} data={comment} article_id={article_id} />
         ))}
       </ScrollView>
 

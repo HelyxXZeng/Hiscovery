@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, SafeAreaView, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text, SafeAreaView, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import DocxReader from '../../lib/DocxReader';
 
@@ -16,6 +16,8 @@ const Article = () => {
     const [description, setDescription] = React.useState('');
     const [showComments, setShowComments] = React.useState(false);
     const [userSessionID, setUserSessionID] = React.useState(null);
+    const [author, setAuthor] = React.useState('');
+    const [publishTime, setPublishTime] = React.useState(null);
 
     const route = useRoute();
     const { article_id } = route.params //This has compile error but can run without problem
@@ -49,25 +51,68 @@ const Article = () => {
         }
 
         fetchDocxUrl();
+        getArticleInfo();
     }, [article_id]);
+
+    const getArticleInfo = async () => {
+        try {
+          const { data: infos, error } = await supabase.rpc('get_article_info', { article_id });
+    
+          if (error || !infos) {
+            throw error || new Error('Responses not found.');
+          }
+          setAuthor(infos[0].author_name);
+          setPublishTime(new Date(infos[0].publish_time));
+        } catch (error) {
+          console.error('Error fetching responses:', error);
+        }
+    };
+
+    const calculateTimeDifference = () => {
+        if (!publishTime) return ''; // If publishTime is not set yet, return empty string
+        const currentTime = Date.now(); // Get current time in milliseconds
+        const publishTimeMillis = publishTime.getTime(); // Get publish time in milliseconds
+        const difference = currentTime - publishTimeMillis;
+
+        const minutes = Math.floor(difference / (1000 * 60));
+        if (minutes < 60) {
+            return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+        }
+
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) {
+            return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+        }
+
+        const days = Math.floor(hours / 24);
+        if (days < 30) {
+            return `${days} day${days !== 1 ? 's' : ''} ago`;
+        }
+
+        const months = Math.floor(days / 30);
+        if (months < 12) {
+            return `${months} month${months !== 1 ? 's' : ''} ago`;
+        }
+
+        const years = Math.floor(months / 12);
+        return `${years} year${years !== 1 ? 's' : ''} ago`;
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
-            <Stack.Screen
-                options={{
-                    headerTitle: () => <Header title="Article" iconvisible={false} />,
-                    headerTitleAlign: 'center',
-                    headerBackVisible: false,
-                }} />
-
+            <View style={{ justifyContent: 'center', alignItems: 'left' }}>
+                <Text>Author: {author}</Text>
+                <Text>Publish Time: {publishTime ? publishTime.toString() : ''}</Text>
+                <Text>Time Difference: {calculateTimeDifference()}</Text>
+            </View>
             {docxUrl ? (
                 <DocxReader docxUrl={docxUrl} />
-                // <Text>{docxUrl}</Text>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>Loading...</Text>
                 </View>
             )}
+
 
             {showComments ? (
                 <CommentContainer article_id={article_id} onClose={() => setShowComments(false)} />
