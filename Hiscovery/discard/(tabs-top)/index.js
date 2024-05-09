@@ -16,10 +16,10 @@
 
 import { Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
-import BigArticleList from "../../../../components/article-list/BigArticleList";
+import BigArticleList from "../../components/article-list/BigArticleList";
 import { useEffect, useState } from "react";
-import { supabase } from "../../../../lib/supabase";
-import Header from "../../../../components/header/Header";
+import { supabase } from "../../lib/supabase";
+import Header from "../../components/header/Header";
 
 export default function Page() {
   const [articles, setArticles] = useState(null);

@@ -2,17 +2,17 @@ import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 
 import { View, Text, TouchableOpacity } from "react-native";
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import {icons} from '../constants'
+import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
+import { icons } from "../constants";
 
-import { ParamListBase, StackNavigationState } from '@react-navigation/native';
+import { ParamListBase, StackNavigationState } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackNavigationEventMap,
   StackNavigationOptions,
-} from '@react-navigation/stack';
-import { withLayoutContext } from 'expo-router';
+} from "@react-navigation/stack";
+import { withLayoutContext } from "expo-router";
 
 const { Navigator } = createStackNavigator();
 
@@ -72,21 +72,23 @@ const Layout = () => {
     //     }}
     //   />
 
-      
-    // </Stack> 
-    
+    // </Stack>
 
     <JsStack>
-      <JsStack.Screen name="(tabs)" options={{ headerShown: false }}/>
-      <JsStack.Screen name="category-list/index"
+      <JsStack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <JsStack.Screen
+        name="category-list/index"
         options={{
           headerTitleAlign: "center",
           headerShown: true,
           title: "Chuyên mục",
           headerLeft: null, // Remove the default back button
           headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <icons.arrowRight fill='#222222'/>
+            <TouchableOpacity
+              style={{ marginRight: 10 }}
+              onPress={() => navigation.goBack()}
+            >
+              <icons.arrowRight fill="#222222" />
             </TouchableOpacity>
           ),
           cardStyleInterpolator: ({ current, layouts }) => {
@@ -103,10 +105,9 @@ const Layout = () => {
               },
             };
           },
-        }}/>
+        }}
+      />
     </JsStack>
-
-    
   );
 };
 
