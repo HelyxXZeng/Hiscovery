@@ -54,6 +54,9 @@ const SearchPage = () => {
     }
 
     fetchData();
+    console.log('is bookmarked?', articles[0].is_bookmarked)
+    console.log('user id', readerId)
+    console.log('article id', articles[0].id)
   }, [])
 
   const handleSearch = async () => {
@@ -78,7 +81,7 @@ const SearchPage = () => {
             onChangeText={text => setSearchValue(text)}
           />
           <TouchableOpacity onPress={handleSearch}>
-            <icons.notification fill={COLORS.iconColor} />
+            <icons.search fill={COLORS.iconColor} />
           </TouchableOpacity>
         </View>
         {isLoading ? (

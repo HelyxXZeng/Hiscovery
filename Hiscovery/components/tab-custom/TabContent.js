@@ -6,13 +6,30 @@ import { supabase } from "../../lib/supabase";
 
 const TabContent = ({ content }) => {
   const [articles, setArticles] = useState(null);
+  const [readerId, setReaderId] = useState(0)
+
+  const getId = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    let { data, error } = await supabase
+      .rpc('get_id_by_email', {
+        p_email: user.email
+      })
+    if (error) console.error(error)
+    else {
+      setReaderId(data);
+      // console.log('Id here', data)
+    }
+  }
+
   useEffect(() => {
+
     async function fetchData() {
+      await getId()
       let { data, error } = await supabase.rpc(
         "get_article_list_from_category",
         {
           category_id: content?.id,
-          user_id: 1,
+          user_id: readerId,
         }
       );
       if (error) console.error(error);
