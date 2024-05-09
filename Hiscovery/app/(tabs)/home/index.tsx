@@ -90,7 +90,7 @@ const Page = () => {
         }}
       />
 
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
         {nestedTabs && (
           <CustomTabBar
             nestedTabs={nestedTabs}
