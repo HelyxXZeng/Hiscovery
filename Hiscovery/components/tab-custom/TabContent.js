@@ -11,7 +11,7 @@ const TabContent = ({ content }) => {
       let { data, error } = await supabase.rpc(
         "get_article_list_from_category",
         {
-          category_id: 1,
+          category_id: content?.id,
           user_id: 1,
         }
       );
@@ -36,5 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingVertical: 10,
   },
 });

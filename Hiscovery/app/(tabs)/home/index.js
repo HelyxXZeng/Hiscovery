@@ -1,25 +1,28 @@
-import { Stack, Link } from "expo-router";
-import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
+import { Stack, Link, useLocalSearchParams } from "expo-router";
+import { StyleSheet, Text, View, Image } from "react-native";
 import React, { useState, useEffect } from "react";
-import { icons, COLORS } from "../../../constants";
+import { icons, COLORS, SIZES } from "../../../constants";
 import CustomTabBar from "../../../components/tab-custom/CustomTabBar";
 import { supabase } from "../../../lib/supabase";
 import TabContent from "../../../components/tab-custom/TabContent";
 
 const Page = () => {
+  const localParams = useLocalSearchParams();
+
+  console.log("localParams", localParams.idCategory);
   const [nestedTabs, setNestedTabs] = useState(null);
   useEffect(() => {
     const getData = async () => {
       try {
         let { data: Category, error } = await supabase
           .from("Category")
-          .select("name");
+          .select("id, name");
 
         const tempt = Category.map((item, index) => {
           return {
             key: (index + 1).toString(),
             title: item.name,
-            content: item.name,
+            content: item,
           };
         });
 
@@ -34,6 +37,8 @@ const Page = () => {
 
     getData();
   }, []);
+
+  console.log("nestedTabs", nestedTabs);
 
   return (
     <View style={styles.container}>
@@ -60,11 +65,15 @@ const Page = () => {
         }}
       />
 
-      <CustomTabBar
-        nestedTabs={nestedTabs}
-        TabContent={TabContent}
-        widthOfPerTab={Dimensions.get("window").width / 3}
-      />
+      <View style={{ flex: 1 }}>
+        {nestedTabs && (
+          <CustomTabBar
+            nestedTabs={nestedTabs}
+            TabContent={TabContent}
+            initIndex={localParams?.idCategory ? localParams?.idCategory : null}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -74,5 +83,6 @@ export default Page;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: SIZES.heightBottomNavigation,
   },
 });

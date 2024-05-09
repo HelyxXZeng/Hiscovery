@@ -1,29 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TabContent from "./TabContent";
 import { TabView, TabBar } from "react-native-tab-view";
 import { Dimensions } from "react-native";
-import { COLORS } from "../../constants";
-import { Animated, StyleSheet } from "react-native";
+import { COLORS, FONT } from "../../constants";
+import { Animated, StyleSheet, Text } from "react-native";
 
-const CustomTabBar = ({ widthOfPerTab = 100, nestedTabs, TabContent }) => {
+const CustomTabBar = ({ nestedTabs, TabContent, initIndex }) => {
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    setIndex(initIndex - 1);
+  }, [initIndex]);
+
+  console.log("initIndex", initIndex);
+  console.log("index", index);
 
   const styles = StyleSheet.create({
     tabBar: {
       backgroundColor: "white",
     },
     perTab: {
-      paddingBottom: 8,
-      width: widthOfPerTab,
+      paddingBottom: 0,
+      // width: Dimensions.get("window").width / 3,
     },
     tabText: {
       color: COLORS.textColor3, // Change this color to your desired text color
-      fontFamily: "InterSemiBold", // Add any other text styles as needed
-      fontSize: 16,
-      textTransform: "capitalize",
+      fontFamily: FONT.bold, // Add any other text styles as needed
+      fontSize: 14,
     },
     indicator: {
-      backgroundColor: "black",
+      // backgroundColor: "red",
       height: 3,
       // width: 50,
     },
@@ -75,10 +81,11 @@ const CustomTabBar = ({ widthOfPerTab = 100, nestedTabs, TabContent }) => {
       style={styles.tabBar}
       scrollEnabled={true} // Enable tab bar scrolling
       labelStyle={styles.tabText}
-      activeColor="black"
       tabStyle={styles.perTab}
       pressColor="transparent"
       renderIndicator={renderIndicator}
+      activeColor={COLORS.darkRed}
+      inactiveColor={COLORS.textColor3}
     />
   );
 
