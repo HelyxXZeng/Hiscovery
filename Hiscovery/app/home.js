@@ -21,7 +21,7 @@ import {
 
 import Comment from "../components/comment/Comment";
 import ArticleCard from "../components/articleCard/ArticleCard";
-import SmallArticleCard from "../components/smallArticleCard/SmallArticleCard"
+import SmallArticleCard from "../components/articleCard/SmallArticleCard"
 
 LogBox.ignoreAllLogs(); // Ignore all log warnings
 console.warn = (message) => {

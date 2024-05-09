@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
-import SmallArticleList from "../../../components/small-article-list/SmallArticleList";
+import SmallArticleList from "../../../components/article-list/SmallArticleList";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase";
 import Header from "../../../components/header/Header";

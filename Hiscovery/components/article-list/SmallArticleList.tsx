@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 // import ArticleCard, { ArticleData } from '../articleCard/ArticleCard';
-import ItemWatchLater, {ArticleData} from '../smallArticleCard/SmallArticleCard'
+import ItemWatchLater, { ArticleData } from '../articleCard/SmallArticleCard'
 import { COLORS, SIZES } from '../../constants/theme';
 
 interface SmallArticleListProps {
