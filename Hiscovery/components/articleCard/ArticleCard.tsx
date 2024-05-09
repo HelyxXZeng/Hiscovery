@@ -21,21 +21,28 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push('/article/' + data.id)
-  }
+    router.push("/article/" + data.id);
+  };
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.news}>
         <View style={styles.Tags}>
           <Text style={styles.heading}>{data.name}</Text>
-          <Text style={[styles.summary, styles.summarySpaceBlock]} numberOfLines={4}
-            ellipsizeMode='tail'>{data.description}</Text>
+          <Text
+            style={[styles.summary, styles.summarySpaceBlock]}
+            numberOfLines={4}
+            ellipsizeMode="tail"
+          >
+            {data.description}
+          </Text>
         </View>
         <View style={styles.ImageParent}>
           <Image style={styles.ImageIcon} source={{ uri: data.image_url }} />
           <View style={[styles.frameParent, styles.parentFlexBox]}>
             <View style={[styles.TagNCParent, styles.parentFlexBox]}>
-              <Text style={[styles.tag, styles.textTypo]}>{data.category_name}</Text>
+              <Text style={[styles.tag, styles.textTypo]}>
+                {data.category_name}
+              </Text>
               <Text style={[styles.tag]}>{data.author_name}</Text>
             </View>
             <View style={[styles.TagNCParent, styles.parentFlexBox]}>
@@ -48,7 +55,11 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
               </View>
               <Image
                 style={styles.bookmarkIcon}
-                source={(data.is_bookmarked ? require("../../assets/icons/bookmark-filled-icon.png") : require("../../assets/icons/bookmark-icon.png"))}
+                source={
+                  data.is_bookmarked
+                    ? require("../../assets/icons/bookmark-filled-icon.png")
+                    : require("../../assets/icons/bookmark-icon.png")
+                }
               />
             </View>
           </View>
@@ -56,7 +67,6 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
         <View style={styles.separator} />
       </View>
     </TouchableOpacity>
-
   );
 };
 
@@ -64,6 +74,7 @@ const styles = StyleSheet.create({
   summarySpaceBlock: {
     marginTop: 10,
     alignSelf: "stretch",
+    backgroundColor: "white",
   },
   parentFlexBox: {
     flexDirection: "row",
@@ -150,13 +161,13 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: COLORS.colorWhitesmoke_100,
     borderTopWidth: 1,
-    width: '100%',
+    width: "100%",
     height: 1,
     marginTop: 10,
   },
   news: {
     paddingHorizontal: 10,
-    paddingVertical: PADDING.p_8xs,
+    paddingVertical: 10,
     alignItems: "center",
   },
 });
