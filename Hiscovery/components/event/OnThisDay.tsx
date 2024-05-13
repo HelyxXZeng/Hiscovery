@@ -5,8 +5,8 @@ import { COLORS, SIZES } from '../../constants';
 import { supabase } from '../../lib/supabase';
 
 const OnThisDay = () => {
-    const [month, setMonth] = useState(1);
-    const [day, setDay] = useState(1);
+    const [month, setMonth] = useState(new Date().getMonth() + 1); // JavaScript months are 0-based
+    const [day, setDay] = useState(new Date().getDate());
     const [data, setData] = useState([]);
 
     useEffect(() => {
