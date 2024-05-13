@@ -111,66 +111,66 @@ export default function UpdateProfile() {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <View style={styles.container}>
-                <View style={styles.imageContainer}>
-                    <Image
-                        style={styles.avatar}
-                        source={{ uri: avatarUrl }}
-                    />
-                    <TouchableOpacity style={styles.changeAvatar} onPress={uploadAvatar}>
-                        <Text> {/* Wrap the Ionicons component with Text */}
-                            <Ionicons name="pencil" size={20} color="white" />
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
-                <TextInput
-                    style={[styles.card, styles.fontSize]}
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    placeholder="Email"
-                    autoCapitalize={'none'}
+        // <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+            <View style={styles.imageContainer}>
+                <Image
+                    style={styles.avatar}
+                    source={{ uri: avatarUrl }}
                 />
-                <TextInput
-                    style={[styles.card, styles.fontSize]}
-                    onChangeText={(text) => setName(text)}
-                    value={name}
-                    placeholder="Full Name"
-                    autoCapitalize={'words'}
-                />
-                <TextInput
-                    style={[styles.card, styles.fontSize]}
-                    onChangeText={(text) => setUsername(text)}
-                    value={username}
-                    placeholder="Username"
-                    autoCapitalize={'none'}
-                />
-                <TextInput
-                    style={[styles.card, styles.fontSize]}
-                    onChangeText={(text) => setPhone(text)}
-                    value={phone}
-                    placeholder="Phone"
-                    autoCapitalize={'none'}
-                />
-                <TextInput
-                    style={[styles.card, styles.fontSize]}
-                    onChangeText={(text) => setBiography(text)}
-                    value={biography}
-                    placeholder="Biography"
-                    autoCapitalize={'none'}
-                    multiline={true}
-                    numberOfLines={3}
-                    textAlignVertical="top"
-                />
-
-                <Button buttonStyle={[styles.button, styles.mt20]} title="UPDATE PROFILE" onPress={() => updateProfile()} />
-
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <Text style={styles.changePassword}>Change Password</Text>
+                <TouchableOpacity style={styles.changeAvatar} onPress={uploadAvatar}>
+                    <Text> {/* Wrap the Ionicons component with Text */}
+                        <Ionicons name="pencil" size={20} color="white" />
+                    </Text>
                 </TouchableOpacity>
-                <ChangePasswordModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
             </View>
-        </ScrollView>
+
+            <TextInput
+                style={[styles.card, styles.fontSize]}
+                onChangeText={(text) => setEmail(text)}
+                value={email}
+                placeholder="Email"
+                autoCapitalize={'none'}
+            />
+            <TextInput
+                style={[styles.card, styles.fontSize]}
+                onChangeText={(text) => setName(text)}
+                value={name}
+                placeholder="Full Name"
+                autoCapitalize={'words'}
+            />
+            <TextInput
+                style={[styles.card, styles.fontSize]}
+                onChangeText={(text) => setUsername(text)}
+                value={username}
+                placeholder="Username"
+                autoCapitalize={'none'}
+            />
+            <TextInput
+                style={[styles.card, styles.fontSize]}
+                onChangeText={(text) => setPhone(text)}
+                value={phone}
+                placeholder="Phone"
+                autoCapitalize={'none'}
+            />
+            <TextInput
+                style={[styles.card, styles.fontSize]}
+                onChangeText={(text) => setBiography(text)}
+                value={biography}
+                placeholder="Biography"
+                autoCapitalize={'none'}
+                multiline={true}
+                numberOfLines={3}
+                textAlignVertical="top"
+            />
+
+            <Button buttonStyle={[styles.button, styles.mt20]} title="UPDATE PROFILE" onPress={() => updateProfile()} />
+
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <Text style={styles.changePassword}>Change Password</Text>
+            </TouchableOpacity>
+            <ChangePasswordModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        </View>
+        // </ScrollView>
     )
 }
