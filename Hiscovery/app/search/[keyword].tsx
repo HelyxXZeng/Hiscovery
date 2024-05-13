@@ -54,14 +54,15 @@ const SearchPage = () => {
     }
 
     fetchData();
-    console.log('is bookmarked?', articles[0].is_bookmarked)
-    console.log('user id', readerId)
-    console.log('article id', articles[0].id)
+    // console.log('is bookmarked?', articles[0].is_bookmarked)
+    // console.log('user id', readerId)
+    // console.log('article id', articles[0].id)
   }, [])
 
   const handleSearch = async () => {
     // Only navigate if searchValue is not empty
     if (searchValue.trim() !== '') {
+      // await setSearchValue(searchValue.replace(' ', '&'))
       router.replace("/search/" + searchValue);
     }
   };
