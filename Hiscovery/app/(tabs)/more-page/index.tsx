@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router'
 import { Button, Icon } from 'react-native-elements'
 import { supabase } from '../../../lib/supabase'
 import UpdateProfile from '../../../components/profile/UpdateProfile'
-import { COLORS } from "../../../constants";
+import { COLORS, SIZES } from "../../../constants";
 
 export default function Page() {
 
@@ -20,10 +20,6 @@ export default function Page() {
       router.push("/auth");
     }
   };
-
-  const goToAuthor = () => {
-    router.push("/author/38");
-  }
 
   return (
     <View style={styles.container}>
@@ -59,6 +55,7 @@ const styles = StyleSheet.create({
     width: 'auto',
     height: 'auto',
     alignSelf: 'center',
-    padding: 20
+    padding: 20,
+    marginBottom: 10
   },
 });
