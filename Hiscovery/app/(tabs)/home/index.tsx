@@ -14,6 +14,18 @@ const Page = () => {
 
   // console.log("localParams", localParams.idCategory);
   const [nestedTabs, setNestedTabs] = useState(null);
+
+  const handleSearchIconClick = () => {
+    if (isSearchVisible) {
+      if (searchValue.trim() !== "") { // Check if searchValue is not empty
+        // Navigate to the search page
+        router.push("/search/" + searchValue);
+        setSearchValue(""); // Clear the search field
+      }
+    }
+    setSearchVisible(!isSearchVisible)
+  };
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -72,14 +84,7 @@ const Page = () => {
           ),
           headerRight: () => (
             <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity onPress={() => {
-                if (isSearchVisible) {
-                  // Navigate to the search page
-                  router.push("/search/" + searchValue);
-                  setSearchValue(""); // Clear the search field
-                }
-                setSearchVisible(!isSearchVisible);
-              }}>
+              <TouchableOpacity onPress={handleSearchIconClick}>
                 <icons.search fill={COLORS.iconColor} />
               </TouchableOpacity>
               <icons.notification fill={COLORS.iconColor} />
