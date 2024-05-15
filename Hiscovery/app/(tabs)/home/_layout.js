@@ -8,6 +8,18 @@ const HomeLayout = () => {
   const [searchValue, setSearchValue] = useState("");
   const router = useRouter();
 
+  const handleSearchIconClick = () => {
+    if (isSearchVisible) {
+      if (searchValue.trim() !== "") { // Check if searchValue is not empty
+        // Navigate to the search page
+        console.log('This is search value length', searchValue.length)
+        router.push("/search/" + searchValue);
+        setSearchValue(""); // Clear the search field
+      }
+    }
+    setSearchVisible(!isSearchVisible)
+  };
+
   return (
     <Stack
       screenOptions={{ headerShadowVisible: false, headerTitleAlign: "center" }}
@@ -41,15 +53,8 @@ const HomeLayout = () => {
 
           headerRight: () => (
             <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity onPress={() => {
-                if (isSearchVisible) {
-                  // Navigate to the search page
-                  router.push("/search/" + searchValue);
-                  setSearchValue(""); // Clear the search field
-                }
-                setSearchVisible(!isSearchVisible);
-              }}>
-                <icons.notification fill={COLORS.iconColor} />
+              <TouchableOpacity onPress={handleSearchIconClick}>
+                <icons.search fill={COLORS.iconColor} />
               </TouchableOpacity>
               <icons.notification fill={COLORS.iconColor} />
             </View>
