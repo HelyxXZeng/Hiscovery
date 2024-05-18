@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView } fro
 import { Picker } from '@react-native-picker/picker';
 import { Stack, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import ProtectedRoute from '../../components/ProtectedRoute';
 
 const ReportPage = () => {
   const [selectedSubject, setSelectedSubject] = useState('');
@@ -17,58 +18,63 @@ const ReportPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <Stack.Screen
-          options={({ headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-              <Ionicons name="arrow-back" size={24} color="black" />
-            </TouchableOpacity>
-          ),
-          headerTitle: () => (
-            <Text style={styles.title}>Report</Text>
-          ), }) }
-        />
-      </SafeAreaView>
-      <View style={styles.fieldContainer}>
-        <Text style={styles.label}>Người dùng/bài viết này có vấn đề về gì?</Text>
-        <View style={styles.dropdown}>
-          <Picker
-            selectedValue={selectedSubject}
-            onValueChange={(itemValue, itemIndex) => setSelectedSubject(itemValue)}>
-            <Picker.Item label="Chọn một mục tiêu" value="" />
-            <Picker.Item label="Ngôn từ bạo lực" value="violence_language" />
-            <Picker.Item label="Xuyên tạc" value="distortion" />
-            <Picker.Item label="Xúc phạm danh dự" value="insulting" />
-            <Picker.Item label="Khác" value="other" />
-          </Picker>
-        </View>
-      </View>
-      {selectedSubject === 'other' && (
+    <ProtectedRoute>
+
+      <View style={styles.container}>
+        <SafeAreaView>
+          <Stack.Screen
+            options={({
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+                  <Ionicons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text style={styles.title}>Report</Text>
+              ),
+            })}
+          />
+        </SafeAreaView>
         <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Vui lòng mô tả mục tiêu cụ thể</Text>
+          <Text style={styles.label}>Người dùng/bài viết này có vấn đề về gì?</Text>
+          <View style={styles.dropdown}>
+            <Picker
+              selectedValue={selectedSubject}
+              onValueChange={(itemValue, itemIndex) => setSelectedSubject(itemValue)}>
+              <Picker.Item label="Chọn một mục tiêu" value="" />
+              <Picker.Item label="Ngôn từ bạo lực" value="violence_language" />
+              <Picker.Item label="Xuyên tạc" value="distortion" />
+              <Picker.Item label="Xúc phạm danh dự" value="insulting" />
+              <Picker.Item label="Khác" value="other" />
+            </Picker>
+          </View>
+        </View>
+        {selectedSubject === 'other' && (
+          <View style={styles.fieldContainer}>
+            <Text style={styles.label}>Vui lòng mô tả mục tiêu cụ thể</Text>
+            <TextInput
+              style={styles.input}
+              value={otherSubject}
+              onChangeText={setOtherSubject}
+              placeholder="Nhập mục tiêu cụ thể"
+            />
+          </View>
+        )}
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Bạn có thể mô tả rõ không?</Text>
           <TextInput
-            style={styles.input}
-            value={otherSubject}
-            onChangeText={setOtherSubject}
-            placeholder="Nhập mục tiêu cụ thể"
+            style={[styles.input, styles.descriptionInput]}
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Mô tả vấn đề của bạn"
+            multiline={true}
           />
         </View>
-      )}
-      <View style={styles.fieldContainer}>
-        <Text style={styles.label}>Bạn có thể mô tả rõ không?</Text>
-        <TextInput
-          style={[styles.input, styles.descriptionInput]}
-          value={description}
-          onChangeText={setDescription}
-          placeholder="Mô tả vấn đề của bạn"
-          multiline={true}
-        />
+        <TouchableOpacity onPress={handleReport} style={styles.reportButton}>
+          <Text style={styles.reportButtonText}>Báo cáo</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleReport} style={styles.reportButton}>
-        <Text style={styles.reportButtonText}>Báo cáo</Text>
-      </TouchableOpacity>
-    </View>
+    </ProtectedRoute>
   );
 };
 

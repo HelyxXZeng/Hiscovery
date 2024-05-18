@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Assuming you're using Expo
 import { Stack, router } from 'expo-router';
+import ProtectedRoute from '../../components/ProtectedRoute';
 
 const FeedbackPage = () => {
   const [subject, setSubject] = useState('');
@@ -18,45 +19,50 @@ const FeedbackPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <Stack.Screen
-          options={({ headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-              <Ionicons name="arrow-back" size={24} color="black" />
-            </TouchableOpacity>
-          ),
-          headerTitle: () => (
-            <Text style={styles.title}>Feedback</Text>
-          ), }) }
-        />
-      </SafeAreaView>
-      <View style={styles.content}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.subtitle}>Chủ đề mà bạn muốn góp ý</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nhập chủ đề góp ý của bạn"
-            value={subject}
-            onChangeText={setSubject}
-            multiline={true}
+    <ProtectedRoute>
+
+      <View style={styles.container}>
+        <SafeAreaView>
+          <Stack.Screen
+            options={({
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+                  <Ionicons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text style={styles.title}>Feedback</Text>
+              ),
+            })}
           />
+        </SafeAreaView>
+        <View style={styles.content}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.subtitle}>Chủ đề mà bạn muốn góp ý</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Nhập chủ đề góp ý của bạn"
+              value={subject}
+              onChangeText={setSubject}
+              multiline={true}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.subtitle}>Theo bạn, HisCovery cần những điểm nào cần cải thiện?</Text>
+            <TextInput
+              style={[styles.input, styles.descriptionInput]}
+              placeholder="Nhập ý kiến của bạn"
+              value={description}
+              onChangeText={setDescription}
+              multiline={true}
+            />
+          </View>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.subtitle}>Theo bạn, HisCovery cần những điểm nào cần cải thiện?</Text>
-          <TextInput
-            style={[styles.input, styles.descriptionInput]}
-            placeholder="Nhập ý kiến của bạn"
-            value={description}
-            onChangeText={setDescription}
-            multiline={true}
-          />
-        </View>
+        <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
+          <Text style={styles.sendButtonText}>Gửi</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
-        <Text style={styles.sendButtonText}>Gửi</Text>
-      </TouchableOpacity>
-    </View>
+    </ProtectedRoute>
   );
 };
 

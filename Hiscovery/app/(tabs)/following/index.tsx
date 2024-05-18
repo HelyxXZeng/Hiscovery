@@ -5,18 +5,22 @@ import OnThisDay from '../../../components/event/OnThisDay'
 import AuthorProfile from '../../../components/profile/AuthorProfile'
 import UserStatusComponent from "../../../components/user-status/UserStatusComponent";
 import UserManagement from "../../../components/user-status/UserManagement";
+import ProtectedRoute from "../../../components/ProtectedRoute";
 
 
 export default function Page() {
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: () => <Header title="Following" iconvisible={false} />,
-        }} />
-      <Text>Index page of Following Tab</Text>
-    </View>
+    <ProtectedRoute>
+
+      <View style={styles.container}>
+        <Stack.Screen
+          options={{
+            headerTitle: () => <Header title="Following" iconvisible={false} />,
+          }} />
+        <Text>Index page of Following Tab</Text>
+      </View>
+    </ProtectedRoute>
   );
 }
 

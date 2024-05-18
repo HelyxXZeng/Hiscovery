@@ -6,6 +6,7 @@ import { Button, Icon } from 'react-native-elements'
 import { supabase } from '../../../lib/supabase'
 import UpdateProfile from '../../../components/profile/UpdateProfile'
 import { COLORS, SIZES } from "../../../constants";
+import ProtectedRoute from "../../../components/ProtectedRoute";
 
 export default function Page() {
 
@@ -22,22 +23,27 @@ export default function Page() {
   };
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: () => <Header title="Profile" iconvisible={false} />,
-        }} />
-      <ScrollView style={{ marginBottom: '15%' }}>
-        <UpdateProfile></UpdateProfile>
-        <Button
-          buttonStyle={styles.button}
-          title="Sign Out  "
-          icon={<Icon name="sign-out" type="font-awesome" color="white" />}
-          iconRight
-          onPress={signOut}
-        />
-      </ScrollView>
-    </View>
+    <ProtectedRoute>
+
+      <View style={styles.container}>
+        <Stack.Screen
+          options={{
+            headerTitle: () => <Header title="Profile" iconvisible={false} />,
+          }} />
+        <ScrollView style={{ marginBottom: '15%' }}>
+          <UpdateProfile></UpdateProfile>
+          <Button
+            buttonStyle={styles.button}
+            title="Sign Out  "
+            icon={<Icon name="sign-out" type="font-awesome" color="white" />}
+            iconRight
+            onPress={signOut}
+          />
+        </ScrollView>
+      </View>
+    </ProtectedRoute>
+
+
   );
 }
 
