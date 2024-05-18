@@ -12,8 +12,8 @@ const CustomTabBar = ({ nestedTabs, TabContent, initIndex }) => {
     setIndex(initIndex - 1);
   }, [initIndex]);
 
-  console.log("initIndex", initIndex);
-  console.log("index", index);
+  // console.log("initIndex", initIndex);
+  // console.log("index", index);
 
   const styles = StyleSheet.create({
     tabBar: {

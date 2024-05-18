@@ -22,7 +22,6 @@ const TabContent = ({ content }) => {
   }
 
   useEffect(() => {
-
     async function fetchData() {
       await getId()
       let { data, error } = await supabase.rpc(
@@ -33,11 +32,16 @@ const TabContent = ({ content }) => {
         }
       );
       if (error) console.error(error);
-      else setArticles(data);
+      else {
+        // console.log('This is data', data)
+        setArticles(data);
+      }
     }
 
     fetchData();
   }, []);
+
+  // console.log('This is data to be rendered', articles)
 
   return (
     <View style={styles.container}>
