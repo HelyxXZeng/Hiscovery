@@ -15,7 +15,7 @@ const DocxReader = ({ docxUrl }) => {
     const fetchDocxAndConvertToHtml = async () => {
       try {
         const response = await fetch(docxUrl);
-        const docxData = await response.blob();
+        const docxData = await response.arrayBuffer();
         const result = await mammoth.convertToHtml({ arrayBuffer: docxData });
         setHtmlContent(result.value);
       } catch (error) {

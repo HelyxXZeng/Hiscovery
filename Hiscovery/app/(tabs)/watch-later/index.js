@@ -17,7 +17,7 @@ export default function Page() {
     if (error) console.error(error)
     else {
       setReaderId(data);
-      // console.log('Id here', data)
+      console.log('Id here', data)
     }
   }
 

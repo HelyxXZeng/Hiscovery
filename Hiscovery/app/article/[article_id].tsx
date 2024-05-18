@@ -56,15 +56,15 @@ const Article = () => {
 
     const getArticleInfo = async () => {
         try {
-          const { data: infos, error } = await supabase.rpc('get_article_info', { article_id });
-    
-          if (error || !infos) {
-            throw error || new Error('Responses not found.');
-          }
-          setAuthor(infos[0].author_name);
-          setPublishTime(new Date(infos[0].publish_time));
+            const { data: infos, error } = await supabase.rpc('get_article_info', { article_id });
+
+            if (error || !infos) {
+                throw error || new Error('Responses not found.');
+            }
+            setAuthor(infos[0].author_name);
+            setPublishTime(new Date(infos[0].publish_time));
         } catch (error) {
-          console.error('Error fetching responses:', error);
+            console.error('Error fetching responses:', error);
         }
     };
 
