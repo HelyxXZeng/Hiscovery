@@ -67,7 +67,7 @@ export default function SignUp({ switchComponent }) {
                 if (error) console.error(error)
                 else {
                     // router.push(`/home`);
-                    router.back();
+                    router.replace('/(tabs)/home')
                     // try {
                     //     router.back()
                     // }

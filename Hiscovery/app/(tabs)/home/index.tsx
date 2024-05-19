@@ -1,3 +1,4 @@
+//app/(tabs)/home/index.tsx
 import { Stack, Link, useLocalSearchParams, useRouter } from "expo-router";
 import { StyleSheet, TextInput, View, Image, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";

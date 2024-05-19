@@ -1,3 +1,4 @@
+//app/(tabs)/following/index.tsx
 import { Stack } from "expo-router";
 import { StyleSheet, Text, View, Button } from "react-native";
 import Header from "../../../components/header/Header";

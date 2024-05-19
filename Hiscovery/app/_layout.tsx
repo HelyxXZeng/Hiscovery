@@ -52,7 +52,7 @@ const Layout = () => {
           options={{
             headerTitleAlign: "center",
             headerShown: true,
-            title: "Chuyên mục",
+            title: "Categories",
             headerLeft: null, // Remove the default back button
             headerRight: () => (
               <TouchableOpacity
