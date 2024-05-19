@@ -9,16 +9,24 @@ const TabContent = ({ content }) => {
   const [readerId, setReaderId] = useState(0)
 
   const getId = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    let { data, error } = await supabase
-      .rpc('get_id_by_email', {
-        p_email: user.email
-      })
-    if (error) console.error(error)
-    else {
-      setReaderId(data);
-      // console.log('Id here', data)
+    const { data: user } = await supabase.auth.getUser()
+    let email = null;
+    if (user.user) {
+      email = user.user.email;
+      let { data, error } = await supabase
+        .rpc('get_id_by_email', {
+          p_email: email
+        })
+      if (error) console.error(error)
+      else {
+        setReaderId(data);
+      }
     }
+    else {
+      setReaderId(0)
+    }
+
+
   }
 
   useEffect(() => {
@@ -31,9 +39,10 @@ const TabContent = ({ content }) => {
           user_id: readerId,
         }
       );
+
       if (error) console.error(error);
       else {
-        // console.log('This is data', data)
+
         setArticles(data);
       }
     }
