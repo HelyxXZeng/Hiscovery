@@ -5,7 +5,7 @@ import { Stack, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import ProtectedRoute from '../../components/ProtectedRoute';
 
-const ReportPage = () => {
+const ReportPage = (onClose) => {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [description, setDescription] = useState('');
   const [otherSubject, setOtherSubject] = useState('');
@@ -15,6 +15,7 @@ const ReportPage = () => {
     console.log('Selected Subject:', selectedSubject);
     console.log('Description:', description);
     console.log('Other Subject:', otherSubject);
+    onClose();
   };
 
   return (

@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, Dimensions } from 'react-native';
-import { WebView } from 'react-native-webview';
-import mammoth from 'mammoth';
-import { supabase } from './supabase'; // Import Supabase client
-import { COLORS } from '../constants';
-import { NativeBaseProvider } from 'native-base';
+import React, { useState, useEffect } from "react";
+import { Text, View, Dimensions } from "react-native";
+import { WebView } from "react-native-webview";
+import mammoth from "mammoth";
+import { supabase } from "./supabase"; // Import Supabase client
+import { COLORS } from "../constants";
+import { NativeBaseProvider } from "native-base";
 
 const DocxReader = ({ docxUrl }) => {
   const [htmlContent, setHtmlContent] = useState(null);
-  const [textContainerWidth, setTextContainerWidth] = useState(Dimensions.get('window').width);
-  const [containerWidth, setContainerWidth] = useState(Dimensions.get('window').width * 0.9);
+  const [textContainerWidth, setTextContainerWidth] = useState(
+    Dimensions.get("window").width
+  );
+  const [containerWidth, setContainerWidth] = useState(
+    Dimensions.get("window").width * 0.9
+  );
 
   useEffect(() => {
     const fetchDocxAndConvertToHtml = async () => {
@@ -19,7 +23,7 @@ const DocxReader = ({ docxUrl }) => {
         const result = await mammoth.convertToHtml({ arrayBuffer: docxData });
         setHtmlContent(result.value);
       } catch (error) {
-        console.error('Error reading or converting DOCX:', error);
+        console.error("Error reading or converting DOCX:", error);
       }
     };
 
@@ -27,7 +31,7 @@ const DocxReader = ({ docxUrl }) => {
   }, [docxUrl]);
 
   useEffect(() => {
-    setTextContainerWidth(Dimensions.get('window').width - 15);
+    setTextContainerWidth(Dimensions.get("window").width - 15);
   }, []);
 
   const injectedJS = `
@@ -67,24 +71,25 @@ for (var i = 0; i < images.length; i++) {
   `;
 
   return (
-
     <View style={{ flex: 1 }}>
       {htmlContent ? (
         <WebView
-          originWhitelist={['*']}
+          originWhitelist={["*"]}
           source={{ html: htmlContent }}
           style={{ flex: 1 }}
           injectedJavaScript={injectedJS}
           javaScriptEnabled={true}
           scalesPageToFit={false}
+          scrollEnabled={false}
         />
       ) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
           <Text>Loading...</Text>
         </View>
       )}
     </View>
-
   );
 };
 

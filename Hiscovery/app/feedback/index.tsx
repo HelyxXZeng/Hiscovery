@@ -4,11 +4,12 @@ import { Ionicons } from '@expo/vector-icons'; // Assuming you're using Expo
 import { Stack, router } from 'expo-router';
 import ProtectedRoute from '../../components/ProtectedRoute';
 
-const FeedbackPage = () => {
+const FeedbackPage = (onClose) => {
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
 
   const handleBack = () => {
+    onClose();
     // Handle back button press here
     // For example, navigate back to the previous screen
   };
