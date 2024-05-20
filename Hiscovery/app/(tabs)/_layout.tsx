@@ -1,12 +1,16 @@
 import { Tabs } from "expo-router";
-import { View, TouchableNativeFeedback, Platform } from "react-native"; // Import TouchableNativeFeedback
+import { View, TouchableNativeFeedback, Platform, TouchableOpacity } from "react-native"; // Import TouchableNativeFeedback
 import { icons } from "../../constants";
+import ProtectedRoute from "../../components/ProtectedRoute";
+
 
 export default function TabsLayout() {
   const TouchableComponent =
     Platform.OS === "android" ? TouchableNativeFeedback : TouchableOpacity; // Determine the Touchable component based on the platform
 
   return (
+
+
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -85,6 +89,8 @@ export default function TabsLayout() {
         }}
       />
     </Tabs>
+
+
   );
 }
 

@@ -2,6 +2,7 @@ import { Alert, Button, TextInput, View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { supabase } from '../../lib/supabase'
 import { useState } from 'react';
+import ProtectedRoute from '../../components/ProtectedRoute';
 
 export default function ResetPassword() {
     const route = useRoute();
@@ -26,20 +27,23 @@ export default function ResetPassword() {
     }
 
     return (
-        <View>
-            <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="New Password"
-                secureTextEntry
-            />
-            <TextInput
-                value={passwordConfirmation}
-                onChangeText={setPasswordConfirmation}
-                placeholder="Confirm New Password"
-                secureTextEntry
-            />
-            <Button title="Submit" onPress={handleResetPassword} />
-        </View>
+        <ProtectedRoute>
+
+            <View>
+                <TextInput
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="New Password"
+                    secureTextEntry
+                />
+                <TextInput
+                    value={passwordConfirmation}
+                    onChangeText={setPasswordConfirmation}
+                    placeholder="Confirm New Password"
+                    secureTextEntry
+                />
+                <Button title="Submit" onPress={handleResetPassword} />
+            </View>
+        </ProtectedRoute>
     );
 }

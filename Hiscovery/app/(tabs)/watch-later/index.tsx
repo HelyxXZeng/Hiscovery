@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase";
 import Header from "../../../components/header/Header";
 import { SIZES } from "../../../constants";
+import ProtectedRoute from "../../../components/ProtectedRoute";
 
 export default function Page() {
   const [readerId, setReaderId] = useState(0)
@@ -37,16 +38,19 @@ export default function Page() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerTitle: () => <Header title="Watch Later" iconvisible={false} />,
-          headerTitleAlign: "center",
-        }}
-      />
-      {/* <Text>Index page of Watch Later Tab</Text> */}
-      {articles && <SmallArticleList articles={articles} />}
-    </View>
+    <ProtectedRoute>
+
+      <View style={styles.container}>
+        <Stack.Screen
+          options={{
+            headerTitle: () => <Header title="Watch Later" iconvisible={false} />,
+            headerTitleAlign: "center",
+          }}
+        />
+        {/* <Text>Index page of Watch Later Tab</Text> */}
+        {articles && <SmallArticleList articles={articles} />}
+      </View>
+    </ProtectedRoute>
   );
 }
 

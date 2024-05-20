@@ -1,3 +1,4 @@
+//app/_layout.tsx
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 
@@ -13,6 +14,7 @@ import {
   StackNavigationOptions,
 } from "@react-navigation/stack";
 import { withLayoutContext } from "expo-router";
+import { AuthProvider } from './context/AuthContext';
 
 const { Navigator } = createStackNavigator();
 
@@ -42,72 +44,42 @@ const Layout = () => {
   }
 
   return (
-    // <Stack initialRouteName="auth">
-    //   <Stack.Screen name="auth" />
-    // </Stack>
-
-    // <Stack>
-    //   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    //   <Stack.Screen
-    //     name="category-list/index"
-    //     options={{
-    //       headerShown: true,
-    //       title: "Category",
-    //       transition: "modal",
-    //       gestureDirection: "horizontal",
-    //       cardStyleInterpolator: ({ current, layouts }) => {
-    //         return {
-    //           cardStyle: {
-    //             transform: [
-    //               {
-    //                 translateX: current.progress.interpolate({
-    //                   inputRange: [0, 1],
-    //                   outputRange: [-layouts.screen.width, 0], // Reverse direction from -width to 0
-    //                 }),
-    //               },
-    //             ],
-    //           },
-    //         };
-    //       },
-    //     }}
-    //   />
-
-    // </Stack>
-
-    <JsStack>
-      <JsStack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <JsStack.Screen
-        name="category-list/index"
-        options={{
-          headerTitleAlign: "center",
-          headerShown: true,
-          title: "Chuyên mục",
-          headerLeft: null, // Remove the default back button
-          headerRight: () => (
-            <TouchableOpacity
-              style={{ marginRight: 10 }}
-              onPress={() => navigation.goBack()}
-            >
-              <icons.arrowRight fill="#222222" />
-            </TouchableOpacity>
-          ),
-          cardStyleInterpolator: ({ current, layouts }) => {
-            return {
-              cardStyle: {
-                transform: [
-                  {
-                    translateX: current.progress.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-layouts.screen.width, 0], // Reverse direction from -width to 0
-                    }),
-                  },
-                ],
-              },
-            };
-          },
-        }}
-      />
-    </JsStack>
+    <AuthProvider>
+      <JsStack>
+        <JsStack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <JsStack.Screen
+          name="category-list/index"
+          options={{
+            headerTitleAlign: "center",
+            headerShown: true,
+            title: "Categories",
+            headerLeft: null, // Remove the default back button
+            headerRight: () => (
+              <TouchableOpacity
+                style={{ marginRight: 10 }}
+                onPress={() => navigation.goBack()}
+              >
+                <icons.arrowRight fill="#222222" />
+              </TouchableOpacity>
+            ),
+            cardStyleInterpolator: ({ current, layouts }) => {
+              return {
+                cardStyle: {
+                  transform: [
+                    {
+                      translateX: current.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-layouts.screen.width, 0], // Reverse direction from -width to 0
+                      }),
+                    },
+                  ],
+                },
+              };
+            },
+          }}
+        />
+      </JsStack>
+    </AuthProvider>
   );
 };
 

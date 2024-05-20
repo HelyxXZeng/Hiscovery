@@ -1,3 +1,4 @@
+//components/SignUp.tsx
 import React, { useEffect, useState } from 'react'
 import { Alert, StyleSheet, View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native'
 import { supabase } from '../../lib/supabase'
@@ -8,18 +9,6 @@ import { useRouter } from 'expo-router'
 import { validateForm } from '../../function/UserDataValidation';
 import ModalCalendar from '../modal-calendar/ModalCalendar'
 import styles from './style'
-
-// Tells Supabase Auth to continuously refresh the session automatically if
-// the app is in the foreground. When this is added, you will continue to receive
-// `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
-// if the user's session is terminated. This should only be registered once.
-// AppState.addEventListener('change', (state) => {
-//     if (state === 'active') {
-//         supabase.auth.startAutoRefresh()
-//     } else {
-//         supabase.auth.stopAutoRefresh()
-//     }
-// })
 
 export default function SignUp({ switchComponent }) {
     const [email, setEmail] = useState('')
@@ -78,7 +67,7 @@ export default function SignUp({ switchComponent }) {
                 if (error) console.error(error)
                 else {
                     // router.push(`/home`);
-                    router.back();
+                    router.replace('/(tabs)/home')
                     // try {
                     //     router.back()
                     // }
