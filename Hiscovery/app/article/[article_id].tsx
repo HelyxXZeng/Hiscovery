@@ -158,6 +158,7 @@ const Article = () => {
 
             {showComments === "report" && (
                 <ReportPage
+                    source_id={article_id}
                     onClose={() => setShowComments("none")}
                 />
             )}

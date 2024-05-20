@@ -17,6 +17,7 @@ const FeedbackPage = (onClose) => {
   const handleSend = () => {
     // Handle send button press here
     // For example, submit feedback to server
+    onClose();
   };
 
   return (
