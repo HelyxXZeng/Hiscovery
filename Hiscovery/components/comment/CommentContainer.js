@@ -20,7 +20,7 @@ const CommentContainer = ({ article_id, onClose }) => {
   const handleAddComment = async () => {
     // Implement logic to add new comment
     try {
-      const { data: comment, error } = await supabase.rpc('add_comment', { article_id: article_id, this_user_id: 2, content: newComment });
+      const { data: comment, error } = await supabase.rpc('add_comment', { article_id: article_id, this_user_id: userSessionID || 2, content: newComment });
 
 
       if (error || !comment) {
@@ -56,7 +56,15 @@ const CommentContainer = ({ article_id, onClose }) => {
         return;
       }
       if (sessionData && sessionData.user) {
-        setUserSessionID(sessionData.user.email);
+        let { data, error } = await supabase
+          .rpc('get_id_by_email', {
+            p_email: sessionData.user.email
+          })
+        if (error) console.error(error)
+        else {
+          setUserSessionID(data);
+          // console.log('Id here', data)
+        }
       }
       const { data: comments, error } = await supabase.rpc('get_comments', { article_id: article_id });
 
