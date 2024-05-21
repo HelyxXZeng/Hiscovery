@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import { supabase } from "../../lib/supabase";
 
-const ReportPage = ({ source_id, onClose }) => {
+const ReportPage = ({ source_id, onClose = null }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [description, setDescription] = useState("");
   const [otherSubject, setOtherSubject] = useState("");
@@ -82,7 +82,7 @@ const ReportPage = ({ source_id, onClose }) => {
             options={{
               headerLeft: () => (
                 <TouchableOpacity
-                  onPress={() => router.back()}
+                  onPress={onClose ? onClose : () => router.back()}
                   style={styles.backButton}
                 >
                   <Ionicons name="arrow-back" size={24} color="black" />
