@@ -55,27 +55,27 @@ const DocxReader = ({ docxUrl }) => {
   useEffect(() => {
     setTextContainerWidth(Dimensions.get("window").width - 15);
     const initTts = () => {
-      // if (Tts) {
-      //   Tts.setDefaultLanguage("en-US");
-      //   Tts.setDefaultVoice("com.apple.ttsbundle.Samantha-compact"); // Or any other voice ID specific to your platform
-      //   Tts.addEventListener("tts-start", (event) =>
-      //     console.log("TTS started", event)
-      //   );
-      //   Tts.addEventListener("tts-finish", (event) =>
-      //     console.log("TTS finished", event)
-      //   );
-      //   Tts.addEventListener("tts-cancel", (event) =>
-      //     console.log("TTS cancelled", event)
-      //   );
-      // } else {
-      //   console.error("Tts is not available.");
-      // }
+      if (Tts) {
+        Tts.setDefaultLanguage("en-US");
+        Tts.setDefaultVoice("com.apple.ttsbundle.Samantha-compact"); // Or any other voice ID specific to your platform
+        Tts.addEventListener("tts-start", (event) =>
+          console.log("TTS started", event)
+        );
+        Tts.addEventListener("tts-finish", (event) =>
+          console.log("TTS finished", event)
+        );
+        Tts.addEventListener("tts-cancel", (event) =>
+          console.log("TTS cancelled", event)
+        );
+      } else {
+        console.error("Tts is not available.");
+      }
 
-      // return () => {
-      //   Tts.removeEventListener("tts-start", () => { });
-      //   Tts.removeEventListener("tts-finish", () => { });
-      //   Tts.removeEventListener("tts-cancel", () => { });
-      // };
+      return () => {
+        Tts.removeEventListener("tts-start", () => { });
+        Tts.removeEventListener("tts-finish", () => { });
+        Tts.removeEventListener("tts-cancel", () => { });
+      };
     };
 
     initTts();
