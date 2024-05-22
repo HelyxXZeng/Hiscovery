@@ -1,0 +1,30 @@
+diff --git a/node_modules/mammoth/lib/docx/docx-reader.js b/node_modules/mammoth/lib/docx/docx-reader.js
+index 5f0fd05..0047657 100644
+--- a/node_modules/mammoth/lib/docx/docx-reader.js
++++ b/node_modules/mammoth/lib/docx/docx-reader.js
+@@ -1,8 +1,6 @@
+ exports.read = read;
+ exports._findPartPaths = findPartPaths;
+ 
+-var path = require("path");
+-
+ var promises = require("../promises");
+ var documents = require("../documents");
+ var Result = require("../results").Result;
+@@ -19,7 +17,6 @@ var notesReader = require("./notes-reader");
+ var commentsReader = require("./comments-reader");
+ var Files = require("./files").Files;
+ 
+-
+ function read(docxFile, input) {
+     input = input || {};
+ 
+@@ -27,7 +24,7 @@ function read(docxFile, input) {
+         contentTypes: readContentTypesFromZipFile(docxFile),
+         partPaths: findPartPaths(docxFile),
+         docxFile: docxFile,
+-        files: new Files(input.path ? path.dirname(input.path) : null)
++        files: new Files(input.path ? input.path : null)
+     }).also(function(result) {
+         return {
+             styles: readStylesFromZipFile(docxFile, result.partPaths.styles)
