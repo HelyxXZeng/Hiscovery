@@ -173,7 +173,7 @@ const Article = () => {
                                 paddingHorizontal: 20,
                                 borderRadius: 5,
                             }}
-                            onPress={() => setShowComments("comment")}
+                            onPress={() => setShowComments("report")}
                         >
                             <Image
                                 source={require("../../assets/icons/commentIcon.gif")}
@@ -188,7 +188,7 @@ const Article = () => {
                                 paddingHorizontal: 20,
                                 borderRadius: 5,
                             }}
-                            onPress={() => setShowComments("comment")}
+                            onPress={() => setShowComments("feedback")}
                         >
                             <Image
                                 source={require("../../assets/icons/commentIcon.gif")}

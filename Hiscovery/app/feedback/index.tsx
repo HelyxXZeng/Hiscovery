@@ -12,7 +12,7 @@ import { Stack, router } from "expo-router";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import { supabase } from "../../lib/supabase";
 
-const FeedbackPage = (onClose = null) => {
+const FeedbackPage = ({ onClose = null }) => {
   const [subject, setSubject] = useState("");
   const [description, setDescription] = useState("");
   const [userSessionID, setUserSessionID] = useState(null);
@@ -52,7 +52,7 @@ const FeedbackPage = (onClose = null) => {
       if (sessionError) {
         console.log(sessionError);
         //redirect to SignIn
-        router.push(`/auth`);
+        // router.push(`/auth`);
         onClose();
         return;
       }
