@@ -18,7 +18,7 @@ const FeedbackPage = (onClose = null) => {
   const [userSessionID, setUserSessionID] = useState(null);
 
   const handleBack = () => {
-    onClose();
+    router.back();
     // Handle back button press here
     // For example, navigate back to the previous screen
   };
@@ -83,7 +83,7 @@ const FeedbackPage = (onClose = null) => {
             options={{
               headerLeft: () => (
                 <TouchableOpacity
-                  onPress={onClose ? onClose : () => router.back()}
+                  onPress={handleBack}
                   style={styles.backButton}
                 >
                   <Ionicons name="arrow-back" size={24} color="black" />

@@ -38,6 +38,14 @@ const Article = () => {
         router.push(`/author/${authorId}`);
     };
 
+    const navigateFeedback = () =>{
+        console.log("Redirecting to feedback");
+        router.push('/feedback/')
+    }
+    const navigateReport = () =>{
+        console.log("Redirecting to report");
+        router.push('/report/')
+    }
     React.useEffect(() => {
         // console.log('this is article_id', article_id)
         async function fetchDocxUrl() {
@@ -150,7 +158,7 @@ const Article = () => {
                 />
             )}
 
-            {showComments === "feedback" && (
+            {/* {showComments === "feedback" && (
                 <FeedbackPage
                     onClose={() => setShowComments("none")}
                 />
@@ -161,7 +169,7 @@ const Article = () => {
                     source_id={article_id}
                     onClose={() => setShowComments("none")}
                 />
-            )}
+            )} */}
 
             {showComments === "none" && (
                 <View style={{ position: "absolute", bottom: 20, right: 20 }}>
@@ -173,7 +181,7 @@ const Article = () => {
                                 paddingHorizontal: 20,
                                 borderRadius: 5,
                             }}
-                            onPress={() => setShowComments("comment")}
+                            onPress={navigateFeedback}
                         >
                             <Image
                                 source={require("../../assets/icons/commentIcon.gif")}
@@ -188,7 +196,7 @@ const Article = () => {
                                 paddingHorizontal: 20,
                                 borderRadius: 5,
                             }}
-                            onPress={() => setShowComments("comment")}
+                            onPress={navigateReport}
                         >
                             <Image
                                 source={require("../../assets/icons/commentIcon.gif")}
