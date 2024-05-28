@@ -50,7 +50,7 @@ const ReportPage = ({ source_id, onClose = null }) => {
       if (sessionError) {
         console.log(sessionError);
         //redirect to SignIn
-        router.push(`/auth`);
+        // router.push(`/auth`);
         onClose();
         return;
       }

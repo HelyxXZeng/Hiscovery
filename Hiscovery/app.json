@@ -23,6 +23,10 @@
         "foregroundImage": "./assets/adaptive-icon-hiscovery.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": [
+        "INTERNET",
+        "RECORD_AUDIO"
+      ],
       "package": "com.supabase.hiscovery",
       "targetSdkVersion": 30
     },
