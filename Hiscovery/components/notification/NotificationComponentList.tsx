@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 import NotificationComponent from './NotificationComponent';
 import { Notification } from './interface';
 import { COLORS, SIZES } from '../../constants';
 
-const NotificationComponentList: React.FC<{ notifications: Notification[] }> = ({ notifications }) => {
+const NotificationComponentList: React.FC<{ notifications: Notification[] }> = ({ notifications: initialNotifications }) => {
+    const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
     const renderItem = ({ item }: { item: Notification }) => {
-        return <NotificationComponent notification={item} />;
+        return <NotificationComponent notification={item} onDelete={handleDelete} />;
+    };
+
+    const handleDelete = (id: number) => {
+        setNotifications((prevNotifications) => prevNotifications.filter((notification) => notification.id !== id));
     };
 
     return (
