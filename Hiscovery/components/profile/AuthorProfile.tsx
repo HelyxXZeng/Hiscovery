@@ -39,12 +39,11 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
         const fetchAuthor = async () => {
             let { data, error } = await supabase
                 .rpc('get_author_profile_data', {
-                    author_id: id,
-                    reader_id: readerId
+                    _author_id: id,
+                    _reader_id: readerId
                 })
             if (error) console.error(error)
             else {
-                // console.log(data[0])s
                 setAuthorData(data[0])
             }
         }
@@ -60,7 +59,6 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
                 // console.log(data)
                 setArticles(data)
             }
-
         }
         fetchAuthor()
         fetchArticles()
@@ -104,8 +102,11 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
 
     useEffect(() => {
         fetchData();
+    }, [readerId]);
+
+    useEffect(() => {
         getId()
-    }, []);
+    }, [])
 
     if (!authorData) return <Text>Loading...</Text>;
 
