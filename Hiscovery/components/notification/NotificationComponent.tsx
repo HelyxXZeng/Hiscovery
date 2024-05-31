@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     time: {
         fontSize: SIZES.medium,
         fontFamily: FONT.medium,
-        color: COLORS.gray,
+        color: 'black',
     },
     more: {
         fontSize: SIZES.xxLarge,
