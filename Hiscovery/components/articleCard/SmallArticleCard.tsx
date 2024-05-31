@@ -34,9 +34,8 @@ const ItemWatchLater = ({ article }: { article: ArticleData }) => {
     } else if (diffInDays < 30) {
       return `${diffInDays} ngày trước`;
     } else {
-      return `${dateTime.getDate()}-${
-        dateTime.getMonth() + 1
-      }-${dateTime.getFullYear()}`;
+      return `${dateTime.getDate()}-${dateTime.getMonth() + 1
+        }-${dateTime.getFullYear()}`;
     }
   };
 
@@ -69,6 +68,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingHorizontal: 15,
     marginTop: 12,
+
   },
   itemWatchLaterChild: {
     borderRadius: 5,

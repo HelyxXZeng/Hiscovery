@@ -6,6 +6,7 @@ import { supabase } from "../../../lib/supabase";
 import Header from "../../../components/header/Header";
 import { SIZES } from "../../../constants";
 import ProtectedRoute from "../../../components/ProtectedRoute";
+import React from "react";
 
 export default function Page() {
   const [readerId, setReaderId] = useState(0)
@@ -18,7 +19,6 @@ export default function Page() {
     if (error) console.error(error)
     else {
       setReaderId(data);
-      console.log('Id here', data)
     }
   }
 
@@ -29,17 +29,16 @@ export default function Page() {
       let { data, error } = await supabase.rpc("get_watchlater_list", {
         userid: readerId,
       });
-      // console.log("data", data);
+
       if (error) console.error(error);
       else setArticles(data);
     }
 
     fetchData();
-  }, []);
+  }, [readerId]);
 
   return (
     <ProtectedRoute>
-
       <View style={styles.container}>
         <Stack.Screen
           options={{
@@ -47,8 +46,11 @@ export default function Page() {
             headerTitleAlign: "center",
           }}
         />
-        {/* <Text>Index page of Watch Later Tab</Text> */}
-        {articles && <SmallArticleList articles={articles} />}
+        {articles && articles.length > 0 ? (
+          <SmallArticleList articles={articles} />
+        ) : (
+          <Text>No bookmarked articles to display. Add some bookmarked articles to watch later.</Text>
+        )}
       </View>
     </ProtectedRoute>
   );
