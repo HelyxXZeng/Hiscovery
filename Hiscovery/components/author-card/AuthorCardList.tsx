@@ -20,7 +20,6 @@ const AuthorCardList: React.FC<AuthorCardListData> = ({ authors }) => {
                 })
             if (error) console.error(error)
 
-
             // Remove from frontend
             setAuthorList(prevAuthors => prevAuthors.filter(author => author.id !== id));
         } catch (error) {

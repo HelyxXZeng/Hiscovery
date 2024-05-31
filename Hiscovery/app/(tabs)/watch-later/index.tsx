@@ -26,8 +26,8 @@ export default function Page() {
   useEffect(() => {
     async function fetchData() {
       await getId()
-      let { data, error } = await supabase.rpc("get_watchlater_list", {
-        userid: readerId,
+      let { data, error } = await supabase.rpc("get_watch_later_list", {
+        _reader_id: readerId,
       });
 
       if (error) console.error(error);
