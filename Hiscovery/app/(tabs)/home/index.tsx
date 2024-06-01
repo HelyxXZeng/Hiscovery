@@ -88,7 +88,9 @@ const Page = () => {
               <TouchableOpacity onPress={handleSearchIconClick}>
                 <icons.search fill={COLORS.iconColor} />
               </TouchableOpacity>
-              <icons.notification fill={COLORS.iconColor} />
+              <TouchableOpacity onPress={() => router.push('/notification')}>
+                <icons.notification fill={COLORS.iconColor} />
+              </TouchableOpacity>
             </View>
           ),
           headerShadowVisible: false,
