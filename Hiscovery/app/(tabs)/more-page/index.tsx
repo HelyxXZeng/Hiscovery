@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import Header from "../../../components/header/Header";
 import { useRouter } from 'expo-router';
 import { Button, Icon } from 'react-native-elements';
@@ -61,6 +61,11 @@ export default function MorePage() {
             iconPosition="right"
             onPress={signOut}
           />
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>HisCovery</Text>
+            <Text style={styles.footerText}>Nếu bạn có thắc mắc gì thêm, hãy liên hệ chúng tôi tại địa chỉ:</Text>
+            <Text style={styles.footerText}>abc@gmail.com</Text>
+          </View>
         </View>
       </View>
     </ProtectedRoute>
@@ -86,9 +91,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 20,
     marginBottom: 10,
-    justifyContent:"space-between"
+    justifyContent: "space-between"
   },
   signout: {
     marginBottom: '15%',
-  }
+  },
+  footer: {
+    marginTop: 'auto',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    backgroundColor: COLORS.lightGray,
+    borderTopWidth: 1,
+    borderColor: COLORS.darkGray,
+    alignItems: 'center',
+  },
+  footerText: {
+    color: COLORS.black,
+    fontSize: 16,
+    textAlign: 'center',
+  },
 });
