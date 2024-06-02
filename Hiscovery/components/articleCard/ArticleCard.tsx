@@ -14,6 +14,7 @@ export interface ArticleData {
   publish_time: string;
   image_url: string;
   is_bookmarked: boolean;
+  number_of_comments: number
 }
 
 const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
@@ -29,7 +30,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
     if (session === null) {
       router.push('/auth');
     }
-    else{
+    else {
       try {
         // Fetch article information including author_id
         const { data: articleInfo, error: infoError } = await supabase.rpc('get_article_info', {
@@ -39,7 +40,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
           console.error("Error fetching article information:", infoError);
           return;
         }
-        
+
         const articleDetails = articleInfo[0];
         const authorId = articleDetails?.author_id;
         if (authorId) {
@@ -48,7 +49,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
             article_id: data.id,
             author_id: authorId
           });
-          
+
           if (bookmarkError) {
             console.error("Error toggling bookmark:", bookmarkError);
           } else {
@@ -58,7 +59,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
       } catch (error) {
         console.error("Error in toggleBookmark:", error);
       }
-    } 
+    }
   };
 
   return (
@@ -89,7 +90,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
                   style={styles.commentIcon}
                   source={require("../../assets/icons/commentIcon.gif")}
                 />
-                <Text style={[styles.text, styles.textTypo]}>3</Text>
+                <Text style={[styles.text, styles.textTypo]}>{data.number_of_comments}</Text>
               </View>
               <TouchableOpacity onPress={toggleBookmark}>
                 <Image

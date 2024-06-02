@@ -1,6 +1,6 @@
 //app/(tabs)/home/index.tsx
 import { Stack, Link, useLocalSearchParams, useRouter } from "expo-router";
-import { StyleSheet, TextInput, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, TextInput, View, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { icons, COLORS, SIZES } from "../../../constants";
 import CustomTabBar from "../../../components/tab-custom/CustomTabBar";
@@ -55,6 +55,9 @@ const Page = () => {
   }, []);
 
   // console.log("nestedTabs", nestedTabs);
+  if (!nestedTabs) {
+    return <ActivityIndicator size="large" color={COLORS.darkRed} />
+  }
 
   return (
     <View style={styles.container}>
