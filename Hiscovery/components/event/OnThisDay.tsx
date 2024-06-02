@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { COLORS, SIZES } from '../../constants';
 import { supabase } from '../../lib/supabase';
@@ -10,22 +10,19 @@ const OnThisDay = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        getData()
+        getData();
     }, [month, day]);
 
-    // Replace this with your real getData function
     const getData = async () => {
-
         let { data, error } = await supabase
             .rpc('get_events_on_this_day', {
                 p_date: convertToDate(month, day)
-            })
-        if (error) console.error(error)
-        else setData(data)
+            });
+        if (error) console.error(error);
+        else setData(data);
     };
 
     const convertToDate = (month, day) => {
-        // JavaScript months are 0-based, so we need to subtract 1 from the month
         const date = new Date(2000, month - 1, day);
         return date;
     };
@@ -42,6 +39,15 @@ const OnThisDay = () => {
             default:
                 return 31;
         }
+    };
+
+    const changeDate = (delta) => {
+        const currentDate = new Date(2000, month - 1, day);
+        const newDate = new Date(currentDate);
+        newDate.setDate(currentDate.getDate() + delta);
+
+        setMonth(newDate.getMonth() + 1);
+        setDay(newDate.getDate());
     };
 
     return (
@@ -65,6 +71,15 @@ const OnThisDay = () => {
                 </View>
             </View>
 
+            <View style={styles.navigationButtons}>
+                <TouchableOpacity onPress={() => changeDate(-1)} style={styles.navButton}>
+                    <Text style={styles.navButtonText}>← Previous Day</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => changeDate(1)} style={styles.navButton}>
+                    <Text style={styles.navButtonText}>Next Day →</Text>
+                </TouchableOpacity>
+            </View>
+
             <View style={styles.bottom}>
                 {data === null || data.length === 0 ? (
                     <Text style={styles.noEventDataText}>No events on this day.</Text>
@@ -79,8 +94,7 @@ const OnThisDay = () => {
                     </>
                 )}
             </View>
-
-        </View >
+        </View>
     );
 };
 
@@ -88,13 +102,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.primary,
-        padding: '3%'
+        padding: '3%',
+        marginBottom: SIZES.heightBottomNavigation
     },
     top: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        height: 'auto',
+        flex: 0,
     },
     pickerContainer: {
         width: '47%',
@@ -118,10 +133,27 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginTop: 10,
     },
-    bottom: {
+    navigationButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         width: '100%',
-        height: 'auto',
+        marginVertical: 10,
+        flex: 0,
+    },
+    navButton: {
+        backgroundColor: COLORS.darkRed,
+        borderRadius: 10,
+        padding: 10,
+        width: '47%',
         alignItems: 'center',
+    },
+    navButtonText: {
+        color: COLORS.white,
+        fontSize: SIZES.medium,
+    },
+    bottom: {
+        flex: 1,
+        width: '100%',
         marginTop: 10
     },
     listItem: {
@@ -144,12 +176,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: COLORS.darkRed,
         textAlign: 'center',
-        marginTop: 20
+        marginTop: 20,
     },
     source: {
         fontSize: SIZES.medium,
         alignSelf: 'flex-end',
-        marginRight: 10
+        marginRight: 10,
     }
 });
 

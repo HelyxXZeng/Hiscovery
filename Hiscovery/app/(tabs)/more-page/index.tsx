@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack } from "expo-router";
-import { ScrollView, StyleSheet, View, Image, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Text, Image, Linking, TouchableOpacity } from "react-native";
 import Header from "../../../components/header/Header";
 import { useRouter } from "expo-router";
 import { Button, Icon } from "react-native-elements";
@@ -29,6 +29,7 @@ export default function MorePage() {
     }
   };
 
+
   useEffect(() => {
     const fetchUserData = async () => {
       const {
@@ -48,6 +49,13 @@ export default function MorePage() {
     fetchUserData();
   }, []);
 
+  const handleEmailPress = () => {
+    const email = 'huyrino@gmail.com';
+    const subject = 'Contact Us';
+    const mailUrl = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+    Linking.openURL(mailUrl).catch(err => console.error('An error occurred', err));
+  };
+
   return (
     <ProtectedRoute>
       <View style={styles.container}>
@@ -56,9 +64,8 @@ export default function MorePage() {
             headerTitle: () => <Header title="More" iconvisible={false} />,
           }}
         />
-        <View style={styles.content}>
-          <ScrollView style={{ flex: 1 }}>
-            <View style={styles.infoContainer}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.infoContainer}>
               <Image style={styles.avatar} source={{ uri: avatarUrl }} />
               <Text style={styles.textName}>{name}</Text>
               <Text style={{ textAlign: "center" }}>{email}</Text>
@@ -115,8 +122,15 @@ export default function MorePage() {
               iconPosition="right"
               onPress={signOut}
             />
-          </ScrollView>
-        </View>
+          <View style={styles.footer}>
+            <Image source={require('../../../assets/adaptive-icon-hiscovery.png')} style={styles.logo} />
+            <Text style={styles.footerTitle}>HisCovery</Text>
+            <Text style={styles.footerText}>Nếu bạn có thắc mắc gì thêm, hãy liên hệ chúng tôi tại địa chỉ:</Text>
+            <TouchableOpacity onPress={handleEmailPress}>
+              <Text style={[styles.footerText, styles.email]}>huyrino@gmail.com</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </View>
     </ProtectedRoute>
   );
@@ -124,14 +138,15 @@ export default function MorePage() {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
     padding: 8,
     backgroundColor: COLORS.primary,
   },
-  content: {
-    flex: 1,
-    justifyContent: "space-between",
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    paddingBottom: 30, // Ensure padding to avoid clipping with the tab bar
+
   },
   button: {
     backgroundColor: "#d24b70",
@@ -145,6 +160,8 @@ const styles = StyleSheet.create({
   },
   signout: {
     marginBottom: "15%",
+        //marginTop: 32,
+    //width:"40%",
   },
   infoContainer: {
     backgroundColor: "white",
@@ -165,6 +182,35 @@ const styles = StyleSheet.create({
   },
   textName: {
     fontFamily: FONT.bold,
-    fontSize: SIZES.h3,
+    fontSize: SIZES.h3,    
+  },
+  footer: {
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    backgroundColor: COLORS.lightGray,
+    borderTopWidth: 1,
+    borderColor: COLORS.darkGray,
+    alignItems: 'center',
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+  },
+  footerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  footerText: {
+    color: COLORS.black,
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  email: {
+    color: COLORS.blue,
+    textDecorationLine: 'underline',
   },
 });
