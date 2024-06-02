@@ -86,6 +86,11 @@ export default function SignIn({ switchComponent }) {
                             Forget Password?
                         </Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => router.replace('/(tabs)/home')}>
+                        <Text style={[{ marginTop: 40 }, { fontSize: 18 }, { color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>
+                            Continue without signing
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>

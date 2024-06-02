@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
 
     useEffect(() => {
         if (session === null) {
-            router.push('/auth');
+            router.replace('/auth');
         }
     }, [session, router]);
 
