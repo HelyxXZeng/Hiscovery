@@ -18,7 +18,7 @@ const COLORS = {
   colorDarkslategray_100: "#323743",
   colorDarkslategray_200: "#222b45",
   baseLightLight100: "#fff",
-  lightColor: "#df4771",
+  lightColor: "#DF4771",
   colorWhitesmoke_100: "#efefef",
   colorWhitesmoke_200: "#ebebeb",
   textColor3: "#989898",
