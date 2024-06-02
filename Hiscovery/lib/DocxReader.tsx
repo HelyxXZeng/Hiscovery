@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Dimensions } from "react-native";
+import { Text, View, Dimensions, Linking, TouchableOpacity, ActivityIndicator } from "react-native";
 import { WebView } from "react-native-webview";
 import mammoth from "mammoth";
-import * as Speech from 'expo-speech'; // Import expo-speech
+import * as Speech from 'expo-speech';
 import { COLORS, icons } from "../constants";
-import { Button, } from 'react-native-elements';
+import { Button } from 'react-native-elements';
+import { Picker } from '@react-native-picker/picker';
 
 const DocxReader = ({ docxUrl }) => {
   const [htmlContent, setHtmlContent] = useState(null);
   const [textContainerWidth, setTextContainerWidth] = useState(Dimensions.get("window").width);
   const [plainText, setPlainText] = useState("");
+  const [speechRate, setSpeechRate] = useState(1.0);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [speechPosition, setSpeechPosition] = useState(0);
+  const [currentSpeechText, setCurrentSpeechText] = useState("");
+  const [isSpeakingRequested, setIsSpeakingRequested] = useState(false);
 
   useEffect(() => {
     const fetchDocxAndConvertToHtml = async () => {
@@ -35,10 +41,34 @@ const DocxReader = ({ docxUrl }) => {
     setTextContainerWidth(Dimensions.get("window").width - 15);
   }, []);
 
+  useEffect(() => {
+    handleReadAloud();
+  }, [speechRate]);
+
+
   const handleReadAloud = () => {
     Speech.stop();
-    // Speech.speak('Hello World!, This is the article page!');
-    Speech.speak(plainText);
+    setIsSpeaking(true);
+    setCurrentSpeechText(plainText.slice(speechPosition));
+    Speech.speak(plainText.slice(speechPosition), {
+      rate: speechRate,
+      onDone: () => setIsSpeaking(false),
+      onStopped: () => setIsSpeaking(false),
+    });
+  };
+
+  const handlePause = () => {
+    setIsSpeakingRequested(false); // Set the desired state
+    Speech.stop();
+    setIsSpeaking(false);
+  };
+
+  const handleNavigationStateChange = (event) => {
+    if (!event.url.startsWith('data:text/html')) {
+      Linking.openURL(event.url);
+      return false;
+    }
+    return true;
   };
 
   const injectedJS = `
@@ -84,25 +114,52 @@ const DocxReader = ({ docxUrl }) => {
             javaScriptEnabled={true}
             scalesPageToFit={false}
             scrollEnabled={false}
+            onShouldStartLoadWithRequest={handleNavigationStateChange}
           />
-          <Button
-            buttonStyle={{
-              backgroundColor: COLORS.darkRed,
-              borderRadius: 50,
-              padding: 10,
-              width: 50,
-              height: 50,
-              margin: 10
-            }}
-            onPress={handleReadAloud}
-            icon={
-              <icons.speaker fill='white' />
-            }
-          />
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', margin: 5, flexWrap: 'wrap' }}>
+            <Button
+              buttonStyle={{
+                backgroundColor: COLORS.darkRed,
+                borderRadius: 50,
+                padding: 5,
+                width: 35,
+                height: 35,
+                margin: 2,
+              }}
+              onPress={handleReadAloud}
+              icon={<icons.speaker fill="white" />}
+            />
+            <TouchableOpacity
+              style={{
+                backgroundColor: COLORS.darkRed,
+                borderRadius: 50,
+                padding: 5,
+                width: 35,
+                height: 35,
+                margin: 2,
+              }}
+              onPress={handlePause}>
+              <icons.pause fill={'white'} />
+            </TouchableOpacity>
+            <Picker
+              selectedValue={speechRate}
+              style={{ height: 25, width: 120, margin: 2 }}
+              onValueChange={(itemValue) => setSpeechRate(itemValue)}
+            >
+              <Picker.Item label="0.25x" value={0.25} />
+              <Picker.Item label="0.5x" value={0.5} />
+              <Picker.Item label="0.75x" value={0.75} />
+              <Picker.Item label="1x" value={1.0} />
+              <Picker.Item label="1.25x" value={1.25} />
+              <Picker.Item label="1.5x" value={1.5} />
+              <Picker.Item label="1.75x" value={1.75} />
+              <Picker.Item label="2x" value={2.0} />
+            </Picker>
+          </View>
         </>
       ) : (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text>Loading...</Text>
+          <ActivityIndicator size="large" color={COLORS.darkRed} />
         </View>
       )}
     </View>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Text,
     SafeAreaView,
     View,
     TouchableOpacity,
     Image,
+    ActivityIndicator,
 } from "react-native";
 import { supabase } from "../../lib/supabase";
 import DocxReader from "../../lib/DocxReader";
@@ -18,6 +19,7 @@ import ReportPage from "../report";
 import * as Speech from 'expo-speech';
 
 
+
 const Article = () => {
     const [docxUrl, setDocxUrl] = React.useState("");
     const [title, setTitle] = React.useState("");
@@ -27,6 +29,8 @@ const Article = () => {
     const [author, setAuthor] = React.useState("");
     const [authorId, setAuthorId] = React.useState(0);
     const [publishTime, setPublishTime] = React.useState(null);
+
+
 
     const route = useRoute();
     const router = useRouter();
@@ -130,7 +134,7 @@ const Article = () => {
             <View
                 style={{
                     justifyContent: "center",
-                    alignItems: "left",
+                    alignItems: "flex-start",
                     position: "relative",
                     height: "auto",
                     margin: 10
@@ -146,7 +150,7 @@ const Article = () => {
                 <View
                     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                 >
-                    <Text>Loading...</Text>
+                    <ActivityIndicator size="large" color={COLORS.darkRed} />
                 </View>
             )}
 
@@ -158,7 +162,7 @@ const Article = () => {
             )}
 
             {showComments === "none" && (
-                <View style={{ position: "absolute", bottom: 20, right: 20 }}>
+                <View style={{ position: "absolute", bottom: 10, right: 10 }}>
                     <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
                             style={{
