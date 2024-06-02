@@ -5,19 +5,17 @@ import {
     View,
     TouchableOpacity,
     Image,
-    ScrollView,
 } from "react-native";
 import { supabase } from "../../lib/supabase";
 import DocxReader from "../../lib/DocxReader";
-
 import { COLORS } from "../../constants";
-import CommentContainer from "../../components/comment/CommentContainer"; // Container for Comments
-
+import CommentContainer from "../../components/comment/CommentContainer";
 import { Stack, useRouter } from "expo-router";
 import Header from "../../components/header/Header";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useFocusEffect } from "@react-navigation/native";
 import FeedbackPage from "../feedback";
 import ReportPage from "../report";
+import * as Speech from 'expo-speech';
 
 const Article = () => {
     const [docxUrl, setDocxUrl] = React.useState("");
@@ -31,7 +29,7 @@ const Article = () => {
 
     const route = useRoute();
     const router = useRouter();
-    const { article_id } = route.params; //This has compile error but can run without problem
+    const { article_id } = route.params;
 
     const handleAuthorPress = async () => {
         console.log("Redirecting to author page");
@@ -47,20 +45,8 @@ const Article = () => {
         router.push('/report/')
     }
     React.useEffect(() => {
-        // console.log('this is article_id', article_id)
         async function fetchDocxUrl() {
             try {
-                // const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
-                // if (sessionError) {
-                //     console.log(sessionError);
-                //     setUserSessionID(0);
-                //     // console.log('Came here 1')
-                // }
-                // if (sessionData && sessionData.user) {
-                //     setUserSessionID(sessionData.user.email);
-                //     // console.log('Came here 2', sessionData.user.email)
-                // }
-
                 const { data: article, error } = await supabase.rpc("get_article", {
                     article_id: article_id,
                 });
@@ -98,9 +84,9 @@ const Article = () => {
     };
 
     const calculateTimeDifference = () => {
-        if (!publishTime) return ""; // If publishTime is not set yet, return empty string
-        const currentTime = Date.now(); // Get current time in milliseconds
-        const publishTimeMillis = publishTime.getTime(); // Get publish time in milliseconds
+        if (!publishTime) return "";
+        const currentTime = Date.now();
+        const publishTimeMillis = publishTime.getTime();
         const difference = currentTime - publishTimeMillis;
 
         const minutes = Math.floor(difference / (1000 * 60));
@@ -126,6 +112,16 @@ const Article = () => {
         const years = Math.floor(months / 12);
         return `${years} year${years !== 1 ? "s" : ""} ago`;
     };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // Screen is focused
+            return () => {
+                // Screen is unfocused
+                Speech.stop();
+            };
+        }, [])
+    );
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
