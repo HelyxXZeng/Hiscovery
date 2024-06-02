@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Dimensions, Button } from "react-native";
+import { Text, View, Dimensions } from "react-native";
 import { WebView } from "react-native-webview";
 import mammoth from "mammoth";
 import * as Speech from 'expo-speech'; // Import expo-speech
+import { COLORS, icons } from "../constants";
+import { Button, } from 'react-native-elements';
 
 const DocxReader = ({ docxUrl }) => {
   const [htmlContent, setHtmlContent] = useState(null);
@@ -83,7 +85,20 @@ const DocxReader = ({ docxUrl }) => {
             scalesPageToFit={false}
             scrollEnabled={false}
           />
-          <Button title="Read" onPress={handleReadAloud} />
+          <Button
+            buttonStyle={{
+              backgroundColor: COLORS.darkRed,
+              borderRadius: 50,
+              padding: 10,
+              width: 50,
+              height: 50,
+              margin: 10
+            }}
+            onPress={handleReadAloud}
+            icon={
+              <icons.speaker fill='white' />
+            }
+          />
         </>
       ) : (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

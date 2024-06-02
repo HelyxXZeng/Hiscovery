@@ -46,7 +46,7 @@ const ItemWatchLater = ({ article, onRemove }: { article: ArticleData, onRemove:
           "Are you sure you want to remove this article from your watch later list?",
           [
             { text: "Cancel", style: "cancel" },
-            { text: "Remove", onPress: () => onRemove(article.id_article) }
+            { text: "Remove", onPress: () => onRemove(article.id) }
           ]
         );
       }}

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { supabase } from "../../lib/supabase";
 import DocxReader from "../../lib/DocxReader";
-import { COLORS } from "../../constants";
+import { COLORS, FONT, icons } from "../../constants";
 import CommentContainer from "../../components/comment/CommentContainer";
 import { Stack, useRouter } from "expo-router";
 import Header from "../../components/header/Header";
@@ -16,6 +16,7 @@ import { useRoute, useFocusEffect } from "@react-navigation/native";
 import FeedbackPage from "../feedback";
 import ReportPage from "../report";
 import * as Speech from 'expo-speech';
+
 
 const Article = () => {
     const [docxUrl, setDocxUrl] = React.useState("");
@@ -36,11 +37,7 @@ const Article = () => {
         router.push(`/author/${authorId}`);
     };
 
-    const navigateFeedback = () =>{
-        console.log("Redirecting to feedback");
-        router.push('/feedback/')
-    }
-    const navigateReport = () =>{
+    const navigateReport = () => {
         console.log("Redirecting to report");
         router.push('/report/')
     }
@@ -124,16 +121,22 @@ const Article = () => {
     );
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
+        <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
+            <Stack.Screen
+                options={{
+                    headerTitle: () => <Header title='Article' iconvisible={false} />,
+                    headerTitleAlign: "center",
+                }} />
             <View
                 style={{
                     justifyContent: "center",
                     alignItems: "left",
                     position: "relative",
                     height: "auto",
+                    margin: 10
                 }}
             >
-                <Text onPress={handleAuthorPress}>Author: {author}</Text>
+                <Text onPress={handleAuthorPress} style={{ fontFamily: FONT.medium }}>Author: {author}</Text>
                 <Text>Publish Time: {publishTime ? publishTime.toString() : ""}</Text>
                 <Text>Time Difference: {calculateTimeDifference()}</Text>
             </View>
@@ -154,19 +157,6 @@ const Article = () => {
                 />
             )}
 
-            {/* {showComments === "feedback" && (
-                <FeedbackPage
-                    onClose={() => setShowComments("none")}
-                />
-            )}
-
-            {showComments === "report" && (
-                <ReportPage
-                    source_id={article_id}
-                    onClose={() => setShowComments("none")}
-                />
-            )} */}
-
             {showComments === "none" && (
                 <View style={{ position: "absolute", bottom: 20, right: 20 }}>
                     <View style={{ flexDirection: "row" }}>
@@ -177,27 +167,9 @@ const Article = () => {
                                 paddingHorizontal: 20,
                                 borderRadius: 5,
                             }}
-                            onPress={navigateFeedback}
-                        >
-                            <Image
-                                source={require("../../assets/icons/commentIcon.gif")}
-                                style={{ width: 20, height: 20 }}
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={{
-                                backgroundColor: "#f0f0f0",
-                                paddingVertical: 10,
-                                paddingHorizontal: 20,
-                                borderRadius: 5,
-                            }}
                             onPress={navigateReport}
                         >
-                            <Image
-                                source={require("../../assets/icons/commentIcon.gif")}
-                                style={{ width: 20, height: 20 }}
-                            />
+                            <icons.report fill={'white'} />
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -217,7 +189,7 @@ const Article = () => {
                     </View>
                 </View>
             )}
-        </SafeAreaView>
+        </View>
     );
 };
 

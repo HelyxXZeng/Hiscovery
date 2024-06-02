@@ -16,7 +16,6 @@ const SmallArticleList: React.FC<SmallArticleListProps> = ({ articles: initialAr
         setArticles(articles.filter(article => article.id !== id));
 
         // Remove from the back end
-        console.log('This is id to be removed', id)
         let { data, error } = await supabase
             .rpc('delete_bookmark', {
                 _id: id
