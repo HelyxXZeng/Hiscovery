@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   signout: {
-    marginBottom: '15%',
+    marginTop: 32,
+    width:"40%",
   },
   footer: {
     paddingVertical: 20,
