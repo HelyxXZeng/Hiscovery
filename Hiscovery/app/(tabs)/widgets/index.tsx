@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import Header from "../../../components/header/Header";
 import OnThisDay from "../../../components/event/OnThisDay";
+import React from "react";
 
 export default function Page() {
   return (
@@ -9,7 +10,7 @@ export default function Page() {
       <Stack.Screen
         options={{
           headerTitleAlign: 'center',
-          headerTitle: () => <Header title="Widgets" iconvisible={false} />,
+          headerTitle: () => <Header title="On this day" iconvisible={false} />,
         }} />
       <OnThisDay />
     </View>

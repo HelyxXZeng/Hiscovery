@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-// import ArticleCard, { ArticleData } from '../articleCard/ArticleCard';
-import ItemWatchLater, { ArticleData } from '../articleCard/SmallArticleCard'
+import ItemWatchLater, { ArticleData } from '../articleCard/SmallArticleCard';
 import { COLORS, SIZES } from '../../constants/theme';
+import { supabase } from '../../lib/supabase';
 
 interface SmallArticleListProps {
     articles: ArticleData[];
 }
 
-const SmallArticleList: React.FC<SmallArticleListProps> = ({ articles }) => {
+const SmallArticleList: React.FC<SmallArticleListProps> = ({ articles: initialArticles }) => {
+    const [articles, setArticles] = useState<ArticleData[]>(initialArticles);
+
+    const handleRemove = async (id: number) => {
+        // Remove from the front end
+        setArticles(articles.filter(article => article.id !== id));
+
+        // Remove from the back end
+        let { data, error } = await supabase
+            .rpc('delete_bookmark', {
+                _id: id
+            })
+        if (error) console.error(error)
+    };
+
     const renderItem = ({ item }: { item: ArticleData }) => (
         <>
-            <ItemWatchLater article={item} />
+            <ItemWatchLater article={item} onRemove={handleRemove} />
             {/* <View style={styles.separator} /> */}
         </>
-
     );
 
     return (
@@ -35,30 +48,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         padding: 5,
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
-    button: {
-        width: '47%',
-        aspectRatio: 1,
-        margin: 5,
-    },
-    image: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.38)',
-    },
-    imageContainer: {
-        flex: 1,
-        borderRadius: 20,
-        overflow: 'hidden',
-    },
-    text: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: SIZES.large
-    }
 });

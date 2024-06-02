@@ -5,19 +5,18 @@ import {
     View,
     TouchableOpacity,
     Image,
-    ScrollView,
 } from "react-native";
 import { supabase } from "../../lib/supabase";
 import DocxReader from "../../lib/DocxReader";
-
-import { COLORS } from "../../constants";
-import CommentContainer from "../../components/comment/CommentContainer"; // Container for Comments
-
+import { COLORS, FONT, icons } from "../../constants";
+import CommentContainer from "../../components/comment/CommentContainer";
 import { Stack, useRouter } from "expo-router";
 import Header from "../../components/header/Header";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useFocusEffect } from "@react-navigation/native";
 import FeedbackPage from "../feedback";
 import ReportPage from "../report";
+import * as Speech from 'expo-speech';
+
 
 const Article = () => {
     const [docxUrl, setDocxUrl] = React.useState("");
@@ -31,36 +30,20 @@ const Article = () => {
 
     const route = useRoute();
     const router = useRouter();
-    const { article_id } = route.params; //This has compile error but can run without problem
+    const { article_id } = route.params;
 
     const handleAuthorPress = async () => {
         console.log("Redirecting to author page");
         router.push(`/author/${authorId}`);
     };
 
-    const navigateFeedback = () =>{
-        console.log("Redirecting to feedback");
-        router.push('/feedback/')
-    }
-    const navigateReport = () =>{
+    const navigateReport = () => {
         console.log("Redirecting to report");
         router.push('/report/')
     }
     React.useEffect(() => {
-        // console.log('this is article_id', article_id)
         async function fetchDocxUrl() {
             try {
-                // const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
-                // if (sessionError) {
-                //     console.log(sessionError);
-                //     setUserSessionID(0);
-                //     // console.log('Came here 1')
-                // }
-                // if (sessionData && sessionData.user) {
-                //     setUserSessionID(sessionData.user.email);
-                //     // console.log('Came here 2', sessionData.user.email)
-                // }
-
                 const { data: article, error } = await supabase.rpc("get_article", {
                     article_id: article_id,
                 });
@@ -98,9 +81,9 @@ const Article = () => {
     };
 
     const calculateTimeDifference = () => {
-        if (!publishTime) return ""; // If publishTime is not set yet, return empty string
-        const currentTime = Date.now(); // Get current time in milliseconds
-        const publishTimeMillis = publishTime.getTime(); // Get publish time in milliseconds
+        if (!publishTime) return "";
+        const currentTime = Date.now();
+        const publishTimeMillis = publishTime.getTime();
         const difference = currentTime - publishTimeMillis;
 
         const minutes = Math.floor(difference / (1000 * 60));
@@ -127,17 +110,33 @@ const Article = () => {
         return `${years} year${years !== 1 ? "s" : ""} ago`;
     };
 
+    useFocusEffect(
+        React.useCallback(() => {
+            // Screen is focused
+            return () => {
+                // Screen is unfocused
+                Speech.stop();
+            };
+        }, [])
+    );
+
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
+        <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
+            <Stack.Screen
+                options={{
+                    headerTitle: () => <Header title='Article' iconvisible={false} />,
+                    headerTitleAlign: "center",
+                }} />
             <View
                 style={{
                     justifyContent: "center",
                     alignItems: "left",
                     position: "relative",
                     height: "auto",
+                    margin: 10
                 }}
             >
-                <Text onPress={handleAuthorPress}>Author: {author}</Text>
+                <Text onPress={handleAuthorPress} style={{ fontFamily: FONT.medium }}>Author: {author}</Text>
                 <Text>Publish Time: {publishTime ? publishTime.toString() : ""}</Text>
                 <Text>Time Difference: {calculateTimeDifference()}</Text>
             </View>
@@ -158,19 +157,6 @@ const Article = () => {
                 />
             )}
 
-            {/* {showComments === "feedback" && (
-                <FeedbackPage
-                    onClose={() => setShowComments("none")}
-                />
-            )}
-
-            {showComments === "report" && (
-                <ReportPage
-                    source_id={article_id}
-                    onClose={() => setShowComments("none")}
-                />
-            )} */}
-
             {showComments === "none" && (
                 <View style={{ position: "absolute", bottom: 20, right: 20 }}>
                     <View style={{ flexDirection: "row" }}>
@@ -181,27 +167,9 @@ const Article = () => {
                                 paddingHorizontal: 20,
                                 borderRadius: 5,
                             }}
-                            onPress={navigateFeedback}
-                        >
-                            <Image
-                                source={require("../../assets/icons/commentIcon.gif")}
-                                style={{ width: 20, height: 20 }}
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={{
-                                backgroundColor: "#f0f0f0",
-                                paddingVertical: 10,
-                                paddingHorizontal: 20,
-                                borderRadius: 5,
-                            }}
                             onPress={navigateReport}
                         >
-                            <Image
-                                source={require("../../assets/icons/commentIcon.gif")}
-                                style={{ width: 20, height: 20 }}
-                            />
+                            <icons.report fill={'white'} />
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -221,7 +189,7 @@ const Article = () => {
                     </View>
                 </View>
             )}
-        </SafeAreaView>
+        </View>
     );
 };
 

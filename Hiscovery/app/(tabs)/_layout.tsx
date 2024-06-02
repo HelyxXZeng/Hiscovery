@@ -2,6 +2,7 @@ import { Tabs } from "expo-router";
 import { View, TouchableNativeFeedback, Platform, TouchableOpacity } from "react-native"; // Import TouchableNativeFeedback
 import { icons } from "../../constants";
 import ProtectedRoute from "../../components/ProtectedRoute";
+import React from "react";
 
 
 export default function TabsLayout() {
@@ -68,8 +69,8 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="widgets"
         options={{
-          tabBarLabel: "Widgets",
-          title: "Widgets",
+          tabBarLabel: "On this Day",
+          title: "On this day",
           tabBarIcon: ({ color }) => <icons.widgets fill={color} />,
           tabBarButton: (props) => (
             <TabBarButton {...props} TouchableComponent={TouchableComponent} />

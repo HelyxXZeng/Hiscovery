@@ -13,6 +13,7 @@ import ProtectedRoute from "../../components/ProtectedRoute";
 import { supabase } from "../../lib/supabase";
 import UpdateProfile from "../../components/profile/UpdateProfile";
 import { ScrollView } from "react-native-gesture-handler";
+import Header from "../../components/header/Header";
 
 const EditProfilePage = (onClose = null) => {
 
@@ -29,17 +30,8 @@ const EditProfilePage = (onClose = null) => {
                 <SafeAreaView>
                     <Stack.Screen
                         options={{
-                            headerLeft: () => (
-                                <TouchableOpacity
-                                    onPress={handleBack}
-                                    style={styles.backButton}
-                                >
-                                    <Ionicons name="arrow-back" size={24} color="black" />
-                                </TouchableOpacity>
-                            ),
-                            headerTitle: () => <Text style={styles.title}>EditProfile</Text>,
-                        }}
-                    />
+                            headerTitle: () => <Header title="Edit Profile" iconvisible={false} />,
+                        }} />
                 </SafeAreaView>
                 <ScrollView style={styles.content}>
                     <UpdateProfile />
