@@ -4,6 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import PrivacyPolicyAndTosData from './../../privacyandpolicy.json';
+import { Stack } from "expo-router";
+import Header from "../../components/header/Header";
 
 // PrivacyPolicyAndTos Component
 const PrivacyPolicyAndTos = () => {
@@ -13,45 +15,47 @@ const PrivacyPolicyAndTos = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View>
-                    <Text style={styles.heading}>Privacy Policy</Text>
-                    {Object.keys(PrivacyPolicyAndTosData.chinh_sach_bao_mat).map((key) => {
-                        const section = PrivacyPolicyAndTosData.chinh_sach_bao_mat[key];
-                        return (
-                            <View key={key}>
-                                <Text style={styles.subHeading}>{section.tieude}</Text>
-                                {Object.keys(section).map((subKey) => {
-                                    if (subKey !== 'tieude') {
-                                        return <Text style={styles.content} key={subKey}>{section[subKey]}</Text>;
-                                    }
-                                    return null;
-                                })}
-                            </View>
-                        );
-                    })}
-                </View>
+        <View style={styles.container}>
+            <Stack.Screen
+                options={{
+                    headerTitle: () => <Header title="Privacy & Policy" iconvisible={false} />,
+                }} />
+            <ScrollView style={[styles.container, { padding: 10, marginBottom: 20 }]}>
+                <Text style={styles.heading}>Privacy Policy</Text>
+                {Object.keys(PrivacyPolicyAndTosData.chinh_sach_bao_mat).map((key) => {
+                    const section = PrivacyPolicyAndTosData.chinh_sach_bao_mat[key];
+                    return (
+                        <View key={key}>
+                            <Text style={styles.subHeading}>{section.tieude}</Text>
+                            {Object.keys(section).map((subKey) => {
+                                if (subKey !== 'tieude') {
+                                    return <Text style={styles.content} key={subKey}>{section[subKey]}</Text>;
+                                }
+                                return null;
+                            })}
+                        </View>
+                    );
+                })}
 
-                <View>
-                    <Text style={styles.heading}>Terms of Service</Text>
-                    {Object.keys(PrivacyPolicyAndTosData.dieu_khoan_su_dung).map((key) => {
-                        const section = PrivacyPolicyAndTosData.dieu_khoan_su_dung[key];
-                        return (
-                            <View key={key}>
-                                <Text style={styles.subHeading}>{section.tieude}</Text>
-                                {Object.keys(section).map((subKey) => {
-                                    if (subKey !== 'tieude') {
-                                        return <Text style={styles.content} key={subKey}>{section[subKey]}</Text>;
-                                    }
-                                    return null;
-                                })}
-                            </View>
-                        );
-                    })}
-                </View>
+
+                <Text style={styles.heading}>Terms of Service</Text>
+                {Object.keys(PrivacyPolicyAndTosData.dieu_khoan_su_dung).map((key) => {
+                    const section = PrivacyPolicyAndTosData.dieu_khoan_su_dung[key];
+                    return (
+                        <View key={key}>
+                            <Text style={styles.subHeading}>{section.tieude}</Text>
+                            {Object.keys(section).map((subKey) => {
+                                if (subKey !== 'tieude') {
+                                    return <Text style={styles.content} key={subKey}>{section[subKey]}</Text>;
+                                }
+                                return null;
+                            })}
+                        </View>
+                    );
+                })}
+
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 };
 

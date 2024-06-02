@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 20,
     marginBottom: 10,
-    justifyContent:"space-between"
+    justifyContent: "space-between"
   },
   signout: {
     marginBottom: '15%',
