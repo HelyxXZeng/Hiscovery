@@ -1,20 +1,35 @@
 import React from "react";
 import { Stack } from "expo-router";
-import { ScrollView, StyleSheet, View, Text, Image, Linking, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Linking,
+  TouchableOpacity,
+} from "react-native";
 import Header from "../../../components/header/Header";
-import { useRouter } from 'expo-router';
-import { Button, Icon } from 'react-native-elements';
-import { supabase } from '../../../lib/supabase';
-import { COLORS, SIZES } from "../../../constants";
+import { useRouter } from "expo-router";
+import { Button, Icon } from "react-native-elements";
+import { supabase } from "../../../lib/supabase";
+import { COLORS, SIZES, FONT } from "../../../constants";
 import ProtectedRoute from "../../../components/ProtectedRoute";
+import { useState, useEffect } from "react";
 
 export default function MorePage() {
-
   const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+  const [avatarUrl, setAvatarUrl] = useState(
+    "https://eianmciufswbutirdbka.supabase.co/storage/v1/object/public/my%20files/images/icons/dollar.png?t=2024-03-03T11%3A57%3A19.836Z"
+  );
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
-    console.log('Signed out!');
+    console.log("Signed out!");
     if (error) {
       console.error("Error signing out:", error);
     } else {
@@ -22,11 +37,32 @@ export default function MorePage() {
     }
   };
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      let { data, error } = await supabase.rpc("get_basic_user_data", {
+        user_email: user.email,
+      });
+
+      if (error) console.error(error);
+      else {
+        setEmail(data[0].email);
+        setName(data[0].name);
+        setAvatarUrl(data[0].avatar_url);
+      }
+    };
+    fetchUserData();
+  }, []);
+
   const handleEmailPress = () => {
-    const email = 'huyrino@gmail.com';
-    const subject = 'Contact Us';
+    const email = "huyrino@gmail.com";
+    const subject = "Contact Us";
     const mailUrl = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
-    Linking.openURL(mailUrl).catch(err => console.error('An error occurred', err));
+    Linking.openURL(mailUrl).catch((err) =>
+      console.error("An error occurred", err)
+    );
   };
 
   return (
@@ -37,28 +73,58 @@ export default function MorePage() {
             headerTitle: () => <Header title="More" iconvisible={false} />,
           }}
         />
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContent}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <View style={styles.infoContainer}>
+            <Image style={styles.avatar} source={{ uri: avatarUrl }} />
+            <Text style={styles.textName}>{name}</Text>
+            <Text style={{ textAlign: "center" }}>{email}</Text>
+          </View>
           <Button
             buttonStyle={styles.button}
             title="Edit Profile   "
             icon={<Icon name="edit" type="font-awesome" color="white" />}
             iconRight
-            onPress={() => router.push('/editProfiles')}
+            onPress={() => router.push("/editProfiles")}
           />
           <Button
             buttonStyle={styles.button}
             title="Feedback   "
             icon={<Icon name="comments" type="font-awesome" color="white" />}
             iconRight
-            onPress={() => router.push('/feedback')}
+            onPress={() => router.push("/feedback")}
           />
           <Button
             buttonStyle={styles.button}
             title="Privacy and Policies, ToS  "
+            icon={
+              <Icon
+                name="my-library-books"
+                type="materialIcons"
+                color="white"
+              />
+            }
+            iconRight
+            onPress={() => router.push("/privacy")}
+          />
+          {/* <Button
+            buttonStyle={styles.button}
+            title="About us  "
             icon={<Icon name="info-circle" type="font-awesome" color="white" />}
             iconRight
-            onPress={() => router.push('/privacy')}
+            onPress={() => router.push("/privacy")}
           />
+
+          <Button
+            buttonStyle={styles.button}
+            title="Rate app  "
+            icon={<Icon name="star" type="font-awesome" color="white" />}
+            iconRight
+            onPress={() => router.push("/privacy")}
+          /> */}
+
           <Button
             buttonStyle={[styles.button, styles.signout]}
             title="Sign Out   "
@@ -67,11 +133,18 @@ export default function MorePage() {
             onPress={signOut}
           />
           <View style={styles.footer}>
-            <Image source={require('../../../assets/adaptive-icon-hiscovery.png')} style={styles.logo} />
+            <Image
+              source={require("../../../assets/adaptive-icon-hiscovery.png")}
+              style={styles.logo}
+            />
             <Text style={styles.footerTitle}>HisCovery</Text>
-            <Text style={styles.footerText}>Nếu bạn có thắc mắc gì thêm, hãy liên hệ chúng tôi tại địa chỉ:</Text>
+            <Text style={styles.footerText}>
+              Nếu bạn có thắc mắc gì thêm, hãy liên hệ chúng tôi tại địa chỉ:
+            </Text>
             <TouchableOpacity onPress={handleEmailPress}>
-              <Text style={[styles.footerText, styles.email]}>huyrino@gmail.com</Text>
+              <Text style={[styles.footerText, styles.email]}>
+                huyrino@gmail.com
+              </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -88,50 +161,71 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingBottom: 30, // Ensure padding to avoid clipping with the tab bar
   },
   button: {
-    backgroundColor: COLORS.darkRed,
-    borderRadius: 20,
-    width: '100%',
-    height: 'auto',
-    alignSelf: 'center',
+    backgroundColor: "#c8355d",
+    borderRadius: 10,
+    width: "100%",
+    height: "auto",
+    alignSelf: "center",
     padding: 20,
     marginBottom: 10,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   signout: {
+    //marginBottom: "15%",
     marginTop: 32,
-    width:"40%",
+    width: "40%",
+  },
+  infoContainer: {
+    backgroundColor: "white",
+    // alignSelf: "center",
+    // marginTop: 10,
+    paddingVertical: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: COLORS.gray,
+    marginBottom: 10,
+    alignSelf: "center",
+  },
+  textName: {
+    fontFamily: FONT.bold,
+    fontSize: SIZES.h3,
   },
   footer: {
-    paddingVertical: 20,
+    paddingVertical: 30,
     paddingHorizontal: 10,
     backgroundColor: COLORS.lightGray,
     borderTopWidth: 1,
-    borderColor: COLORS.darkGray,
-    alignItems: 'center',
+    borderColor: "#EEEEF0",
+    alignItems: "center",
   },
   logo: {
     width: 100,
     height: 100,
-    marginBottom: 10,
   },
   footerTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 10,
   },
   footerText: {
     color: COLORS.black,
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 5,
   },
   email: {
     color: COLORS.blue,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
 });
