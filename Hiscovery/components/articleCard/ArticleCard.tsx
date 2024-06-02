@@ -1,10 +1,10 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 import { useRouter } from "expo-router";
-import Article from "../../app/article/Article";
+import { supabase } from "../../lib/supabase"; // Import your Supabase client
+import { useAuth } from "../../app/context/AuthContext";
 
-// Define an interface for the Supabase data
 export interface ArticleData {
   id: number;
   name: string;
@@ -16,13 +16,51 @@ export interface ArticleData {
   is_bookmarked: boolean;
 }
 
-// Modify ArticleCard component to accept props based on ArticleData interface
 const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const router = useRouter();
+  const [isBookmarked, setIsBookmarked] = useState(data.is_bookmarked);
+  const { session } = useAuth();
 
   const handlePress = () => {
     router.push("/article/" + data.id);
   };
+
+  const toggleBookmark = async () => {
+    if (session === null) {
+      router.push('/auth');
+    }
+    else{
+      try {
+        // Fetch article information including author_id
+        const { data: articleInfo, error: infoError } = await supabase.rpc('get_article_info', {
+          article_id: data.id
+        });
+        if (infoError) {
+          console.error("Error fetching article information:", infoError);
+          return;
+        }
+        
+        const articleDetails = articleInfo[0];
+        const authorId = articleDetails?.author_id;
+        if (authorId) {
+          // Call change_bookmark with article_id and author_id
+          const { data: bookmarkResponse, error: bookmarkError } = await supabase.rpc('change_bookmark', {
+            article_id: data.id,
+            author_id: authorId
+          });
+          
+          if (bookmarkError) {
+            console.error("Error toggling bookmark:", bookmarkError);
+          } else {
+            setIsBookmarked(!isBookmarked);
+          }
+        }
+      } catch (error) {
+        console.error("Error in toggleBookmark:", error);
+      }
+    } 
+  };
+
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.news}>
@@ -53,14 +91,16 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
                 />
                 <Text style={[styles.text, styles.textTypo]}>3</Text>
               </View>
-              <Image
-                style={styles.bookmarkIcon}
-                source={
-                  data.is_bookmarked
-                    ? require("../../assets/icons/bookmark-filled-icon.png")
-                    : require("../../assets/icons/bookmark-icon.png")
-                }
-              />
+              <TouchableOpacity onPress={toggleBookmark}>
+                <Image
+                  style={styles.bookmarkIcon}
+                  source={
+                    isBookmarked
+                      ? require("../../assets/icons/bookmark-filled-icon.png")
+                      : require("../../assets/icons/bookmark-icon.png")
+                  }
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
