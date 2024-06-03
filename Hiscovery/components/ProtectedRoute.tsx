@@ -1,9 +1,9 @@
 // components/ProtectedRoute.tsx
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../app/context/AuthContext';
-import { SIZES } from '../constants';
+import { COLORS, FONT, SIZES } from '../constants';
 
 const ProtectedRoute = ({ children }) => {
     const router = useRouter();
@@ -18,7 +18,13 @@ const ProtectedRoute = ({ children }) => {
     if (session === null) {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Redirecting to Sign In...</Text>
+                <Text style={styles.text}>Please log in to access this page.
+                </Text>
+                <TouchableOpacity onPress={() => router.replace('/auth')}>
+                    <Text style={[{ marginTop: 40 }, { fontSize: 18 }, { color: COLORS.darkRed }, { fontFamily: FONT.bold }]}>
+                        Log in now!
+                    </Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -33,7 +39,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
-        fontSize: SIZES.xLarge,
+        fontSize: SIZES.medium,
         textAlign: 'center',
     },
 });
