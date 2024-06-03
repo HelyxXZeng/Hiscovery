@@ -8,33 +8,32 @@ import { COLORS, SIZES } from "../../../constants";
 import { supabase } from "../../../lib/supabase";
 import AuthorCardList from "../../../components/author-card/AuthorCardList";
 
-
 export default function Page() {
-  const [readerId, setReaderId] = useState(0)
+  const [readerId, setReaderId] = useState(0);
   const [authors, setAuthors] = useState(null);
 
   const getId = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    let { data, error } = await supabase
-      .rpc('get_id_by_email', {
-        p_email: user.email
-      })
-    if (error) console.error(error)
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    let { data, error } = await supabase.rpc("get_id_by_email", {
+      p_email: user.email,
+    });
+    if (error) console.error(error);
     else {
       setReaderId(data);
     }
-  }
+  };
 
   useEffect(() => {
     async function fetchData() {
-      await getId()
+      await getId();
 
-      let { data, error } = await supabase
-        .rpc('get_followed_authors', {
-          reader_id: readerId
-        })
-      if (error) console.error(error)
-      else setAuthors(data)
+      let { data, error } = await supabase.rpc("get_followed_authors", {
+        reader_id: readerId,
+      });
+      if (error) console.error(error);
+      else setAuthors(data);
     }
 
     fetchData();
@@ -54,9 +53,11 @@ export default function Page() {
         ) : authors && authors.length > 0 ? (
           <AuthorCardList authors={authors} />
         ) : (
-          <Text>No followed authors to display. Follow some authors to read their latest articles.</Text>
+          <Text>
+            No followed authors to display. Follow some authors to read their
+            latest articles.
+          </Text>
         )}
-
       </View>
     </ProtectedRoute>
   );
@@ -65,8 +66,8 @@ export default function Page() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
     marginBottom: SIZES.heightBottomNavigation,
   },
 });
