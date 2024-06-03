@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Text,
-    SafeAreaView,
     View,
     TouchableOpacity,
     Image,
@@ -14,21 +13,20 @@ import CommentContainer from "../../components/comment/CommentContainer";
 import { Stack, useRouter } from "expo-router";
 import Header from "../../components/header/Header";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
-import FeedbackPage from "../feedback";
-import ReportPage from "../report";
 import * as Speech from 'expo-speech';
 
-
-
 const Article = () => {
-    const [docxUrl, setDocxUrl] = React.useState("");
-    const [title, setTitle] = React.useState("");
-    const [description, setDescription] = React.useState("");
-    const [showComments, setShowComments] = React.useState("none");
-    const [userSessionID, setUserSessionID] = React.useState(null);
-    const [author, setAuthor] = React.useState("");
-    const [authorId, setAuthorId] = React.useState(0);
-    const [publishTime, setPublishTime] = React.useState(null);
+    const [docxUrl, setDocxUrl] = useState("");
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [showComments, setShowComments] = useState("none");
+    const [userSessionID, setUserSessionID] = useState(null);
+    const [author, setAuthor] = useState("");
+    const [authorId, setAuthorId] = useState(0);
+    const [publishTime, setPublishTime] = useState(new Date());
+    const [viewCount, setViewCount] = useState(0);
+    const [viewCountId, setViewCountId] = useState(null);
+    const [hasViewed, setHasViewed] = useState(false);
 
     const route = useRoute();
     const router = useRouter();
@@ -42,7 +40,8 @@ const Article = () => {
         console.log("Redirecting to report");
         router.push('/report/')
     }
-    React.useEffect(() => {
+
+    useEffect(() => {
         async function fetchDocxUrl() {
             try {
                 const { data: article, error } = await supabase.rpc("get_article", {
@@ -62,6 +61,7 @@ const Article = () => {
 
         fetchDocxUrl();
         getArticleInfo();
+        getViewCount();
     }, [article_id]);
 
     const getArticleInfo = async () => {
@@ -80,6 +80,53 @@ const Article = () => {
             console.error("Error fetching responses:", error);
         }
     };
+
+    const getViewCount = async () => {
+        try {
+            const { data, error } = await supabase.rpc("get_view_count", {
+                article_id,
+            });
+
+            if (error || !data) {
+                throw error || new Error("View count not found.");
+            }
+
+            setViewCount(data[0].total_views);
+            setViewCountId(data[0].view_count_id);
+        } catch (error) {
+            console.error("Error fetching view count:", error);
+        }
+    };
+
+    const incrementViewCount = async () => {
+        if (!hasViewed && viewCountId) {
+            try {
+                const { error } = await supabase.rpc("update_view_count", {
+                    view_count_id: viewCountId,
+                });
+                if (error) {
+                    throw error;
+                }
+                setViewCount(prevCount => prevCount + 1);
+                setHasViewed(true);
+            } catch (error) {
+                console.error("Error updating view count:", error);
+            }
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // Screen is focused
+            const timer = setTimeout(incrementViewCount, 20000);
+
+            return () => {
+                // Screen is unfocused
+                clearTimeout(timer);
+                Speech.stop();
+            };
+        }, [viewCountId])
+    );
 
     const calculateTimeDifference = () => {
         if (!publishTime) return "";
@@ -111,16 +158,6 @@ const Article = () => {
         return `${years} year${years !== 1 ? "s" : ""} ago`;
     };
 
-    useFocusEffect(
-        React.useCallback(() => {
-            // Screen is focused
-            return () => {
-                // Screen is unfocused
-                Speech.stop();
-            };
-        }, [])
-    );
-
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
             <Stack.Screen
@@ -138,8 +175,9 @@ const Article = () => {
                 }}
             >
                 <Text onPress={handleAuthorPress} style={{ fontFamily: FONT.bold, fontSize: SIZES.large }}>Author: {author}</Text>
-                <Text>Publish Time: {publishTime ? publishTime.toString() : ""}</Text>
+                <Text>Publish Time: {publishTime ? publishTime.toISOString().split('T')[0] : ""}</Text>
                 <Text>Time Difference: {calculateTimeDifference()}</Text>
+                <Text>Views: {viewCount}</Text>
             </View>
             {docxUrl ? (
                 <DocxReader docxUrl={docxUrl} />
