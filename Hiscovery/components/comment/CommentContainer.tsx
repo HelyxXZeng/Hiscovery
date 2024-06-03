@@ -105,8 +105,13 @@ const CommentContainer = ({ article_id, onClose }) => {
           style={{ flex: 1, borderWidth: 1, borderColor: 'gray', borderRadius: 5, padding: 5 }}
         />
 
-        <TouchableOpacity onPress={handleAddComment} style={{ marginLeft: 10 }}>
-          <Text>Add</Text>
+        <TouchableOpacity onPress={handleAddComment} style={{
+          marginLeft: 10, backgroundColor: COLORS.darkRed,
+          borderRadius: 5,
+          paddingVertical: 8,
+          paddingHorizontal: 10,
+        }}>
+          <Text style={{ color: "white" }}>Add</Text>
         </TouchableOpacity>
       </View>
     </View>

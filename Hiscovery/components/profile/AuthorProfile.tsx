@@ -127,7 +127,7 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
                         />
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.username}>{authorData.username}</Text>
+                <Text style={styles.username}>@{authorData.username}</Text>
                 <View style={styles.infoContainer}>
                     <Text style={styles.info}>Followers: {authorData.number_of_followers} - </Text>
                     <Text style={styles.info}>Articles: {authorData.number_of_articles}</Text>

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { supabase } from "../../lib/supabase";
 import DocxReader from "../../lib/DocxReader";
-import { COLORS, FONT, icons } from "../../constants";
+import { COLORS, FONT, SIZES, icons } from "../../constants";
 import CommentContainer from "../../components/comment/CommentContainer";
 import { Stack, useRouter } from "expo-router";
 import Header from "../../components/header/Header";
@@ -30,14 +30,11 @@ const Article = () => {
     const [authorId, setAuthorId] = React.useState(0);
     const [publishTime, setPublishTime] = React.useState(null);
 
-
-
     const route = useRoute();
     const router = useRouter();
     const { article_id } = route.params;
 
     const handleAuthorPress = async () => {
-        console.log("Redirecting to author page");
         router.push(`/author/${authorId}`);
     };
 
@@ -140,7 +137,7 @@ const Article = () => {
                     margin: 10
                 }}
             >
-                <Text onPress={handleAuthorPress} style={{ fontFamily: FONT.medium }}>Author: {author}</Text>
+                <Text onPress={handleAuthorPress} style={{ fontFamily: FONT.bold, fontSize: SIZES.large }}>Author: {author}</Text>
                 <Text>Publish Time: {publishTime ? publishTime.toString() : ""}</Text>
                 <Text>Time Difference: {calculateTimeDifference()}</Text>
             </View>

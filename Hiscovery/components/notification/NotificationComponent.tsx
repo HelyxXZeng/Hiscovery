@@ -79,6 +79,7 @@ const NotificationComponent: React.FC<{ notification: Notification, onDelete: (i
                     <TouchableOpacity onPress={handleMarkAsRead}>
                         <Text style={styles.contextMenuItem}>Mark as read</Text>
                     </TouchableOpacity>
+                    <View style={styles.separator}></View>
                     <TouchableOpacity onPress={handleDelete}>
                         <Text style={styles.contextMenuItem}>Delete</Text>
                     </TouchableOpacity>
@@ -135,9 +136,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 7,
         right: 40,
-        backgroundColor: COLORS.white,
-        borderColor: COLORS.gray,
-        borderWidth: 1,
+        backgroundColor: COLORS.gray2,
         borderRadius: 5,
         zIndex: 1,
     },
@@ -146,6 +145,11 @@ const styles = StyleSheet.create({
         fontSize: SIZES.medium,
         color: COLORS.black,
     },
+    separator: {
+        width: '100%',
+        backgroundColor: COLORS.gray,
+        height: 1
+    }
 });
 
 export default NotificationComponent;
