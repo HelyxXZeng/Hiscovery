@@ -1,4 +1,4 @@
 # Hiscovery
 
-vô node_modules\mammoth\lib\docx\docx-reader.js
-thay file docx_reader.js bằng file trong backend
+Chạy câu lệnh "npm i" để tải các thư viện về máy.
+Chạy câu lệnh "npm start" để chạy chương trình.
