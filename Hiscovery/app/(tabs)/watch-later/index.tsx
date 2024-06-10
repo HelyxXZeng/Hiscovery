@@ -1,10 +1,10 @@
 import { Stack } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import SmallArticleList from "../../../components/article-list/SmallArticleList";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase";
 import Header from "../../../components/header/Header";
-import { SIZES } from "../../../constants";
+import { COLORS, SIZES } from "../../../constants";
 import ProtectedRoute from "../../../components/ProtectedRoute";
 import React from "react";
 
@@ -37,6 +37,16 @@ export default function Page() {
     fetchData();
   }, [readerId]);
 
+  const renderArticles = () => {
+    if (!articles) {
+      return <ActivityIndicator size="large" color={COLORS.darkRed} />;
+    } else if (articles.length > 0) {
+      return <SmallArticleList articles={articles} />;
+    } else {
+      return <Text>No bookmarked articles to display. Add some bookmarked articles to watch later.</Text>;
+    }
+  }
+
   return (
     <ProtectedRoute>
       <View style={styles.container}>
@@ -46,11 +56,7 @@ export default function Page() {
             headerTitleAlign: "center",
           }}
         />
-        {articles && articles.length > 0 ? (
-          <SmallArticleList articles={articles} />
-        ) : (
-          <Text>No bookmarked articles to display. Add some bookmarked articles to watch later.</Text>
-        )}
+        {renderArticles()}
       </View>
     </ProtectedRoute>
   );

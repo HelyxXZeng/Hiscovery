@@ -77,7 +77,7 @@ const NotificationsScreen: React.FC = () => {
                 }}
             />
             {loading ?
-                <ActivityIndicator size="large" color={COLORS.primary} /> :
+                <ActivityIndicator size="large" color={COLORS.darkRed} /> :
                 <View style={styles.container}>
                     {error ? (
                         <Text style={styles.errorText}>{error}</Text>

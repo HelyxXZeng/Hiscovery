@@ -40,6 +40,16 @@ export default function Page() {
     fetchData();
   }, [readerId]);
 
+  const renderFollowing = () => {
+    if (!authors) {
+      return <ActivityIndicator size="large" color={COLORS.darkRed} />;
+    } else if (authors.length > 0) {
+      return <AuthorCardList authors={authors} />
+    }
+    else {
+      return <Text>No followed authors to display. Follow some authors to read their latest articles.</Text>
+    }
+  }
   return (
     <ProtectedRoute>
       <View style={styles.container}>
@@ -49,14 +59,8 @@ export default function Page() {
             headerTitleAlign: "center",
           }}
         />
-        {readerId === 0 ? (
-          <ActivityIndicator size="large" color={COLORS.darkRed} />
-        ) : authors && authors.length > 0 ? (
-          <AuthorCardList authors={authors} />
-        ) : (
-          <Text>No followed authors to display. Follow some authors to read their latest articles.</Text>
-        )}
 
+        {renderFollowing()}
       </View>
     </ProtectedRoute>
   );
