@@ -108,11 +108,12 @@ const styles = StyleSheet.create({
         fontFamily: FONT.tag,
     },
     removeButton: {
-        backgroundColor: 'red',
+        backgroundColor: COLORS.darkRed,
         justifyContent: 'center',
         alignItems: 'center',
         width: 70,
-        height: '100%',
+        height: '95%',
+        borderRadius: 15
     },
 });
 

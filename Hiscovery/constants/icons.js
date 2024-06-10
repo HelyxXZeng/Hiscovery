@@ -142,10 +142,34 @@ const search = ({ fill }) => {
   return <SvgXml xml={svgXml} />;
 }
 
+const speaker = ({ fill }) => {
+  const svgXml = `
+  <svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 425.2 430" enable-background="new 0 0 425.2 430" xml:space="preserve" fill="#000000" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path fill="#ffffff" d="M216.2,0.9c-5.9-2.2-12.5-0.5-16.6,4.3L104.1,116H0v198h104.1l95.5,110.8c2.9,3.4,7.1,5.2,11.4,5.2 c1.7,0,3.5-0.3,5.2-0.9c5.9-2.2,9.8-7.8,9.8-14.1V15C226,8.7,222.1,3.1,216.2,0.9z M30,146h66v138H30V146z M195,374.6l-69-81.2 V136.6l69-81.2V374.6z"></path> <path fill="#ffffff" d="M260.1,385.1c-8.3,0-15.1-6.8-15.1-15.1s6.8-15.1,15.1-15.1c74.4,0,134.9-60.5,134.9-134.9 S334.5,85.1,260.1,85.1c-8.3,0-15.1-6.8-15.1-15.1s6.8-15.1,15.1-15.1c91,0,165.1,74.1,165.1,165.1S351.1,385.1,260.1,385.1z"></path> <path fill="#ffffff" d="M268.1,322c-8.3,0-15-6.7-15-15s6.7-15,15-15c35.8,0,65-29.2,65-65v-14c0-35.8-29.2-65-65-65 c-8.3,0-15-6.7-15-15s6.7-15,15-15c52.4,0,95,42.6,95,95v14C363.1,279.4,320.5,322,268.1,322z"></path> </g> </g></svg>`
+
+  return <SvgXml xml={svgXml} />;
+}
+
+const pause = ({ fill }) => {
+  const svgXml = `
+  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 6C2 4.11438 2 3.17157 2.58579 2.58579C3.17157 2 4.11438 2 6 2C7.88562 2 8.82843 2 9.41421 2.58579C10 3.17157 10 4.11438 10 6V18C10 19.8856 10 20.8284 9.41421 21.4142C8.82843 22 7.88562 22 6 22C4.11438 22 3.17157 22 2.58579 21.4142C2 20.8284 2 19.8856 2 18V6Z" stroke="#ffffff" stroke-width="1.5"></path> <path d="M14 6C14 4.11438 14 3.17157 14.5858 2.58579C15.1716 2 16.1144 2 18 2C19.8856 2 20.8284 2 21.4142 2.58579C22 3.17157 22 4.11438 22 6V18C22 19.8856 22 20.8284 21.4142 21.4142C20.8284 22 19.8856 22 18 22C16.1144 22 15.1716 22 14.5858 21.4142C14 20.8284 14 19.8856 14 18V6Z" stroke="#ffffff" stroke-width="1.5"></path> </g></svg>
+  `
+  return <SvgXml xml={svgXml} />;
+}
+
+const report = ({ fill }) => {
+  const svgXml = `
+  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#B32751"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M4 1C3.44772 1 3 1.44772 3 2V22C3 22.5523 3.44772 23 4 23C4.55228 23 5 22.5523 5 22V13.5983C5.46602 13.3663 6.20273 13.0429 6.99251 12.8455C8.40911 12.4914 9.54598 12.6221 10.168 13.555C11.329 15.2964 13.5462 15.4498 15.2526 15.2798C17.0533 15.1004 18.8348 14.5107 19.7354 14.1776C20.5267 13.885 21 13.1336 21 12.3408V5.72337C21 4.17197 19.3578 3.26624 18.0489 3.85981C16.9875 4.34118 15.5774 4.87875 14.3031 5.0563C12.9699 5.24207 12.1956 4.9907 11.832 4.44544C10.5201 2.47763 8.27558 2.24466 6.66694 2.37871C6.0494 2.43018 5.47559 2.53816 5 2.65249V2C5 1.44772 4.55228 1 4 1ZM5 4.72107V11.4047C5.44083 11.2247 5.95616 11.043 6.50747 10.9052C8.09087 10.5094 10.454 10.3787 11.832 12.4455C12.3106 13.1634 13.4135 13.4531 15.0543 13.2897C16.5758 13.1381 18.1422 12.6321 19 12.3172V5.72337C19 5.67794 18.9081 5.66623 18.875 5.68126C17.7575 6.18804 16.1396 6.81972 14.5791 7.03716C13.0776 7.24639 11.2104 7.1185 10.168 5.55488C9.47989 4.52284 8.2244 4.25586 6.83304 4.3718C6.12405 4.43089 5.46427 4.58626 5 4.72107Z" fill="#B32751"></path> </g></svg>
+  `
+  return <SvgXml xml={svgXml} />;
+}
+
 export default {
   heart,
   menu,
   search,
+  speaker,
+  pause,
+  report,
   filter,
   left,
   heartOutline,

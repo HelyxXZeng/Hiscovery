@@ -1,58 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     Text,
-    SafeAreaView,
     View,
     TouchableOpacity,
     Image,
-    ScrollView,
+    ActivityIndicator,
 } from "react-native";
 import { supabase } from "../../lib/supabase";
 import DocxReader from "../../lib/DocxReader";
-
-import { COLORS } from "../../constants";
-import CommentContainer from "../../components/comment/CommentContainer"; // Container for Comments
-
+import { COLORS, FONT, SIZES, icons } from "../../constants";
+import CommentContainer from "../../components/comment/CommentContainer";
 import { Stack, useRouter } from "expo-router";
 import Header from "../../components/header/Header";
-import { useRoute } from "@react-navigation/native";
-import FeedbackPage from "../feedback";
-import ReportPage from "../report";
+import { useRoute, useFocusEffect } from "@react-navigation/native";
+import * as Speech from 'expo-speech';
 
 const Article = () => {
-    const [docxUrl, setDocxUrl] = React.useState("");
-    const [title, setTitle] = React.useState("");
-    const [description, setDescription] = React.useState("");
-    const [showComments, setShowComments] = React.useState("none");
-    const [userSessionID, setUserSessionID] = React.useState(null);
-    const [author, setAuthor] = React.useState("");
-    const [authorId, setAuthorId] = React.useState(0);
-    const [publishTime, setPublishTime] = React.useState(null);
+    const [docxUrl, setDocxUrl] = useState("");
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [showComments, setShowComments] = useState("none");
+    const [userSessionID, setUserSessionID] = useState(null);
+    const [author, setAuthor] = useState("");
+    const [authorId, setAuthorId] = useState(0);
+    const [publishTime, setPublishTime] = useState(new Date());
+    const [viewCount, setViewCount] = useState(0);
+    const [viewCountId, setViewCountId] = useState(null);
+    const [hasViewed, setHasViewed] = useState(false);
 
     const route = useRoute();
     const router = useRouter();
-    const { article_id } = route.params; //This has compile error but can run without problem
+    const { article_id } = route.params;
 
     const handleAuthorPress = async () => {
-        console.log("Redirecting to author page");
         router.push(`/author/${authorId}`);
     };
 
-    React.useEffect(() => {
-        // console.log('this is article_id', article_id)
+    const navigateReport = () => {
+        console.log("Redirecting to report");
+        router.push('/report/')
+    }
+
+    useEffect(() => {
         async function fetchDocxUrl() {
             try {
-                // const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
-                // if (sessionError) {
-                //     console.log(sessionError);
-                //     setUserSessionID(0);
-                //     // console.log('Came here 1')
-                // }
-                // if (sessionData && sessionData.user) {
-                //     setUserSessionID(sessionData.user.email);
-                //     // console.log('Came here 2', sessionData.user.email)
-                // }
-
                 const { data: article, error } = await supabase.rpc("get_article", {
                     article_id: article_id,
                 });
@@ -70,6 +61,7 @@ const Article = () => {
 
         fetchDocxUrl();
         getArticleInfo();
+        getViewCount();
     }, [article_id]);
 
     const getArticleInfo = async () => {
@@ -89,10 +81,57 @@ const Article = () => {
         }
     };
 
+    const getViewCount = async () => {
+        try {
+            const { data, error } = await supabase.rpc("get_view_count", {
+                article_id,
+            });
+
+            if (error || !data) {
+                throw error || new Error("View count not found.");
+            }
+
+            setViewCount(data[0].total_views);
+            setViewCountId(data[0].view_count_id);
+        } catch (error) {
+            console.error("Error fetching view count:", error);
+        }
+    };
+
+    const incrementViewCount = async () => {
+        if (!hasViewed && viewCountId) {
+            try {
+                const { error } = await supabase.rpc("update_view_count", {
+                    view_count_id: viewCountId,
+                });
+                if (error) {
+                    throw error;
+                }
+                setViewCount(prevCount => prevCount + 1);
+                setHasViewed(true);
+            } catch (error) {
+                console.error("Error updating view count:", error);
+            }
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // Screen is focused
+            const timer = setTimeout(incrementViewCount, 20000);
+
+            return () => {
+                // Screen is unfocused
+                clearTimeout(timer);
+                Speech.stop();
+            };
+        }, [viewCountId])
+    );
+
     const calculateTimeDifference = () => {
-        if (!publishTime) return ""; // If publishTime is not set yet, return empty string
-        const currentTime = Date.now(); // Get current time in milliseconds
-        const publishTimeMillis = publishTime.getTime(); // Get publish time in milliseconds
+        if (!publishTime) return "";
+        const currentTime = Date.now();
+        const publishTimeMillis = publishTime.getTime();
         const difference = currentTime - publishTimeMillis;
 
         const minutes = Math.floor(difference / (1000 * 60));
@@ -120,18 +159,25 @@ const Article = () => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
+        <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
+            <Stack.Screen
+                options={{
+                    headerTitle: () => <Header title='Article' iconvisible={false} />,
+                    headerTitleAlign: "center",
+                }} />
             <View
                 style={{
                     justifyContent: "center",
-                    alignItems: "left",
+                    alignItems: "flex-start",
                     position: "relative",
                     height: "auto",
+                    margin: 10
                 }}
             >
-                <Text onPress={handleAuthorPress}>Author: {author}</Text>
-                <Text>Publish Time: {publishTime ? publishTime.toString() : ""}</Text>
+                <Text onPress={handleAuthorPress} style={{ fontFamily: FONT.bold, fontSize: SIZES.large }}>Author: {author}</Text>
+                <Text>Publish Time: {publishTime ? publishTime.toISOString().split('T')[0] : ""}</Text>
                 <Text>Time Difference: {calculateTimeDifference()}</Text>
+                <Text>Views: {viewCount}</Text>
             </View>
             {docxUrl ? (
                 <DocxReader docxUrl={docxUrl} />
@@ -139,7 +185,7 @@ const Article = () => {
                 <View
                     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                 >
-                    <Text>Loading...</Text>
+                    <ActivityIndicator size="large" color={COLORS.darkRed} />
                 </View>
             )}
 
@@ -150,21 +196,8 @@ const Article = () => {
                 />
             )}
 
-            {showComments === "feedback" && (
-                <FeedbackPage
-                    onClose={() => setShowComments("none")}
-                />
-            )}
-
-            {showComments === "report" && (
-                <ReportPage
-                    source_id={article_id}
-                    onClose={() => setShowComments("none")}
-                />
-            )}
-
             {showComments === "none" && (
-                <View style={{ position: "absolute", bottom: 20, right: 20 }}>
+                <View style={{ position: "absolute", bottom: 10, right: 10 }}>
                     <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
                             style={{
@@ -173,27 +206,9 @@ const Article = () => {
                                 paddingHorizontal: 20,
                                 borderRadius: 5,
                             }}
-                            onPress={() => setShowComments("comment")}
+                            onPress={navigateReport}
                         >
-                            <Image
-                                source={require("../../assets/icons/commentIcon.gif")}
-                                style={{ width: 20, height: 20 }}
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={{
-                                backgroundColor: "#f0f0f0",
-                                paddingVertical: 10,
-                                paddingHorizontal: 20,
-                                borderRadius: 5,
-                            }}
-                            onPress={() => setShowComments("comment")}
-                        >
-                            <Image
-                                source={require("../../assets/icons/commentIcon.gif")}
-                                style={{ width: 20, height: 20 }}
-                            />
+                            <icons.report fill={'white'} />
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -213,7 +228,7 @@ const Article = () => {
                     </View>
                 </View>
             )}
-        </SafeAreaView>
+        </View>
     );
 };
 

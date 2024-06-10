@@ -102,8 +102,9 @@ const ReportPage = ({ source_id, onClose = null }) => {
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedSubject(itemValue)
               }
+              placeholder="Chọn một mục tiêu"
             >
-              <Picker.Item label="Chọn một mục tiêu" value="" />
+              {/* <Picker.Item label="Chọn một mục tiêu" value="" /> */}
               <Picker.Item label="Ngôn từ bạo lực" value="violence_language" />
               <Picker.Item label="Xuyên tạc" value="distortion" />
               <Picker.Item label="Xúc phạm danh dự" value="insulting" />
