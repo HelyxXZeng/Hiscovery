@@ -14,7 +14,7 @@ export interface ArticleData {
   publish_time: string;
   image_url: string;
   is_bookmarked: boolean;
-  number_of_comments: number
+  number_of_comments: number;
 }
 
 const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
@@ -22,6 +22,11 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const [isBookmarked, setIsBookmarked] = useState(data.is_bookmarked);
   const [userId, setUserId] = useState<number | null>(null);
   const { session } = useAuth();
+
+  useEffect(() => {
+    // console.log('This is data ' + data.name + " ", data.is_bookmarked)
+    setIsBookmarked(data.is_bookmarked);
+  }, [data.is_bookmarked]);
 
   const handlePress = () => {
     router.push("/article/" + data.id);
@@ -45,25 +50,21 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   }, []);
 
   const toggleBookmark = async () => {
-    const articleId = data.id
+    const articleId = data.id;
     if (session === null) {
       router.push('/auth');
-    }
-    else {
-
+    } else {
       let { data, error } = await supabase
         .rpc('change_bookmark', {
           article_id: articleId,
           user_id: userId
-        })
-      if (error) console.error(error)
+        });
+      if (error) console.error(error);
       else {
-        setIsBookmarked(!isBookmarked)
+        setIsBookmarked(!isBookmarked);
       }
     }
   };
-
-
 
   return (
     <TouchableOpacity onPress={handlePress}>

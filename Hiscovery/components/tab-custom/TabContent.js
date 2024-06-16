@@ -9,47 +9,40 @@ const TabContent = ({ content }) => {
   const [readerId, setReaderId] = useState(0)
 
   const getId = async () => {
-    const { data: user } = await supabase.auth.getUser()
-    let email = null;
-    if (user.user) {
-      email = user.user.email;
-      let { data, error } = await supabase
-        .rpc('get_id_by_email', {
-          p_email: email
-        })
-      if (error) console.error(error)
-      else {
-        setReaderId(data);
-      }
-    }
+    const { data: { user } } = await supabase.auth.getUser()
+    let { data, error } = await supabase
+      .rpc('get_id_by_email', {
+        p_email: user.email
+      })
+    if (error) console.error(error)
     else {
-      setReaderId(0)
+      setReaderId(data);
+      // console.log('Id here', data)
     }
-
-
   }
 
-  useEffect(() => {
-    async function fetchData() {
-      await getId()
-      let { data, error } = await supabase.rpc(
-        "get_article_list_from_category",
-        {
-          category_id: content?.id,
-          user_id: readerId,
-        }
-      );
-
-      if (error) console.error(error);
-      else {
-
-        setArticles(data);
+  async function fetchData() {
+    await getId()
+    let { data, error } = await supabase.rpc(
+      "get_article_list_from_category",
+      {
+        category_id: content?.id,
+        user_id: readerId,
       }
+    );
+
+    if (error) console.error(error);
+    else {
+      setArticles(data);
     }
-
+  }
+  useEffect(() => {
     fetchData();
-  }, []);
+  }, [readerId]);
 
+  useEffect(() => {
+    getId()
+  }, [])
   // console.log('This is data to be rendered', articles)
 
   return (
