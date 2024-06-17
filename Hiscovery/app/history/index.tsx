@@ -48,7 +48,7 @@ export default function Page() {
           console.error(error);
         } else {
           setArticles(data);
-          console.log(data);
+          // console.log(data);
         }
       } catch (error) {
         console.error(error);

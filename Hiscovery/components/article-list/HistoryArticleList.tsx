@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import ItemWatchLater, { ArticleData } from '../articleCard/SmallArticleCard';
 import { supabase } from '../../lib/supabase';
+import ItemWatchLater, { HistoryArticleData } from '../articleCard/HistoryArticleCard';
 
 interface HistoryArticleListProps {
-    articles: ArticleData[];
+    articles: HistoryArticleData[];
 }
 
 const HistoryArticleList: React.FC<HistoryArticleListProps> = ({ articles: initialArticles }) => {
-    const [articles, setArticles] = useState<ArticleData[]>(initialArticles);
+    const [articles, setArticles] = useState<HistoryArticleData[]>(initialArticles);
 
     const handleRemove = async (id: number) => {
         // Remove from the front end
-        setArticles(articles.filter(article => article.id !== id));
+        setArticles(articles.filter(article => article.id_article !== id));
 
         // Remove from the back end
+        console.log(id)
         let { data, error } = await supabase
-            .rpc('delete_bookmark', {
-                _id: id
+            .rpc('delete_history_row', {
+                history_id: id
             })
         if (error) console.error(error)
     };
 
-    const renderItem = ({ item }: { item: ArticleData }) => (
+    const renderItem = ({ item }: { item: HistoryArticleData }) => (
         <ItemWatchLater article={item} onRemove={handleRemove} />
     );
 

@@ -4,8 +4,7 @@ import { FONT, SIZES, COLORS } from "../../constants/index";
 import { useRouter } from "expo-router";
 import { Swipeable } from 'react-native-gesture-handler';
 
-export interface ArticleData {
-  id: number
+export interface HistoryArticleData {
   id_article: number;
   name: string;
   category_name: string;
@@ -15,7 +14,7 @@ export interface ArticleData {
   day_of_reading?: string;
 }
 
-const ItemWatchLater = ({ article, onRemove }: { article: ArticleData, onRemove: (id_article: number) => void }) => {
+const ItemWatchLater = ({ article, onRemove }: { article: HistoryArticleData, onRemove: (id_article: number) => void }) => {
   const router = useRouter();
 
   const handlePress = () => {
@@ -47,7 +46,7 @@ const ItemWatchLater = ({ article, onRemove }: { article: ArticleData, onRemove:
           "Are you sure you want to remove this article from your watch later/history list?",
           [
             { text: "Cancel", style: "cancel" },
-            { text: "Remove", onPress: () => onRemove(article.id) }
+            { text: "Remove", onPress: () => onRemove(article.id_article) }
           ]
         );
       }}
