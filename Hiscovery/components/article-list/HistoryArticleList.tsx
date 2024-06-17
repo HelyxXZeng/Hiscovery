@@ -15,7 +15,7 @@ const HistoryArticleList: React.FC<HistoryArticleListProps> = ({ articles: initi
         setArticles(articles.filter(article => article.id_article !== id));
 
         // Remove from the back end
-        console.log(id)
+        // console.log(id)
         let { data, error } = await supabase
             .rpc('delete_history_row', {
                 history_id: id

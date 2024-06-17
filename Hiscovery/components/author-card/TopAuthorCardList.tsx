@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingVertical: 5,
-        paddingRight: 5,
+        // paddingRight: 5,
+        marginHorizontal: 5,
         backgroundColor: "white"
     },
     ListContainer: {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
         fontSize: SIZES.large,
         alignItems:'center',
         textAlign:'center',
-        marginRight: 10,
+        marginRight: 15,
     }
 });
 
