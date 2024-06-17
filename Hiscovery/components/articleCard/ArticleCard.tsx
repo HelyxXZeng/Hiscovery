@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 import { useRouter } from "expo-router";
@@ -14,50 +14,54 @@ export interface ArticleData {
   publish_time: string;
   image_url: string;
   is_bookmarked: boolean;
-  number_of_comments: number
+  number_of_comments: number;
 }
 
 const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const router = useRouter();
   const [isBookmarked, setIsBookmarked] = useState(data.is_bookmarked);
+  const [userId, setUserId] = useState<number | null>(null);
   const { session } = useAuth();
+
+  useEffect(() => {
+    // console.log('This is data ' + data.name + " ", data.is_bookmarked)
+    setIsBookmarked(data.is_bookmarked);
+  }, [data.is_bookmarked]);
 
   const handlePress = () => {
     router.push("/article/" + data.id);
   };
 
+  const fetchUserData = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data, error } = await supabase
+        .rpc('get_id_by_email', { p_email: user.email });
+      if (error) console.error(error);
+      else setUserId(data);
+    }
+  };
+
+  useEffect(() => {
+    const fetch = async () => {
+      await fetchUserData();
+    };
+    fetch();
+  }, []);
+
   const toggleBookmark = async () => {
+    const articleId = data.id;
     if (session === null) {
       router.push('/auth');
-    }
-    else {
-      try {
-        // Fetch article information including author_id
-        const { data: articleInfo, error: infoError } = await supabase.rpc('get_article_info', {
-          article_id: data.id
+    } else {
+      let { data, error } = await supabase
+        .rpc('change_bookmark', {
+          article_id: articleId,
+          user_id: userId
         });
-        if (infoError) {
-          console.error("Error fetching article information:", infoError);
-          return;
-        }
-
-        const articleDetails = articleInfo[0];
-        const authorId = articleDetails?.author_id;
-        if (authorId) {
-          // Call change_bookmark with article_id and author_id
-          const { data: bookmarkResponse, error: bookmarkError } = await supabase.rpc('change_bookmark', {
-            article_id: data.id,
-            author_id: authorId
-          });
-
-          if (bookmarkError) {
-            console.error("Error toggling bookmark:", bookmarkError);
-          } else {
-            setIsBookmarked(!isBookmarked);
-          }
-        }
-      } catch (error) {
-        console.error("Error in toggleBookmark:", error);
+      if (error) console.error(error);
+      else {
+        setIsBookmarked(!isBookmarked);
       }
     }
   };

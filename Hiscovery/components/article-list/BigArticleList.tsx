@@ -15,7 +15,6 @@ const BigArticleList: React.FC<BigArticleListProps> = ({
   const renderItem = ({ item }: { item: ArticleData }) => (
     <>
       <ArticleCard data={item} />
-      {/* <View style={styles.separator} /> */}
     </>
   );
 
