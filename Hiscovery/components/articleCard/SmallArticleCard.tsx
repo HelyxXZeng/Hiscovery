@@ -12,6 +12,7 @@ export interface ArticleData {
   publish_time: string;
   image_url: string;
   description: string;
+  day_of_reading?: string;
 }
 
 const ItemWatchLater = ({ article, onRemove }: { article: ArticleData, onRemove: (id_article: number) => void }) => {
@@ -68,9 +69,11 @@ const ItemWatchLater = ({ article, onRemove }: { article: ArticleData, onRemove:
             <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
               {article.name}
             </Text>
-            <Text style={styles.tagNTime} numberOfLines={1} ellipsizeMode="tail">
-              Đã đọc: 30/20/0001
-            </Text>
+            {article.day_of_reading && (
+              <Text style={styles.tagNTime} numberOfLines={1} ellipsizeMode="tail">
+                Lần đọc cuối: {formatDate(article.day_of_reading)}
+              </Text>
+            )}
             <Text style={styles.tagNTime} numberOfLines={1}>
               {article.category_name} - Xuất bản: {formatDate(article.publish_time)}
             </Text>
@@ -80,6 +83,7 @@ const ItemWatchLater = ({ article, onRemove }: { article: ArticleData, onRemove:
     </Swipeable>
   );
 };
+
 
 const styles = StyleSheet.create({
   itemWatchLaterLayout: {

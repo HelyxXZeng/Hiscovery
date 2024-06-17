@@ -94,14 +94,14 @@ export default function MorePage() {
             title="History   "
             icon={<Icon name="history" type="font-awesome" color="white" />}
             iconRight
-            onPress={() => router.push("/feedback")}
+            onPress={() => router.push("/history")}
           />
           <Button
             buttonStyle={styles.button}
             title="LeaderBoard   "
             icon={<Icon name="trophy" type="font-awesome" color="white" />}
             iconRight
-            onPress={() => router.push("/feedback")}
+            onPress={() => router.push("/leaderBoard")}
           />
           <Button
             buttonStyle={styles.button}

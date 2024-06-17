@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { FONT, SIZES, COLORS } from "../../constants/index";
 import { useRouter } from "expo-router";
 import { Swipeable } from 'react-native-gesture-handler';
@@ -12,9 +12,17 @@ export interface AuthorData {
     username: string;
     avatar_url: string;
     join_date: string;
+    number_of_followers?: number; // Số lượng followers (tùy chọn)
+    number_of_articles?: number; // Số lượng bài viết (tùy chọn)
+    views?:number;
 }
 
-const ItemFollowingAuthor = ({ author, onRemove }: { author: AuthorData, onRemove: (id: number) => void }) => {
+interface ItemFollowingAuthorProps {
+    author: AuthorData;
+    onRemove?: (id: number) => void; // Hàm xử lý khi xóa (tùy chọn)
+}
+
+const ItemFollowingAuthor: React.FC<ItemFollowingAuthorProps> = ({ author, onRemove }) => {
     const router = useRouter();
 
     const handlePress = () => {
@@ -27,18 +35,9 @@ const ItemFollowingAuthor = ({ author, onRemove }: { author: AuthorData, onRemov
     };
 
     const handleRemove = () => {
-        Alert.alert(
-            "Remove Author",
-            "Are you sure you want to remove this author?",
-            [
-                { text: "Cancel", style: "cancel" },
-                {
-                    text: "Remove",
-                    style: "destructive",
-                    onPress: () => onRemove(author.id)
-                }
-            ]
-        );
+        if (onRemove) {
+            onRemove(author.id);
+        }
     };
 
     const renderRightActions = () => (
@@ -48,7 +47,7 @@ const ItemFollowingAuthor = ({ author, onRemove }: { author: AuthorData, onRemov
     );
 
     return (
-        <Swipeable renderRightActions={renderRightActions}>
+        <Swipeable renderRightActions={onRemove ? renderRightActions : undefined}>
             <TouchableOpacity onPress={handlePress}>
                 <View style={styles.itemFollowingAuthorLayout}>
                     <Image
@@ -66,6 +65,11 @@ const ItemFollowingAuthor = ({ author, onRemove }: { author: AuthorData, onRemov
                         <Text style={styles.joinDate}>
                             Joined on {formatJoinDate(author.join_date)}
                         </Text>
+                        {(author.number_of_followers !== undefined && author.number_of_articles !== undefined) && (
+                            <Text style={styles.additionalInfo}>
+                                {author.number_of_followers} followers, {author.number_of_articles} articles
+                            </Text>
+                        )}
                     </View>
                 </View>
             </TouchableOpacity>
@@ -106,6 +110,12 @@ const styles = StyleSheet.create({
         fontSize: SIZES.small,
         color: COLORS.textColor3,
         fontFamily: FONT.tag,
+    },
+    additionalInfo: {
+        fontSize: SIZES.small,
+        color: COLORS.textColor3,
+        fontFamily: FONT.tag,
+        // marginTop: 5,
     },
     removeButton: {
         backgroundColor: COLORS.darkRed,

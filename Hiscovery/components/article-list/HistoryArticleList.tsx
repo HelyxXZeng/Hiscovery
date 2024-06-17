@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import ItemWatchLater, { ArticleData } from '../articleCard/SmallArticleCard';
-// import { COLORS, SIZES } from '../../constants/theme';
 import { supabase } from '../../lib/supabase';
 
-interface SmallArticleListProps {
+interface HistoryArticleListProps {
     articles: ArticleData[];
 }
 
-const SmallArticleList: React.FC<SmallArticleListProps> = ({ articles: initialArticles }) => {
+const HistoryArticleList: React.FC<HistoryArticleListProps> = ({ articles: initialArticles }) => {
     const [articles, setArticles] = useState<ArticleData[]>(initialArticles);
 
     const handleRemove = async (id: number) => {
@@ -24,10 +23,7 @@ const SmallArticleList: React.FC<SmallArticleListProps> = ({ articles: initialAr
     };
 
     const renderItem = ({ item }: { item: ArticleData }) => (
-        <>
-            <ItemWatchLater article={item} onRemove={handleRemove} />
-            {/* <View style={styles.separator} /> */}
-        </>
+        <ItemWatchLater article={item} onRemove={handleRemove} />
     );
 
     return (
@@ -35,13 +31,13 @@ const SmallArticleList: React.FC<SmallArticleListProps> = ({ articles: initialAr
             <FlatList
                 data={articles}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id_article.toString()} // Sử dụng id_article thay vì id
             />
         </View>
     );
 };
 
-export default SmallArticleList;
+export default HistoryArticleList;
 
 const styles = StyleSheet.create({
     container: {
