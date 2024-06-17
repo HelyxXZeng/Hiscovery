@@ -68,8 +68,11 @@ const ItemWatchLater = ({ article, onRemove }: { article: ArticleData, onRemove:
             <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
               {article.name}
             </Text>
-            <Text style={styles.tagNTime}>
-              {article.category_name} - {formatDate(article.publish_time)}
+            <Text style={styles.tagNTime} numberOfLines={1} ellipsizeMode="tail">
+              Đã đọc: 30/20/0001
+            </Text>
+            <Text style={styles.tagNTime} numberOfLines={1}>
+              {article.category_name} - Xuất bản: {formatDate(article.publish_time)}
             </Text>
           </View>
         </View>

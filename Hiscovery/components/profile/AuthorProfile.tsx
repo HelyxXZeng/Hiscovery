@@ -56,7 +56,6 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
                 })
             if (error) console.error(error)
             else {
-                // console.log(data)
                 setArticles(data)
             }
         }

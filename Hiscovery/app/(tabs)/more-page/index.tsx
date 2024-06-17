@@ -91,6 +91,20 @@ export default function MorePage() {
           />
           <Button
             buttonStyle={styles.button}
+            title="History   "
+            icon={<Icon name="history" type="font-awesome" color="white" />}
+            iconRight
+            onPress={() => router.push("/feedback")}
+          />
+          <Button
+            buttonStyle={styles.button}
+            title="LeaderBoard   "
+            icon={<Icon name="trophy" type="font-awesome" color="white" />}
+            iconRight
+            onPress={() => router.push("/feedback")}
+          />
+          <Button
+            buttonStyle={styles.button}
             title="Feedback   "
             icon={<Icon name="comments" type="font-awesome" color="white" />}
             iconRight
