@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 import { useRouter } from "expo-router";
@@ -21,7 +21,19 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const router = useRouter();
   const [isBookmarked, setIsBookmarked] = useState(data.is_bookmarked);
   const { session } = useAuth();
-
+  const [userId,setUserId] = useState<any>(null);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .rpc('get_id_by_email', { p_email: user.email });
+        if (error) console.error(error);
+        else setUserId(data);
+      }
+    };
+    fetchUserData()
+  }, [userId]);
   const handlePress = () => {
     router.push("/article/" + data.id);
   };
@@ -47,7 +59,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
           // Call change_bookmark with article_id and author_id
           const { data: bookmarkResponse, error: bookmarkError } = await supabase.rpc('change_bookmark', {
             article_id: data.id,
-            author_id: authorId
+            user_id: userId
           });
 
           if (bookmarkError) {
