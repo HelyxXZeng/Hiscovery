@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import { Swipeable } from 'react-native-gesture-handler';
 
 export interface HistoryArticleData {
-  id: number;
+  history_id: number;
   id_article: number;
   name: string;
   category_name: string;
@@ -47,7 +47,7 @@ const ItemWatchLater = ({ article, onRemove }: { article: HistoryArticleData, on
           "Are you sure you want to remove this article from your history?",
           [
             { text: "Cancel", style: "cancel" },
-            { text: "Remove", onPress: () => onRemove(article.id) }
+            { text: "Remove", onPress: () => onRemove(article.history_id) }
           ]
         );
       }}
