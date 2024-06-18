@@ -14,7 +14,7 @@ export interface AuthorData {
     join_date: string;
     number_of_followers?: number; // Số lượng followers (tùy chọn)
     number_of_articles?: number; // Số lượng bài viết (tùy chọn)
-    views?:number;
+    views?: number;
 }
 
 interface ItemFollowingAuthorProps {
@@ -47,7 +47,7 @@ const ItemFollowingAuthor: React.FC<ItemFollowingAuthorProps> = ({ author, onRem
     );
 
     return (
-        <Swipeable renderRightActions={onRemove ? renderRightActions : undefined}>
+        <Swipeable containerStyle={{ flex: 1 }} renderRightActions={onRemove ? renderRightActions : undefined}>
             <TouchableOpacity onPress={handlePress}>
                 <View style={styles.itemFollowingAuthorLayout}>
                     <Image

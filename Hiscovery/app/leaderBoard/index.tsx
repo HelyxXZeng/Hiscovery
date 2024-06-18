@@ -14,8 +14,8 @@ import Header from "../../components/header/Header";
 const LeaderBoardPage = () => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'topAuthor', title: 'Top Author' },
-    { key: 'topArticle', title: 'Top Article' },
+    { key: 'topAuthor', title: 'Top Authors' },
+    { key: 'topArticle', title: 'Top Articles' },
   ]);
   const [readerId, setReaderId] = useState<number | null>(null);
 
@@ -50,7 +50,7 @@ const LeaderBoardPage = () => {
       }
     }
   }, [getId, readerId, routes[index].key]);
-  
+
 
   const fetchTopAuthors = async () => {
     try {
