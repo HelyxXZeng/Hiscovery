@@ -5,12 +5,17 @@ type UserContextType = {
     userId: number | null;
     setUserId: React.Dispatch<React.SetStateAction<number | null>>;
     fetchUserId: () => Promise<void>;
+    resetUserId: () => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [userId, setUserId] = useState<number | null>(null);
+
+    const resetUserId = () => {
+        setUserId(null);
+    };
 
     const fetchUserId = useCallback(async () => {
         try {
@@ -33,7 +38,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }, [fetchUserId]);
 
     return (
-        <UserContext.Provider value={{ userId, setUserId, fetchUserId }}>
+        <UserContext.Provider value={{ userId, setUserId, fetchUserId, resetUserId }}>
             {children}
         </UserContext.Provider>
     );

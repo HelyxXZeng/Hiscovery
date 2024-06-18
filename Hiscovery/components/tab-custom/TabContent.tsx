@@ -7,7 +7,8 @@ import { useUser } from "../../app/context/UserContext";
 
 const TabContent = ({ content }) => {
   const [articles, setArticles] = useState(null);
-  const { userId } = useUser()
+  const { userId } = useUser();
+  const [listKey, setListKey] = useState(Date.now());
 
   async function fetchData() {
     let { data, error } = await supabase.rpc(
@@ -21,6 +22,7 @@ const TabContent = ({ content }) => {
     if (error) console.error(error);
     else {
       setArticles(data);
+      setListKey(Date.now()); // Update the key with a unique value (timestamp)
     }
   }
 
@@ -30,7 +32,7 @@ const TabContent = ({ content }) => {
 
   return (
     <View style={styles.container}>
-      {articles && <BigArticleList articles={articles} scrollEnabled={true} />}
+      {articles && <BigArticleList key={listKey} articles={articles} scrollEnabled={true} />}
     </View>
   );
 };

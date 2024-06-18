@@ -16,10 +16,11 @@ import { supabase } from "../../../lib/supabase";
 import { COLORS, SIZES, FONT } from "../../../constants";
 import ProtectedRoute from "../../../components/ProtectedRoute";
 import { useState, useEffect } from "react";
+import { useUser } from "../../context/UserContext";
 
 export default function MorePage() {
   const router = useRouter();
-
+  const { resetUserId } = useUser()
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
@@ -33,6 +34,7 @@ export default function MorePage() {
     if (error) {
       console.error("Error signing out:", error);
     } else {
+      resetUserId()
       router.push("/auth");
     }
   };

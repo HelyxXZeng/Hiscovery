@@ -7,13 +7,14 @@ import { useRouter } from 'expo-router';
 import styles from './style';
 import { validateForm } from '../../function/UserDataValidation';
 import { COLORS, FONT } from '../../constants/theme';
+import { useUser } from '../../app/context/UserContext';
 
 export default function SignIn({ switchComponent }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [hidePassword, setHidePassword] = useState(true);
-
+    const { fetchUserId } = useUser()
     const router = useRouter();
 
     async function signInWithEmail() {
@@ -34,6 +35,7 @@ export default function SignIn({ switchComponent }) {
             if (error) {
                 Alert.alert(error.message);
             } else {
+                fetchUserId()
                 router.replace(`/(tabs)/home`);
             }
             setLoading(false);

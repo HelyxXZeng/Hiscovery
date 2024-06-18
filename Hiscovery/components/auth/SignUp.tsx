@@ -9,6 +9,7 @@ import { useRouter } from 'expo-router'
 import { validateForm } from '../../function/UserDataValidation';
 import ModalCalendar from '../modal-calendar/ModalCalendar'
 import styles from './style'
+import { useUser } from '../../app/context/UserContext'
 
 export default function SignUp({ switchComponent }) {
     const [email, setEmail] = useState('')
@@ -23,6 +24,7 @@ export default function SignUp({ switchComponent }) {
     const [showCalendarModal, setShowCalendarModal] = useState(false);
 
     const router = useRouter();
+    const { fetchUserId } = useUser()
 
     useEffect(() => {
         setFormattedDate(birthdate.toISOString().substring(0, 10))
@@ -66,14 +68,8 @@ export default function SignUp({ switchComponent }) {
                     })
                 if (error) console.error(error)
                 else {
-                    // router.push(`/home`);
+                    fetchUserId()
                     router.replace('/(tabs)/home')
-                    // try {
-                    //     router.back()
-                    // }
-                    // catch (error) {
-                    //     router.push('/(tabs)/home')
-                    // }
                 }
 
             }
