@@ -6,79 +6,52 @@ import { supabase } from "../../lib/supabase";
 import Header from "../../components/header/Header";
 import { COLORS, SIZES } from "../../constants";
 import ProtectedRoute from "../../components/ProtectedRoute";
-import React from "react"; 
+import React from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { ArticleData } from "../../components/articleCard/SmallArticleCard";
 import HistoryArticleList from "../../components/article-list/HistoryArticleList";
+import { useUser } from "../context/UserContext";
+import { HistoryArticleData } from "../../components/articleCard/HistoryArticleCard";
 
 export default function Page() {
-  const [readerId, setReaderId] = useState<number | null>(null);
-  const [articles, setArticles] = useState<ArticleData[]>([]);
+  const { userId } = useUser();
+  const [articles, setArticles] = useState<HistoryArticleData[]>([]);
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
 
-  // Function to get Reader ID
-  const getId = useCallback(async () => {
+  // Function to fetch articles
+  const fetchArticles = useCallback(async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data, error } = await supabase.rpc('get_id_by_email', {
-          p_email: user.email
-        });
-        if (error) {
-          console.error(error);
-        } else {
-          setReaderId(data);
-        }
+      setLoading(true);
+      const { data, error } = await supabase.rpc("get_history_articles", {
+        user_id: userId,
+      });
+      if (error) {
+        console.error(error);
+      } else {
+        setArticles(data);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
+      setInitialLoad(false);
     }
-  }, []);
-
-  // Function to fetch articles
-  const fetchArticles = useCallback(async () => {
-    if (readerId !== null) {
-      try {
-        setLoading(true);
-        const { data, error } = await supabase.rpc("get_history_articles", {
-          user_id: readerId,
-        });
-        if (error) {
-          console.error(error);
-        } else {
-          setArticles(data);
-          // console.log(data);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-        setInitialLoad(false);
-      }
-    }
-  }, [readerId]);
-
-  // Initial fetch to get reader ID
-  useEffect(() => {
-    getId();
-  }, [getId]);
-
-  // Fetch articles when readerId is set
-  useEffect(() => {
-    if (readerId !== null) {
-      fetchArticles();
-    }
-  }, [readerId, fetchArticles]);
+  }, [userId]);
 
   // Fetch articles when screen is focused
   useFocusEffect(
     useCallback(() => {
-      if (readerId !== null && !initialLoad) {
+      if (userId !== null && !initialLoad) {
         fetchArticles();
       }
-    }, [fetchArticles, readerId, initialLoad])
+    }, [fetchArticles, userId, initialLoad])
   );
+
+  useEffect(() => {
+    if (userId !== null) {
+      fetchArticles();
+    }
+  }, [userId, fetchArticles]);
 
   const renderArticles = () => {
     if (loading && initialLoad) {
@@ -86,7 +59,7 @@ export default function Page() {
     } else if (articles && articles.length > 0) {
       return <HistoryArticleList key={articles.map(article => article.id_article).join(',')} articles={articles} />;
     } else {
-      return <Text>No history articles to display. Read some articles to your history.</Text>;
+      return <Text>No history articles to display. Read some articles to add them to your history.</Text>;
     }
   };
 

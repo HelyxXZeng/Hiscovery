@@ -12,12 +12,13 @@ import { Stack, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import { supabase } from "../../lib/supabase";
+import { useUser } from "../context/UserContext";
 
 const ReportPage = ({ source_id, onClose = null }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [description, setDescription] = useState("");
   const [otherSubject, setOtherSubject] = useState("");
-  const [userSessionID, setUserSessionID] = useState(null);
+  const { userId } = useUser();
 
   const handleReport = async () => {
     // Handle report submission here
@@ -28,7 +29,7 @@ const ReportPage = ({ source_id, onClose = null }) => {
     try {
       const { data: report, error } = await supabase.rpc("add_new_report", {
         source_id: source_id,
-        this_user_id: userSessionID || 2,
+        this_user_id: userId || 2,
         this_description: selectedSubject || otherSubject,
         this_type: 'article',
         this_content: description,
@@ -43,36 +44,6 @@ const ReportPage = ({ source_id, onClose = null }) => {
       console.error("Error fetching Report:", error);
     }
   };
-
-  const fetchData = async () => {
-    try {
-      const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
-      if (sessionError) {
-        console.log(sessionError);
-        //redirect to SignIn
-        router.push(`/auth`);
-        onClose();
-        return;
-      }
-      if (sessionData && sessionData.user) {
-        let { data, error } = await supabase
-          .rpc('get_id_by_email', {
-            p_email: sessionData.user.email
-          })
-        if (error) console.error(error)
-        else {
-          setUserSessionID(data);
-          // console.log('Id here', data)
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching user session:", error);
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, [source_id]);
 
   return (
     <ProtectedRoute>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,11 +13,12 @@ import { Stack, router } from "expo-router";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import { supabase } from "../../lib/supabase";
 import Header from "../../components/header/Header";
+import { useUser } from "../context/UserContext";
 
 const FeedbackPage = (onClose = null) => {
+  const { userId } = useUser();
   const [subject, setSubject] = useState("");
   const [description, setDescription] = useState("");
-  const [userSessionID, setUserSessionID] = useState(null);
 
   const handleBack = () => {
     router.back();
@@ -32,7 +33,7 @@ const FeedbackPage = (onClose = null) => {
 
     try {
       const { data: report, error } = await supabase.rpc("add_new_report", {
-        this_user_id: userSessionID || 2,
+        this_user_id: userId,
         this_description: description,
         this_subject: subject,
       });
@@ -40,42 +41,12 @@ const FeedbackPage = (onClose = null) => {
       if (error || !report) {
         throw error || new Error("Feedback failed.");
       } else {
-        onClose();
+        if (onClose) onClose();
       }
     } catch (error) {
       console.error("Error fetching Feedback:", error);
     }
   };
-
-  const fetchData = async () => {
-    try {
-      const { data: sessionData, error: sessionError } =
-        await supabase.auth.refreshSession();
-      if (sessionError) {
-        console.log(sessionError);
-        //redirect to SignIn
-        router.push(`/auth`);
-        onClose();
-        return;
-      }
-      if (sessionData && sessionData.user) {
-        let { data, error } = await supabase.rpc("get_id_by_email", {
-          p_email: sessionData.user.email,
-        });
-        if (error) console.error(error);
-        else {
-          setUserSessionID(data);
-          // console.log('Id here', data)
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching user session:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <ProtectedRoute>
@@ -84,7 +55,8 @@ const FeedbackPage = (onClose = null) => {
           <Stack.Screen
             options={{
               headerTitle: () => <Header title="Feedback" iconvisible={false} />,
-            }} />
+            }}
+          />
         </SafeAreaView>
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.content}>
@@ -115,7 +87,6 @@ const FeedbackPage = (onClose = null) => {
             <Text style={styles.sendButtonText}>Gửi</Text>
           </TouchableOpacity>
         </ScrollView>
-
       </View>
     </ProtectedRoute>
   );

@@ -5,16 +5,16 @@ import NotificationComponentList from '../../components/notification/Notificatio
 import { COLORS } from '../../constants';
 import { Notification } from '../../components/notification/interface';
 import { supabase } from '../../lib/supabase';
+import { useUser } from '../context/UserContext';
 
 const NotificationsScreen: React.FC = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [userId, setUserId] = useState<number | null>(null);
+    const { userId } = useUser()
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetch = async () => {
-            await fetchUserData();
             if (userId) {
                 await fetchNotifications();
             }
@@ -26,16 +26,6 @@ const NotificationsScreen: React.FC = () => {
         const result = new Date(date);
         result.setHours(result.getHours() + hours);
         return result;
-    };
-
-    const fetchUserData = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-            const { data, error } = await supabase
-                .rpc('get_id_by_email', { p_email: user.email });
-            if (error) console.error(error);
-            else setUserId(data);
-        }
     };
 
     const fetchNotifications = async () => {

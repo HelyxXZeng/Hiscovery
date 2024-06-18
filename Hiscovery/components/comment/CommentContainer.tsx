@@ -5,22 +5,21 @@ import { COLORS, icons } from '../../constants';
 import { supabase } from '../../lib/supabase';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router'
+import { useUser } from '../../app/context/UserContext';
 
 const CommentContainer = ({ article_id, onClose }) => {
   // Simulated comments data (replace this with your actual data fetching mechanism)
   const [newComment, setNewComment] = React.useState('');
   const [Comments, setComments] = React.useState([]);
   const [refreshKey, setRefreshKey] = React.useState(0);
-
-  const [userSessionID, setUserSessionID] = React.useState(null);
-
+  const { userId } = useUser()
   const navigation = useNavigation();
   const router = useRouter();
 
   const handleAddComment = async () => {
     // Implement logic to add new comment
     try {
-      const { data: comment, error } = await supabase.rpc('add_comment', { article_id: article_id, this_user_id: userSessionID || 2, content: newComment });
+      const { data: comment, error } = await supabase.rpc('add_comment', { article_id: article_id, this_user_id: userId || 2, content: newComment });
 
 
       if (error || !comment) {
@@ -55,17 +54,7 @@ const CommentContainer = ({ article_id, onClose }) => {
         onClose();
         return;
       }
-      if (sessionData && sessionData.user) {
-        let { data, error } = await supabase
-          .rpc('get_id_by_email', {
-            p_email: sessionData.user.email
-          })
-        if (error) console.error(error)
-        else {
-          setUserSessionID(data);
-          // console.log('Id here', data)
-        }
-      }
+
       const { data: comments, error } = await supabase.rpc('get_comments', { article_id: article_id });
 
       if (error || !comments) {

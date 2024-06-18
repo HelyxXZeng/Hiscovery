@@ -3,6 +3,7 @@ import { useRoute } from '@react-navigation/native';
 import { supabase } from '../../lib/supabase'
 import { useState } from 'react';
 import ProtectedRoute from '../../components/ProtectedRoute';
+import React from 'react';
 
 export default function ResetPassword() {
     const route = useRoute();

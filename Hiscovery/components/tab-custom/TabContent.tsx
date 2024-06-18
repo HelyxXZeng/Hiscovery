@@ -3,31 +3,18 @@ import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../constants";
 import BigArticleList from "../article-list/BigArticleList";
 import { supabase } from "../../lib/supabase";
+import { useUser } from "../../app/context/UserContext";
 
 const TabContent = ({ content }) => {
   const [articles, setArticles] = useState(null);
-  const [readerId, setReaderId] = useState(0)
-
-  const getId = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    let { data, error } = await supabase
-      .rpc('get_id_by_email', {
-        p_email: user.email
-      })
-    if (error) console.error(error)
-    else {
-      setReaderId(data);
-      // console.log('Id here', data)
-    }
-  }
+  const { userId } = useUser()
 
   async function fetchData() {
-    await getId()
     let { data, error } = await supabase.rpc(
       "get_article_list_from_category",
       {
         category_id: content?.id,
-        user_id: readerId,
+        user_id: userId,
       }
     );
 
@@ -36,14 +23,10 @@ const TabContent = ({ content }) => {
       setArticles(data);
     }
   }
-  useEffect(() => {
-    fetchData();
-  }, [readerId]);
 
   useEffect(() => {
-    getId()
-  }, [])
-  // console.log('This is data to be rendered', articles)
+    fetchData();
+  }, [userId]);
 
   return (
     <View style={styles.container}>

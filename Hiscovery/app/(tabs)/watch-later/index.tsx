@@ -1,80 +1,44 @@
-import { Stack } from "expo-router";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import SmallArticleList from "../../../components/article-list/SmallArticleList";
-import { useState, useEffect, useCallback } from "react";
-import { supabase } from "../../../lib/supabase";
-import Header from "../../../components/header/Header";
-import { COLORS, SIZES } from "../../../constants";
-import ProtectedRoute from "../../../components/ProtectedRoute";
-import React from "react";
+import React, { useCallback, useEffect, useState } from 'react';
+import { Stack } from 'expo-router';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import SmallArticleList from '../../../components/article-list/SmallArticleList';
+import Header from '../../../components/header/Header';
+import { COLORS, SIZES } from '../../../constants';
+import ProtectedRoute from '../../../components/ProtectedRoute';
 import { useFocusEffect } from '@react-navigation/native';
+import { useUser } from '../../context/UserContext';
+import { supabase } from "../../../lib/supabase";
 
 export default function Page() {
-  const [readerId, setReaderId] = useState<number | null>(null);
+  const { userId, fetchUserId } = useUser();
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
 
-  // Function to get Reader ID
-  const getId = useCallback(async () => {
+  const fetchArticles = useCallback(async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data, error } = await supabase.rpc('get_id_by_email', {
-          p_email: user.email
-        });
-        if (error) {
-          console.error(error);
-        } else {
-          setReaderId(data);
-        }
+      setLoading(true);
+      const { data, error } = await supabase.rpc("get_watch_later_list", { _reader_id: userId });
+      if (error) {
+        console.error(error);
+      } else {
+        setArticles(data);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
+      setInitialLoad(false);
     }
-  }, []);
 
-  // Function to fetch articles
-  const fetchArticles = useCallback(async () => {
-    if (readerId !== null) {
-      try {
-        setLoading(true);
-        const { data, error } = await supabase.rpc("get_watch_later_list", {
-          _reader_id: readerId,
-        });
-        if (error) {
-          console.error(error);
-        } else {
-          setArticles(data);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-        setInitialLoad(false);
-      }
-    }
-  }, [readerId]);
+  }, [userId]);
 
-  // Initial fetch to get reader ID
-  useEffect(() => {
-    getId();
-  }, [getId]);
-
-  // Fetch articles when readerId is set
-  useEffect(() => {
-    if (readerId !== null) {
-      fetchArticles();
-    }
-  }, [readerId, fetchArticles]);
-
-  // Fetch articles when screen is focused
   useFocusEffect(
     useCallback(() => {
-      if (readerId !== null && !initialLoad) {
+      if (userId !== null) {
         fetchArticles();
       }
-    }, [fetchArticles, readerId, initialLoad])
+    }, [fetchArticles, userId, initialLoad])
   );
 
   const renderArticles = () => {

@@ -15,6 +15,7 @@ import { Icon } from 'react-native-elements';
 import { COLORS, FONT, SIZES } from '../../constants';
 import { ScrollView } from 'react-native-gesture-handler';
 import { supabase } from '../../lib/supabase';
+import { useUser } from '../../app/context/UserContext';
 interface AuthorData {
     id: number;
     name: string;
@@ -33,14 +34,14 @@ interface AuthorProfileProps {
 const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
     const [authorData, setAuthorData] = useState<AuthorData | null>(null);
     const [articles, setArticles] = useState<ArticleData[]>([]);
-    const [readerId, setReaderId] = useState(0)
+    const { userId } = useUser()
 
     const fetchData = async () => {
         const fetchAuthor = async () => {
             let { data, error } = await supabase
                 .rpc('get_author_profile_data', {
                     _author_id: id,
-                    _reader_id: readerId
+                    _reader_id: userId
                 })
             if (error) console.error(error)
             else {
@@ -52,7 +53,7 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
             let { data, error } = await supabase
                 .rpc('get_article_by_author', {
                     author_id: id,
-                    reader_id: readerId
+                    reader_id: userId
                 })
             if (error) console.error(error)
             else {
@@ -73,7 +74,7 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
         let { data, error } = await supabase
             .rpc('follow_author', {
                 author_id: id,
-                reader_id: readerId
+                reader_id: userId
             })
         if (error) {
             console.error(error)
@@ -86,26 +87,10 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ id }) => {
 
     };
 
-    const getId = async () => {
-        const { data: { user } } = await supabase.auth.getUser()
-        let { data, error } = await supabase
-            .rpc('get_id_by_email', {
-                p_email: user.email
-            })
-        if (error) console.error(error)
-        else {
-            setReaderId(data);
-            // console.log('Id here', data)
-        }
-    }
 
     useEffect(() => {
         fetchData();
-    }, [readerId]);
-
-    useEffect(() => {
-        getId()
-    }, [])
+    }, [userId]);
 
     if (!authorData) return <Text>Loading...</Text>;
 
