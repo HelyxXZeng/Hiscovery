@@ -12,7 +12,7 @@ const HistoryArticleList: React.FC<HistoryArticleListProps> = ({ articles: initi
 
     const handleRemove = async (id: number) => {
         // Remove from the front end
-        setArticles(articles.filter(article => article.id_article !== id));
+        setArticles(articles.filter(article => article.history_id !== id));
 
         // Remove from the back end
         // console.log(id)
