@@ -22,7 +22,31 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const [isBookmarked, setIsBookmarked] = useState(data.is_bookmarked);
   const [userId, setUserId] = useState<number | null>(null);
   const { session } = useAuth();
+  const [viewCount, setViewCount] = useState<number | any>(null);
+  // const [viewCountId, setViewCountId] = useState(null);
+  var articleID=data.id;
 
+  const getViewCount = async () => {
+    if(articleID)
+    try {
+        const { data, error } = await supabase.rpc("get_view_count", {
+          article_id: articleID,
+        });
+
+        if (error || !data) {
+            throw error || new Error("View count not found.");
+        }
+
+        setViewCount(data[0].total_views);
+        // setViewCountId(data[0].view_count_id);
+    } catch (error) {
+        console.error("Error fetching view count:", error);
+    }
+};
+  useEffect(()=>{
+    getViewCount()
+    // console.log(viewCount)
+  },[data.id])
   useEffect(() => {
     // console.log('This is data ' + data.name + " ", data.is_bookmarked)
     setIsBookmarked(data.is_bookmarked);
@@ -87,6 +111,7 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
                 {data.category_name}
               </Text>
               <Text style={[styles.tag]}>{data.author_name}</Text>
+              <Text style={[styles.tag]}>Lượt đọc: {viewCount}</Text>
             </View>
             <View style={[styles.TagNCParent, styles.parentFlexBox]}>
               <View style={[styles.commentIconParent, styles.parentFlexBox]}>
