@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, ScrollView, TextInput, View, Text, TouchableOpacity } from 'react-native';
-import { supabase } from '../../lib/supabase'
-import { Button, Input } from 'react-native-elements'
-import { COLORS, SIZES, FONT } from '../../constants/theme'
-import styles from './style'
+import { supabase } from '../../lib/supabase';
+import { Button } from 'react-native-elements';
+import { COLORS, FONT } from '../../constants/theme';
+import styles from './style';
 
 export default function ForgotPassword({ switchComponent }) {
-    const [email, setEmail] = useState('')
-    const [loading, setLoading] = useState(false)
+    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
 
     async function resetPassword() {
-        setLoading(true)
+        setLoading(true);
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: 'com.supabase://reset-password'
         });
@@ -20,7 +20,7 @@ export default function ForgotPassword({ switchComponent }) {
         } else {
             Alert.alert('Success', 'Check your email for the password reset link');
         }
-        setLoading(false)
+        setLoading(false);
     }
 
     return (

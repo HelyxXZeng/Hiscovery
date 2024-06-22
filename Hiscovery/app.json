@@ -1,6 +1,7 @@
 {
   "expo": {
     "scheme": "com.supabase",
+    "deepLinking": true,
     "name": "Hiscovery",
     "slug": "Hiscovery",
     "version": "1.0.1",

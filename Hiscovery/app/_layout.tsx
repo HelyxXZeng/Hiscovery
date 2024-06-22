@@ -78,6 +78,7 @@ const Layout = () => {
             },
           }}
         />
+        <JsStack.Screen name="reset-password/index" options={{ headerShown: true, title: "Reset Password" }} />
       </JsStack>
     </AuthProvider>
   );
