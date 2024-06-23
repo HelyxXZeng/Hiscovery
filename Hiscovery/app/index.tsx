@@ -13,7 +13,7 @@ export default function Index() {
       const url = event.url;
       // Parse the URL and navigate to the appropriate screen
       if (url.includes("reset-password")) {
-        router.push("/reset-password");
+        router.replace("/reset-password/");
       }
     };
 
