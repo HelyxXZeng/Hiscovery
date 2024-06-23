@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { Redirect, useRouter } from "expo-router";
 import { Linking } from "react-native";
-import 'text-encoding';
+import "text-encoding";
 
 export default function Index() {
   const router = useRouter();
@@ -12,12 +12,12 @@ export default function Index() {
     const handleDeepLink = (event: { url: string }) => {
       const url = event.url;
       // Parse the URL and navigate to the appropriate screen
-      if (url.includes('reset-password')) {
-        router.push('/reset-password/index');
+      if (url.includes("reset-password")) {
+        router.push("/reset-password");
       }
     };
 
-    const subscription = Linking.addEventListener('url', handleDeepLink);
+    const subscription = Linking.addEventListener("url", handleDeepLink);
 
     return () => {
       subscription.remove();
@@ -26,4 +26,3 @@ export default function Index() {
 
   return <Redirect href={"/(tabs)/home"} />;
 }
-
