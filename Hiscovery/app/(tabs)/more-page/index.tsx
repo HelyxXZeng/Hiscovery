@@ -122,7 +122,7 @@ export default function MorePage() {
             iconRight
             onPress={() => router.push("/privacy")}
           />
-          {/* <Button
+          <Button
             buttonStyle={styles.button}
             title="About us  "
             icon={<Icon name="info-circle" type="font-awesome" color="white" />}
@@ -136,7 +136,7 @@ export default function MorePage() {
             icon={<Icon name="star" type="font-awesome" color="white" />}
             iconRight
             onPress={() => router.push("/privacy")}
-          /> */}
+          />
 
           <Button
             buttonStyle={[styles.button, styles.signout]}
