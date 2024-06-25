@@ -5,6 +5,7 @@ import NotificationComponentList from '../../components/notification/Notificatio
 import { COLORS } from '../../constants';
 import { Notification } from '../../components/notification/interface';
 import { supabase } from '../../lib/supabase';
+import ProtectedRoute from '../../components/ProtectedRoute';
 
 const NotificationsScreen: React.FC = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -60,33 +61,35 @@ const NotificationsScreen: React.FC = () => {
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: COLORS.white }}>
-            <Stack.Screen
-                options={{
-                    headerTitle: () => (
-                        <View style={{ marginLeft: 0 }}>
-                            <Text style={{ fontSize: 20, fontFamily: "InterSemiBold" }}>
-                                Notifications
-                            </Text>
-                        </View>
-                    ),
-                    headerShadowVisible: false,
-                    headerStyle: {
-                        backgroundColor: COLORS.primary,
-                    },
-                }}
-            />
-            {loading ?
-                <ActivityIndicator size="large" color={COLORS.darkRed} /> :
-                <View style={styles.container}>
-                    {error ? (
-                        <Text style={styles.errorText}>{error}</Text>
-                    ) : (
-                        <NotificationComponentList notifications={notifications} />
-                    )}
-                </View>
-            }
-        </View>
+        <ProtectedRoute>
+            <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+                <Stack.Screen
+                    options={{
+                        headerTitle: () => (
+                            <View style={{ marginLeft: 0 }}>
+                                <Text style={{ fontSize: 20, fontFamily: "InterSemiBold" }}>
+                                    Notifications
+                                </Text>
+                            </View>
+                        ),
+                        headerShadowVisible: false,
+                        headerStyle: {
+                            backgroundColor: COLORS.primary,
+                        },
+                    }}
+                />
+                {loading ?
+                    <ActivityIndicator size="large" color={COLORS.darkRed} /> :
+                    <View style={styles.container}>
+                        {error ? (
+                            <Text style={styles.errorText}>{error}</Text>
+                        ) : (
+                            <NotificationComponentList notifications={notifications} />
+                        )}
+                    </View>
+                }
+            </View>
+        </ProtectedRoute>
     );
 };
 

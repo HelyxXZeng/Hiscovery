@@ -66,16 +66,8 @@ export default function SignUp({ switchComponent }) {
                     })
                 if (error) console.error(error)
                 else {
-                    // router.push(`/home`);
                     router.replace('/(tabs)/home')
-                    // try {
-                    //     router.back()
-                    // }
-                    // catch (error) {
-                    //     router.push('/(tabs)/home')
-                    // }
                 }
-
             }
             if (!session) Alert.alert('Please check your inbox for email verification!')
         } else {

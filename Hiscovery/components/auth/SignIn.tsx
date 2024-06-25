@@ -13,7 +13,6 @@ export default function SignIn({ switchComponent }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [hidePassword, setHidePassword] = useState(true);
-
     const router = useRouter();
 
     async function signInWithEmail() {

@@ -19,7 +19,6 @@ import { useState, useEffect } from "react";
 
 export default function MorePage() {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 

@@ -7,6 +7,7 @@ import { supabase } from "../../lib/supabase";
 const TabContent = ({ content }) => {
   const [articles, setArticles] = useState(null);
   const [readerId, setReaderId] = useState(0)
+  const [listKey, setListKey] = useState(Date.now())
 
   const getId = async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -34,6 +35,7 @@ const TabContent = ({ content }) => {
     if (error) console.error(error);
     else {
       setArticles(data);
+      setListKey(Date.now()); // Update the key with a unique value (timestamp)
     }
   }
   useEffect(() => {
@@ -47,7 +49,7 @@ const TabContent = ({ content }) => {
 
   return (
     <View style={styles.container}>
-      {articles && <BigArticleList articles={articles} scrollEnabled={true} />}
+      {articles && <BigArticleList key={listKey} articles={articles} scrollEnabled={true} />}
     </View>
   );
 };

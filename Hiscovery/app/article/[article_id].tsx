@@ -31,6 +31,24 @@ const Article = () => {
     const route = useRoute();
     const router = useRouter();
     const { article_id } = route.params;
+    const [readerId, setReaderId] = useState(0)
+
+    const getId = async () => {
+        const { data: { user } } = await supabase.auth.getUser()
+        let { data, error } = await supabase
+            .rpc('get_id_by_email', {
+                p_email: user.email
+            })
+        if (error) console.error(error)
+        else {
+            setReaderId(data);
+            // console.log('Id here', data)
+        }
+    }
+
+    useEffect(() => {
+        getId()
+    }, [author])
 
     const handleAuthorPress = async () => {
         router.push(`/author/${authorId}`);
@@ -107,6 +125,15 @@ const Article = () => {
                 if (error) {
                     throw error;
                 }
+
+
+                let { data } = await supabase
+                    .rpc('update_history', {
+                        article_id,
+                        reader_id: readerId
+                    })
+
+
                 setViewCount(prevCount => prevCount + 1);
                 setHasViewed(true);
             } catch (error) {
