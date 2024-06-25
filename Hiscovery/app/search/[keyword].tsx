@@ -7,7 +7,6 @@ import { icons, COLORS } from '../../constants';
 import { Stack, useRouter } from 'expo-router';
 import Header from "../../components/header/Header";
 import { supabase } from "../../lib/supabase";
-import { useUser } from '../context/UserContext';
 
 const SearchPage = () => {
   const router = useRouter()
@@ -16,15 +15,28 @@ const SearchPage = () => {
   const decodedKeyword = decodeURIComponent(keyword);
   const [searchValue, setSearchValue] = useState('');
   const [articles, setArticles] = useState([]);
-  const { userId } = useUser()
+  const [readerId, setReaderId] = useState(0)
   const [isLoading, setIsLoading] = useState(true);
+
+  const getId = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    let { data, error } = await supabase
+      .rpc('get_id_by_email', {
+        p_email: user.email
+      })
+    if (error) console.error(error)
+    else {
+      setReaderId(data);
+      // console.log('Id here', data)
+    }
+  }
 
   const fetchArticlesByKeyword = async () => {
     const search = async () => {
       let { data, error } = await supabase
         .rpc('search_articles', {
           keyword: decodedKeyword,
-          user_id: userId
+          user_id: readerId
         })
       if (error) console.error(error)
       else {
@@ -37,6 +49,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      await getId()
       await fetchArticlesByKeyword()
     }
 

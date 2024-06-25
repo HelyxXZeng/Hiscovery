@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'reac
 import LikeDislikeComponent from '../like-dislike/Likedis';
 import { supabase } from '../../lib/supabase';
 import { COLORS } from '../../constants';
-import { useUser } from '../../app/context/UserContext';
 //import ReportButton from './ReportButton'; // Import your ReportButton
 
 const defaultAvatar = require('../../assets/icons/default_avatar_icon.png');
@@ -24,7 +23,7 @@ const Comment: React.FC<CommentProps> = ({ data, article_id }) => {
   const [isRoot, setisRoot] = React.useState(false);
   const [showResponseInput, setShowResponseInput] = useState(false);
   const [responseText, setResponseText] = useState('');
-  const { userId } = useUser()
+  const [userId, setUserId] = useState<number | null>(null);
   const { avatar_url: avatar, comment_content, username } = data;
 
 
@@ -79,6 +78,19 @@ const Comment: React.FC<CommentProps> = ({ data, article_id }) => {
     getResponses();
     getCommentRoot();
   }, [article_id]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .rpc('get_id_by_email', { p_email: user.email });
+        if (error) console.error(error);
+        else setUserId(data);
+      }
+    };
+    fetchUserData()
+  }, [userId]);
 
   return (
     <View style={styles.container}>

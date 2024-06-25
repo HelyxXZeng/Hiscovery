@@ -15,7 +15,6 @@ import {
 } from "@react-navigation/stack";
 import { withLayoutContext } from "expo-router";
 import { AuthProvider } from './context/AuthContext';
-import { UserProvider } from "./context/UserContext";
 import React from "react";
 
 const { Navigator } = createStackNavigator();

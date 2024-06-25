@@ -4,7 +4,6 @@ import { SIZES, FONT, COLORS, PADDING } from "../../constants/index";
 import { useRouter } from "expo-router";
 import { supabase } from "../../lib/supabase"; // Import your Supabase client
 import { useAuth } from "../../app/context/AuthContext";
-import { useUser } from "../../app/context/UserContext";
 
 export interface ArticleData {
   id: number;
@@ -21,33 +20,33 @@ export interface ArticleData {
 const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const router = useRouter();
   const [isBookmarked, setIsBookmarked] = useState(data.is_bookmarked);
-  const { userId } = useUser()
+  const [userId, setUserId] = useState<number | null>(null);
   const { session } = useAuth();
   const [viewCount, setViewCount] = useState<number | any>(null);
   // const [viewCountId, setViewCountId] = useState(null);
-  var articleID = data.id;
+  var articleID=data.id;
 
   const getViewCount = async () => {
-    if (articleID)
-      try {
+    if(articleID)
+    try {
         const { data, error } = await supabase.rpc("get_view_count", {
           article_id: articleID,
         });
 
         if (error || !data) {
-          throw error || new Error("View count not found.");
+            throw error || new Error("View count not found.");
         }
 
         setViewCount(data[0].total_views);
         // setViewCountId(data[0].view_count_id);
-      } catch (error) {
+    } catch (error) {
         console.error("Error fetching view count:", error);
-      }
-  };
-  useEffect(() => {
+    }
+};
+  useEffect(()=>{
     getViewCount()
     // console.log(viewCount)
-  }, [data.id])
+  },[data.id])
   useEffect(() => {
     // console.log('This is data ' + data.name + " ", data.is_bookmarked)
     setIsBookmarked(data.is_bookmarked);
@@ -56,6 +55,23 @@ const ArticleCard: React.FC<{ data: ArticleData }> = ({ data }) => {
   const handlePress = () => {
     router.push("/article/" + data.id);
   };
+
+  const fetchUserData = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data, error } = await supabase
+        .rpc('get_id_by_email', { p_email: user.email });
+      if (error) console.error(error);
+      else setUserId(data);
+    }
+  };
+
+  useEffect(() => {
+    const fetch = async () => {
+      await fetchUserData();
+    };
+    fetch();
+  }, []);
 
   const toggleBookmark = async () => {
     const articleId = data.id;

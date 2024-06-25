@@ -9,10 +9,10 @@ interface TopAuthorCardListData {
 
 const TopAuthorCardList: React.FC<TopAuthorCardListData> = ({ authors }) => {
     const renderItem = ({ item }: { item: AuthorData }) => (
-        <View style={styles.ListContainer}>
-            <ItemFollowingAuthor author={item} />
-            <Text style={styles.number}>{item.views}</Text>
-        </View>
+       <View style={styles.ListContainer}>
+           <ItemFollowingAuthor author={item} />
+           <Text style={styles.number}>{item.views}</Text>
+       </View>
     );
 
     return (
@@ -37,15 +37,15 @@ const styles = StyleSheet.create({
     ListContainer: {
         display: 'flex',
         flexDirection: "row",
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent:'center',
+        alignItems:'center',
     },
-    number: {
+    number:{
         color: "#c8355d",
         fontFamily: FONT.tag,
         fontSize: SIZES.large,
-        alignItems: 'center',
-        textAlign: 'center',
+        alignItems:'center',
+        textAlign:'center',
         marginRight: 15,
     }
 });

@@ -1,40 +1,19 @@
 import { Alert, ScrollView, TextInput, TouchableOpacity, View, Text } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { supabase } from '../../lib/supabase'
 import { Button } from 'react-native-elements'
 import { useState } from 'react';
-import ProtectedRoute from '../../components/ProtectedRoute';
-import React from 'react';
 import { Icon } from 'react-native-elements';
-import ModalCalendar from '../../components/modal-calendar/ModalCalendar';
 import { COLORS, FONT } from '../../constants';
 import styles from '../../components/auth/style';
 import { router } from 'expo-router';
 import { validateForm } from '../../function/UserDataValidation';
+import React from 'react';
 
 export default function ResetPassword() {
-    const route = useRoute();
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('')
     const [hidePassword, setHidePassword] = useState(true)
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
-
-    async function handleResetPassword() {
-        if (password !== passwordConfirmation) {
-            Alert.alert('Error', 'Passwords do not match');
-            return;
-        }
-
-        const { data, error } = await supabase.auth.updateUser({
-            password: password
-        })
-
-        if (error) {
-            Alert.alert('Error resetting password', error.message);
-        } else {
-            Alert.alert('Success', 'Your password has been updated');
-        }
-    }
 
     async function updatePassword() {
         if (password !== passwordConfirmation) {

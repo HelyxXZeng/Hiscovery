@@ -5,10 +5,11 @@ import { useRouter } from "expo-router";
 import { COLORS, FONT } from "../../constants";
 import TopAuthorCardList from "../../components/author-card/TopAuthorCardList";
 import BigArticleList from "../../components/article-list/BigArticleList"; // Import BigArticleList component
+import { AuthorData } from "../../components/author-card/AuthorCard";
 import { Stack, Link } from "expo-router";
+import { icons } from "../../constants";
 import { supabase } from "../../lib/supabase"; // assuming supabase is where you define your RPC function
 import Header from "../../components/header/Header";
-import { useUser } from "../context/UserContext";
 
 const LeaderBoardPage = () => {
   const [index, setIndex] = useState(0);
@@ -16,14 +17,44 @@ const LeaderBoardPage = () => {
     { key: 'topAuthor', title: 'Top Authors' },
     { key: 'topArticle', title: 'Top Articles' },
   ]);
+  const [readerId, setReaderId] = useState<number | null>(null);
 
-  const { userId } = useUser(); // Use the global user ID
   const [topAuthors, setTopAuthors] = useState<any[]>([]);
   const [topArticles, setTopArticles] = useState<any[]>([]); // State for top articles
 
-  const fetchTopAuthors = useCallback(async () => {
+  const getId = useCallback(async () => {
     try {
-      const { data, error } = await supabase.rpc('get_top_authors', { user_id: userId });
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase.rpc('get_id_by_email', {
+          p_email: user.email
+        });
+        if (error) {
+          console.error(error);
+        } else {
+          setReaderId(data);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getId();
+    if (readerId) {
+      if (routes[index].key === 'topAuthor') {
+        fetchTopAuthors();
+      } else if (routes[index].key === 'topArticle') {
+        fetchTopArticles();
+      }
+    }
+  }, [getId, readerId, routes[index].key]);
+
+
+  const fetchTopAuthors = async () => {
+    try {
+      const { data, error } = await supabase.rpc('get_top_authors', { user_id: readerId });
       if (error) {
         console.error("Error fetching top authors:", error.message);
         return;
@@ -32,11 +63,11 @@ const LeaderBoardPage = () => {
     } catch (error) {
       console.error("Failed to fetch top authors:", error);
     }
-  }, [userId]);
+  };
 
-  const fetchTopArticles = useCallback(async () => {
+  const fetchTopArticles = async () => {
     try {
-      const { data, error } = await supabase.rpc('get_top_articles', { user_id: userId });
+      const { data, error } = await supabase.rpc('get_top_articles', { user_id: readerId });
       if (error) {
         console.error("Error fetching top articles:", error.message);
         return;
@@ -45,17 +76,7 @@ const LeaderBoardPage = () => {
     } catch (error) {
       console.error("Failed to fetch top articles:", error);
     }
-  }, [userId]);
-
-  useEffect(() => {
-    if (userId) {
-      if (routes[index].key === 'topAuthor') {
-        fetchTopAuthors();
-      } else if (routes[index].key === 'topArticle') {
-        fetchTopArticles();
-      }
-    }
-  }, [userId, routes[index].key, fetchTopAuthors, fetchTopArticles]);
+  };
 
   const renderScene = ({ route }) => {
     switch (route.key) {
