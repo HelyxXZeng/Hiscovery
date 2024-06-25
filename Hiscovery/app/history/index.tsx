@@ -6,14 +6,15 @@ import { supabase } from "../../lib/supabase";
 import Header from "../../components/header/Header";
 import { COLORS, SIZES } from "../../constants";
 import ProtectedRoute from "../../components/ProtectedRoute";
-import React from "react"; 
+import React from "react";
 import { useFocusEffect } from '@react-navigation/native';
 import { ArticleData } from "../../components/articleCard/SmallArticleCard";
 import HistoryArticleList from "../../components/article-list/HistoryArticleList";
+import { HistoryArticleData } from "../../components/articleCard/HistoryArticleCard";
 
 export default function Page() {
   const [readerId, setReaderId] = useState<number | null>(null);
-  const [articles, setArticles] = useState<ArticleData[]>([]);
+  const [articles, setArticles] = useState<HistoryArticleData[]>([]);
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
 
