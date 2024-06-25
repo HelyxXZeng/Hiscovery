@@ -46,44 +46,43 @@ const Layout = () => {
   }
 
   return (
-    <UserProvider>
-      <AuthProvider>
-        <JsStack>
-          <JsStack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <JsStack.Screen
-            name="category-list/index"
-            options={{
-              headerTitleAlign: "center",
-              headerShown: true,
-              title: "Categories",
-              headerLeft: null, // Remove the default back button
-              headerRight: () => (
-                <TouchableOpacity
-                  style={{ marginRight: 10 }}
-                  onPress={() => navigation.goBack()}
-                >
-                  <icons.arrowRight fill="#222222" />
-                </TouchableOpacity>
-              ),
-              cardStyleInterpolator: ({ current, layouts }) => {
-                return {
-                  cardStyle: {
-                    transform: [
-                      {
-                        translateX: current.progress.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [-layouts.screen.width, 0], // Reverse direction from -width to 0
-                        }),
-                      },
-                    ],
-                  },
-                };
-              },
-            }}
-          />
-        </JsStack>
-      </AuthProvider>
-    </UserProvider>
+    <AuthProvider>
+      <JsStack>
+        <JsStack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <JsStack.Screen
+          name="category-list/index"
+          options={{
+            headerTitleAlign: "center",
+            headerShown: true,
+            title: "Categories",
+            headerLeft: null, // Remove the default back button
+            headerRight: () => (
+              <TouchableOpacity
+                style={{ marginRight: 10 }}
+                onPress={() => navigation.goBack()}
+              >
+                <icons.arrowRight fill="#222222" />
+              </TouchableOpacity>
+            ),
+            cardStyleInterpolator: ({ current, layouts }) => {
+              return {
+                cardStyle: {
+                  transform: [
+                    {
+                      translateX: current.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-layouts.screen.width, 0], // Reverse direction from -width to 0
+                      }),
+                    },
+                  ],
+                },
+              };
+            },
+          }}
+        />
+        <JsStack.Screen name="reset-password/index" options={{ headerShown: true, title: "Reset Password" }} />
+      </JsStack>
+    </AuthProvider>
   );
 };
 
